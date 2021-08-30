@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RemyNewWebApp.Models;
+using RemyNewWebApp.Extensions;
 using RemyNewWebApp.Models.ViewModels;
 using RemyNewWebApp.Services.Interfaces;
 using System;

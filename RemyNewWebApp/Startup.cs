@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using RemyNewWebApp.Data;
 using RemyNewWebApp.Models;
 using RemyNewWebApp.Services;
+using RemyNewWebApp.Services.Factories;
 using RemyNewWebApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -37,12 +38,14 @@ namespace RemyNewWebApp
 
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseNpgsql(
-                        Configuration.GetConnectionString("DefaultConnection")));
+                        Configuration.GetConnectionString("DefaultConnection"),
+                        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddClaimsPrincipalFactory<BTUserClaimsPrincipalFactory>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
