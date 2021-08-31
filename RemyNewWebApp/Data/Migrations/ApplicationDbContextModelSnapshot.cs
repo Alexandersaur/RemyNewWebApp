@@ -16,7 +16,7 @@ namespace RemyNewWebApp.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("BTUserProject", b =>
@@ -261,9 +261,7 @@ namespace RemyNewWebApp.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -436,7 +434,7 @@ namespace RemyNewWebApp.Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<bool>("Archive")
+                    b.Property<bool>("Archived")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("Created")
@@ -714,7 +712,7 @@ namespace RemyNewWebApp.Data.Migrations
             modelBuilder.Entity("RemyNewWebApp.Models.Invite", b =>
                 {
                     b.HasOne("RemyNewWebApp.Models.Company", "Company")
-                        .WithMany()
+                        .WithMany("Invites")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -884,6 +882,8 @@ namespace RemyNewWebApp.Data.Migrations
 
             modelBuilder.Entity("RemyNewWebApp.Models.Company", b =>
                 {
+                    b.Navigation("Invites");
+
                     b.Navigation("Members");
 
                     b.Navigation("Projects");
