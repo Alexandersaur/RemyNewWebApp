@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,16 +22,22 @@ namespace RemyNewWebApp.Controllers
         private readonly IBTCompanyInfoService _companyInfoService;
         private readonly IBTProjectService _projectService;
         private readonly IBTRolesService _rolesService;
+        private readonly IBTFileService _fileService;
+        private readonly UserManager<BTUser> _userManager;
 
         public ProjectsController(ApplicationDbContext context,
                                   IBTCompanyInfoService companyInfoService,
                                   IBTProjectService projectService,
-                                  IBTRolesService rolesService)
+                                  IBTRolesService rolesService,
+                                  IBTFileService fileService,
+                                  UserManager<BTUser> userManager)
         {
             _context = context;
             _companyInfoService = companyInfoService;
             _projectService = projectService;
             _rolesService = rolesService;
+            _fileService = fileService;
+            _userManager = userManager;
         }
 
         // GET: Projects
@@ -37,6 +45,22 @@ namespace RemyNewWebApp.Controllers
         {
             var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
             return View(await applicationDbContext.ToListAsync());
+        }        
+        
+        // GET: MY Projects
+        public async Task<IActionResult> MyProjects()
+        {
+            string userId = _userManager.GetUserId(User);
+            List<Project> projects = await _projectService.GetUserProjectsAsync(userId);
+            return View(projects);
+        }        
+        
+        // GET: ALL Projects
+        public async Task<IActionResult> AllProjects()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
+            return View(projects);
         }
 
         [HttpGet]
@@ -62,15 +86,15 @@ namespace RemyNewWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(model.SelectedUsers != null)
+                if (model.SelectedUsers != null)
                 {
                     List<string> memberIds = (await _projectService.GetAllProjectMembersExceptPMAsync(model.Project.Id))
                                                                    .Select(m => m.Id).ToList();
-                    foreach(string item in memberIds)
+                    foreach (string item in memberIds)
                     {
                         await _projectService.RemoveUserFromProjectAsync(item, model.Project.Id);
                     }
-                    foreach(string item in model.SelectedUsers)
+                    foreach (string item in model.SelectedUsers)
                     {
                         await _projectService.AddUserToProjectAsync(item, model.Project.Id);
                     }
@@ -102,29 +126,64 @@ namespace RemyNewWebApp.Controllers
         }
 
         // GET: Projects/Create
-        public IActionResult Create()
+        [Authorize(Roles="Admin, ProjectManager")]
+        public async Task<IActionResult> Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id");
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id");
-            return View();
+            int companyId = User.Identity.GetCompanyId().Value;
+            //Add Viewmodel instance "AddProjectWithPMViewModel"
+            AddProjectWithPMViewModel model = new();
+            //Load SelectLists with data ie. PMList & PriorityList
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId),"Id","FullName");
+            model.PriorityList = new SelectList(_context.ProjectPriorities, "Id", "Name");
+            //Return View with viewmodel instance as the model
+            return View(model);
+            //ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id");
+            //ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id");
+            //return View();
         }
 
         // POST: Projects/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ImageFileName,ImageFileData,ImageFileContentType,Archived,CompanyId,ProjectPriorityId")] Project project)
+        //public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ImageFileName,ImageFileData,ImageFileContentType,Archived,CompanyId,ProjectPriorityId")] Project project)
+        //Change the above paramter type to "AddProjectWithPMViewModel as model
+        public async Task<IActionResult> Create(AddProjectWithPMViewModel model)
         {
-            if (ModelState.IsValid)
+            int companyId = User.Identity.GetCompanyId().Value;
+            //Test if model is null (aka if data has been captured from the form)
+            if (model != null)
             {
-                _context.Add(project);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    //Capture the image if one has been selected
+                    if (model.Project.ImageFormFile != null)
+                    {
+                        model.Project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(model.Project.ImageFormFile);
+                        model.Project.ImageFileName = model.Project.ImageFormFile.FileName;
+                        model.Project.ImageFileContentType = model.Project.ImageFormFile.ContentType;
+                    }
+                    //Set companyId of the new project
+                    model.Project.CompanyId = companyId;
+                    //Use service to add new project to database
+                    await _projectService.AddNewProjectAsync(model.Project);
+                    //Then if a PM was selected in the form
+                    if (!string.IsNullOrEmpty(model.PMId))
+                    {
+                        //Add the PM to the project with service call
+                        await _projectService.AddUserToProjectAsync(model.PMId, model.Project.Id);
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                //_context.Add(project);
+                //await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Create));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
-            return View(project);
+            //ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
+            //ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+            return RedirectToAction("Create");
         }
 
         // GET: Projects/Edit/5
@@ -150,6 +209,7 @@ namespace RemyNewWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //TODO: remove _context
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,ImageFileName,ImageFileData,ImageFileContentType,Archived,CompanyId,ProjectPriorityId")] Project project)
         {
             if (id != project.Id)
