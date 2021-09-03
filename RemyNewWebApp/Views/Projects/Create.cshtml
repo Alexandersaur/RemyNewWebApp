@@ -39,9 +39,19 @@
         </div>*@
             <div class="form-group">
                 <label asp-for="Project.ImageFormFile" class="control-label"></label>
-                <input asp-for="Project.ImageFormFile" class="form-control" type="file" accept=".png, .jpg, .jpeg, .gif"/>
+                <input asp-for="Project.ImageFormFile" class="form-control" type="file" accept=".png, .jpg, .jpeg, .gif"
+                       onchange="document.getElementById('imageFileData').src = window.URL.createObjectURL(this.files[0])"/>
                 <span asp-validation-for="Project.ImageFormFile" class="text-danger"></span>
             </div>
+            @*<label>Image Preview</label>
+            @if (Model.Project.ImageFileData != null)
+            {
+                <img id="imageFileData" class="img-fluid img-thumbnail" src="data:image/*";base64,@(Conver.ToBase)
+            }
+            else
+            {
+
+            }*@
             @*<div class="form-group">
             <label asp-for="ImageFileContentType" class="control-label"></label>
             <input asp-for="ImageFileContentType" class="form-control" />

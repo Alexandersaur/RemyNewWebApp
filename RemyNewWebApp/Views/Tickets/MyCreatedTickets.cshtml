@@ -15,8 +15,8 @@
             <!--begin::Header-->
             <div class="card-header border-0 pt-5">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label fw-bolder fs-3 mb-1">My Submitted Tickets</span>
-                    <span class="text-muted mt-1 fw-bold fs-7">Currently submitted @Model.Where(t => t.OwnerUserId == UserManager.GetUserId(User).ToString()).Count() tickets</span>
+                    <span class="card-label fw-bolder fs-3 mb-1">My Tickets</span>
+                    <span class="text-muted mt-1 fw-bold fs-7">Currently assigned to [#] tickets</span>
                 </h3>
                 <div class="card-toolbar">
                     <!--begin::Menu-->
@@ -114,7 +114,7 @@
                         <thead>
                             <tr class="fw-bolder text-muted bg-light">
                                 <th class="ps-4 min-w-200px rounded-start">Title & Submitter</th>
-                                <th class="min-w-100px">Info</th>
+                                <th class="min-w-100px">Updated</th>
                                 <th class="min-w-150px">Developer</th>
                                 <th class="min-w-175px">Type</th>
                                 <th class="min-w-150px">Status</th>
@@ -125,7 +125,7 @@
                         <!--end::Table head-->
                         <!--begin::Table body-->
                         <tbody>
-                            @foreach (var item in Model.Where(t => t.OwnerUserId == UserManager.GetUserId(User).ToString()))
+                            @foreach (var item in Model.Where(t => t.DeveloperUserId == UserManager.GetUserId(User).ToString()))
                             {
                                 <tr>
                                     <td>
@@ -226,91 +226,3 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-@*<table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Created)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Updated)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Archived)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Project)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TicketType)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TicketStatus)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TicketPriority)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OwnerUser)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DeveloperUser)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Updated)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Archived)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Project.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketType.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketStatus.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketPriority.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OwnerUser.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DeveloperUser.Id)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>*@

@@ -1,15 +1,224 @@
 ﻿@model IEnumerable<RemyNewWebApp.Models.Project>
+@using RemyNewWebApp.Models.Enums
+@using RemyNewWebApp.Extensions
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Container-->
+    <div class="container" id="kt_content_container">
+        <!--begin::Tables Widget 12-->
+        <div class="card mb-5 mb-xl-8">
+            <!--begin::Header-->
+            <div class="card-header border-0 pt-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="card-label fw-bolder fs-3 mb-1">All Projects</span>
+                    <span class="text-muted mt-1 fw-bold fs-7">Currently @Model.Count() projects in Company: @User.Identity.GetCompanyId().Value</span>
+                </h3>
+                <div class="card-toolbar">
+                    <!--begin::Menu-->
+                    <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                        <span class="svg-icon svg-icon-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
+                                    <rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                    <rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                    <rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                </g>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </button>
+                    <!--begin::Menu 2-->
+                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-bold w-200px" data-kt-menu="true">
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <div class="menu-content fs-6 text-dark fw-bolder px-3 py-4">Quick Actions</div>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu separator-->
+                        <div class="separator mb-3 opacity-75"></div>
+                        <!--end::Menu separator-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="#" class="menu-link px-3">New Ticket</a>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="#" class="menu-link px-3">New Customer</a>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start" data-kt-menu-flip="bottom, top">
+                            <!--begin::Menu item-->
+                            <a href="#" class="menu-link px-3">
+                                <span class="menu-title">New Group</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <!--end::Menu item-->
+                            <!--begin::Menu sub-->
+                            <div class="menu-sub menu-sub-dropdown w-175px py-4">
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3">Admin Group</a>
+                                </div>
+                                <!--end::Menu item-->
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3">Staff Group</a>
+                                </div>
+                                <!--end::Menu item-->
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3">Member Group</a>
+                                </div>
+                                <!--end::Menu item-->
+                            </div>
+                            <!--end::Menu sub-->
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="#" class="menu-link px-3">New Contact</a>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu separator-->
+                        <div class="separator mt-3 opacity-75"></div>
+                        <!--end::Menu separator-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <div class="menu-content px-3 py-3">
+                                <a class="btn btn-primary btn-sm px-4" href="#">Generate Reports</a>
+                            </div>
+                        </div>
+                        <!--end::Menu item-->
+                    </div>
+                    <!--end::Menu 2-->
+                    <!--end::Menu-->
+                </div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body py-3">
+                <!--begin::Table container-->
+                <div class="table-responsive">
+                    <!--begin::Table-->
+                    <table class="table align-middle gs-0 gy-4">
+                        <!--begin::Table head-->
+                        <thead>
+                            <tr class="fw-bolder text-muted bg-light">
+                                <th class="ps-4 min-w-200px rounded-start">Name & Creator</th>
+                                <th class="min-w-225px">Info</th>
+                                <th class="min-w-150px">Timespan</th>
+                                <th class="min-w-50px">Priority</th>
+                                <th class="min-w-100px text-end rounded-end"></th>
+                            </tr>
+                        </thead>
+                        <!--end::Table head-->
+                        <!--begin::Table body-->
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="symbol symbol-50px me-5">
+                                                <span class="symbol-label bg-light">
+                                                    <img src="/assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
+                                                </span>
+                                            </div>
+                                            <div class="d-flex justify-content-start flex-column">
+                                                <a href="#" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </a>
+                                                <a class="text-muted fw-bold text-muted d-block fs-7">
+                                                    Members: @Model.Count()
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
+                                        </a>
+                                        <span class="text-muted fw-bold text-muted d-block fs-7">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
+                                            END: @Html.DisplayFor(modelItem => item.EndDate)
+                                        </a>
+                                        <span class="text-muted fw-bold text-muted d-block fs-7">
+                                            BEGIN: @Html.DisplayFor(modelItem => item.StartDate)
+                                        </span>
+                                    </td>
+                                    @if (item.ProjectPriority.Name == BTTicketPriority.Low.ToString())
+                                    {
+                                        <td>
+                                            <span class="badge badge-light-primary fs-7 fw-bold">
+                                                @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                            </span>
+                                        </td>
+                                    }
+                                    @if (item.ProjectPriority.Name == BTTicketPriority.Medium.ToString())
+                                    {
+                                        <td>
+                                            <span class="badge badge-light-success fs-7 fw-bold">
+                                                @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                            </span>
+                                        </td>
+                                    }
+                                    @if (item.ProjectPriority.Name == BTTicketPriority.High.ToString())
+                                    {
+                                        <td>
+                                            <span class="badge badge-light-warning fs-7 fw-bold">
+                                                @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                            </span>
+                                        </td>
+                                    }
+                                    @if (item.ProjectPriority.Name == BTTicketPriority.Urgent.ToString())
+                                    {
+                                        <td>
+                                            <span class="badge badge-light-danger fs-7 fw-bold">
+                                                @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                            </span>
+                                        </td>
+                                    }
+                                    <td class="text-end">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
+                                        @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                        {
+                                            <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <!--end::Table body-->
+                    </table>
+                    <!--end::Table-->
+                </div>
+                <!--end::Table container-->
+            </div>
+            <!--begin::Body-->
+        </div>
+        <!--end::Tables Widget 12-->
+    </div>
+</div>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+
+
+
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -46,45 +255,46 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageFileName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageFileData)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageFileContentType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Archived)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Company.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="AssignMembers" asp-route-id="@item.Id">Assign Members</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageFileName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageFileData)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageFileContentType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Archived)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="AssignMembers" asp-route-id="@item.Id">Assign Members</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
-</table>
+</table>*@

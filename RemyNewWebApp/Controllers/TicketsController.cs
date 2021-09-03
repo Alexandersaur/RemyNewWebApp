@@ -10,6 +10,7 @@ using RemyNewWebApp.Data;
 using RemyNewWebApp.Extensions;
 using RemyNewWebApp.Models;
 using RemyNewWebApp.Models.Enums;
+using RemyNewWebApp.Models.ViewModels;
 using RemyNewWebApp.Services;
 using RemyNewWebApp.Services.Interfaces;
 
@@ -18,11 +19,14 @@ namespace RemyNewWebApp.Controllers
     public class TicketsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly BTProjectService _projectService;
+        private readonly IBTProjectService _projectService;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTTicketService _ticketService;
 
-        public TicketsController(ApplicationDbContext context, BTProjectService projectService, UserManager<BTUser> userManager, IBTTicketService ticketService)
+        public TicketsController(ApplicationDbContext context, 
+                                 IBTProjectService projectService, 
+                                 UserManager<BTUser> userManager, 
+                                 IBTTicketService ticketService)
         {
             _context = context;
             _projectService = projectService;
@@ -194,6 +198,29 @@ namespace RemyNewWebApp.Controllers
             //ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
             return View(ticket);
         }
+
+        public async Task<IActionResult> AssignDeveloper(int id)
+        {
+            AssignDeveloperViewModel model = new();
+            model.Ticket = await _ticketService.GetTicketByIdAsync(id);
+            model.Developers = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.ProjectId, Roles.Developer.ToString()),
+                                              "Id","FullName");
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignDeveloper(AssignDeveloperViewModel model)
+        {
+            //TODO: Add history
+            //TODO: Send notifications
+            if (model.DeveloperId != null)
+            {
+                await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DeveloperId);
+            }
+            return RedirectToAction("AllTickets");
+        }
+
 
         // GET: Tickets/Delete/5
         public async Task<IActionResult> Delete(int? id)

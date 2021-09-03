@@ -60,6 +60,7 @@ namespace RemyNewWebApp.Services
                     try
                     {
                         ticket.DeveloperUserId = userId;
+                        ticket.Updated = DateTimeOffset.Now;
                         //--Revisit when assigning tickets--//
                         ticket.TicketStatusId = (await LookupTicketStatusIdAsync("Development")).Value;
                         await _context.SaveChangesAsync();
