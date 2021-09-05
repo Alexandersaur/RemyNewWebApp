@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<RemyNewWebApp.Models.Project>
+@using RemyNewWebApp.Models.Enums
 
 @{
     ViewData["Title"] = "Index";
@@ -28,7 +29,7 @@
                 @Html.DisplayNameFor(model => model.ImageFileName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageFileData)
+                Image
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ImageFileContentType)
@@ -55,16 +56,19 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @item.StartDate.DateTime.ToString("MM.dd.yy")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                @item.EndDate.DateTime.ToString("MM.dd.yy")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ImageFileName)
             </td>
             <td>
+                @if(item.ImageFileData != null)
+                {
                 <img style="width:60px;height:60px" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" alt=""/>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ImageFileContentType)
@@ -76,13 +80,16 @@
                 @Html.DisplayFor(modelItem => item.Company.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
+                @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="AssignMembers" asp-route-id="@item.Id">Assign Members</a> |
+                @if(User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                {
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a asp-action="AssignMembers" asp-route-id="@item.Id">Assign Members</a> 
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
             </td>
         </tr>
 }

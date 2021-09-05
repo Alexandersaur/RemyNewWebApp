@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
 using RemyNewWebApp.Data;
 using RemyNewWebApp.Models;
 using RemyNewWebApp.Models.Enums;
@@ -239,6 +240,27 @@ namespace RemyNewWebApp.Services
             return users.Where(u => u.CompanyId == companyId).ToList();
         }
 
+        public async Task<List<Project>> GetUnassignedProjectsAsync(int companyId)
+        {
+            List<Project> result = new();
+            List<Project> projects = new();
+            try
+            {
+                projects = await _context.Projects.Where(p => p.CompanyId == companyId).ToListAsync();
+                foreach (Project proj in projects)
+                {
+                    if ((await GetProjectMembersByRoleAsync(proj.Id, Roles.ProjectManager.ToString())).Count == 0)
+                    {
+                        result.Add(proj);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return result;
+        }
         public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
         {
             Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);

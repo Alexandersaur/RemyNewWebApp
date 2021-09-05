@@ -14,8 +14,8 @@
             <!--begin::Header-->
             <div class="card-header border-0 pt-5">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label fw-bolder fs-3 mb-1">All Projects</span>
-                    <span class="text-muted mt-1 fw-bold fs-7">Currently @Model.Count() projects in Company: @User.Identity.GetCompanyId().Value</span>
+                    <span class="card-label fw-bolder fs-3 mb-1">Assign Project Manager</span>
+                    <span class="text-muted mt-1 fw-bold fs-7">Currently @Model.Count() unassigned projects in Company: @User.Identity.GetCompanyId().Value</span>
                 </h3>
                 <div class="card-toolbar">
                     <!--begin::Menu-->
@@ -190,15 +190,8 @@
                                         </td>
                                     }
                                 <td class="text-end">
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>
-                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
-                                    {
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-info btn-sm px-4">Edit</a>
-                                        <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign Developer</a>
-                                        <a asp-action="AssignPM" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-success btn-sm px-4">Assign PM</a>
-                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-danger btn-sm px-4">Delete</a>
+                                    <a asp-action="Assign" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Add PM</a>
 
-                                    }
                                 </td>
                                 </tr>
                             }

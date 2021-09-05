@@ -63,6 +63,28 @@ namespace RemyNewWebApp.Controllers
             return View(projects);
         }
 
+        // GET: Assign PM index
+        public async Task<IActionResult> AssignPMIndex()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+            return View(projects);
+        }
+
+        //[HttpGet]
+        //public async Task<IActionResult> AssignPM(int id)
+        //{
+        //    //create new Viewomdel for Project and list of Project Managers
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AssignPM(AddProjectManagerViewModel model)
+        //{
+        //    //Set parameter for AddProjectManagerViewModel
+        //}
+
+
         [HttpGet]
         public async Task<IActionResult> AssignMembers(int id)
         {

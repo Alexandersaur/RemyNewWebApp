@@ -23,6 +23,7 @@ namespace RemyNewWebApp.Services.Interfaces
         public Task<Models.Project> GetProjectByIdAsync(int projectId, int companyId);
         public Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId);
         public Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId);
+        public Task<List<Models.Project>> GetUnassignedProjectsAsync(int companyId);
         public Task<List<Models.Project>> GetUserProjectsAsync(string userId);
         public Task<bool> IsUserOnProjectAsync(string userId, int projectId);
         public Task<int> LookupProjectPriorityId(string priorityName);
