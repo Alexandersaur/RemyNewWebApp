@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using RemyNewWebApp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using static RemyNewWebApp.Extensions.MaxFileSizeAttribute;
 
 namespace RemyNewWebApp.Models
 {
@@ -23,8 +25,11 @@ namespace RemyNewWebApp.Models
         [DisplayName("File Description")]
         public string Description { get; set; }
 
+        [DisplayName("Select Image")]
         [NotMapped]
         [DataType(DataType.Upload)]
+        [MaxFileSize(2*1024*1024)]
+        [AllowedExtensions(new string[] { ".jpg", ".png", ".doc", ".docx", ".xls", ".xlsx", ".pdf"})]
         public IFormFile FormFile { get; set; }
 
         [DisplayName("File Name")]
