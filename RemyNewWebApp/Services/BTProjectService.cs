@@ -246,7 +246,9 @@ namespace RemyNewWebApp.Services
             List<Project> projects = new();
             try
             {
-                projects = await _context.Projects.Where(p => p.CompanyId == companyId).ToListAsync();
+                projects = await _context.Projects
+                                         .Include(p => p.ProjectPriority)
+                                         .Where(p => p.CompanyId == companyId).ToListAsync();
                 foreach (Project proj in projects)
                 {
                     if ((await GetProjectMembersByRoleAsync(proj.Id, Roles.ProjectManager.ToString())).Count == 0)

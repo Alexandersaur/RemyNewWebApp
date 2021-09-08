@@ -148,7 +148,7 @@ namespace RemyNewWebApp.Controllers
         }
 
         // GET: Projects/Create
-        [Authorize(Roles="Admin, ProjectManager")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Create()
         {
             int companyId = User.Identity.GetCompanyId().Value;

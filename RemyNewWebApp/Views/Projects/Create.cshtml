@@ -43,15 +43,15 @@
                        onchange="document.getElementById('imageFileData').src = window.URL.createObjectURL(this.files[0])"/>
                 <span asp-validation-for="Project.ImageFormFile" class="text-danger"></span>
             </div>
-            @*<label>Image Preview</label>
+            <label>Image Preview</label>
             @if (Model.Project.ImageFileData != null)
             {
-                <img id="imageFileData" class="img-fluid img-thumbnail" src="data:image/*";base64,@(Conver.ToBase)
+                <img id="imageFileData" class="img-fluid img-thumbnail" src="data:image/*";base64,@(Conver.ToBase64String(item.ImageFileData))" alt="" />
             }
             else
             {
 
-            }*@
+            }
             @*<div class="form-group">
             <label asp-for="ImageFileContentType" class="control-label"></label>
             <input asp-for="ImageFileContentType" class="form-control" />

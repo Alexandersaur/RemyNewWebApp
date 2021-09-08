@@ -14,5 +14,11 @@ namespace RemyNewWebApp.Extensions
             Claim claim = ((ClaimsIdentity)identity).FindFirst("CompanyId");
             return (claim != null) ? int.Parse(claim.Value) : null;
         }
+
+        public static string GetCompanyName(this IIdentity identity)
+        {
+            Claim claim = ((ClaimsIdentity)identity).FindFirst("CompanyName");
+            return (claim != null) ? claim.Value : null;
+        }
     }
 }

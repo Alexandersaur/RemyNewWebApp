@@ -202,6 +202,15 @@
             <!--end::Col-->
         </div>
         <!--end::Row-->
+
+        <div class="row">
+            <div class="card card-bordered">
+                <div class="card-body">
+                    <div id="kt_amcharts_3" style="height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+
         <!--begin::Row-->
         <div class="row gy-5 g-xl-10">
             <!--begin::Col-->
@@ -449,5 +458,59 @@
 </div>
 
 @section scripts{
+<script>
+    am4core.ready(function () {
 
-} 
+        // Themes begin
+        am4core.useTheme(am4themes_dataviz);
+        am4core.useTheme(am4themes_animated);
+        // Themes end
+
+        // Create chart
+        chart = am4core.create('kt_amcharts_3', am4charts.PieChart);
+        chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+        chart.data = [
+            {
+                country: 'Lithuania',
+                value: 260
+            },
+            {
+                country: 'Czechia',
+                value: 230
+            },
+            {
+                country: 'Ireland',
+                value: 200
+            },
+            {
+                country: 'Germany',
+                value: 165
+            },
+            {
+                country: 'Australia',
+                value: 139
+            },
+            {
+                country: 'Austria',
+                value: 128
+            }
+        ];
+
+        var series = chart.series.push(new am4charts.PieSeries());
+        series.dataFields.value = 'value';
+        series.dataFields.radiusValue = 'value';
+        series.dataFields.category = 'country';
+        series.slices.template.cornerRadius = 6;
+        series.colors.step = 3;
+
+        series.hiddenState.properties.endAngle = -90;
+
+        chart.legend = new am4charts.Legend();
+
+    }); // end am4core.ready()
+</script>
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+}

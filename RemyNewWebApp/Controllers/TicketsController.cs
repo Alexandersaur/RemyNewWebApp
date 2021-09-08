@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,16 +25,22 @@ namespace RemyNewWebApp.Controllers
         private readonly IBTProjectService _projectService;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTTicketService _ticketService;
+        private readonly IBTTicketHistoryService _historyService;
+        private readonly IBTNotificationService _notificationService;
 
-        public TicketsController(ApplicationDbContext context, 
-                                 IBTProjectService projectService, 
-                                 UserManager<BTUser> userManager, 
-                                 IBTTicketService ticketService)
+        public TicketsController(ApplicationDbContext context,
+                                 IBTProjectService projectService,
+                                 UserManager<BTUser> userManager,
+                                 IBTTicketService ticketService,
+                                 IBTTicketHistoryService historyService,
+                                 IBTNotificationService notificationService)
         {
             _context = context;
             _projectService = projectService;
             _userManager = userManager;
             _ticketService = ticketService;
+            _historyService = historyService;
+            _notificationService = notificationService;
         }
 
         // GET: Tickets
@@ -40,7 +48,7 @@ namespace RemyNewWebApp.Controllers
         {
             var applicationDbContext = _context.Tickets.Include(t => t.DeveloperUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
             return View(await applicationDbContext.ToListAsync());
-        }        
+        }
 
         // GET: MY Tickets
         public async Task<IActionResult> MyTickets()
@@ -49,8 +57,8 @@ namespace RemyNewWebApp.Controllers
             string userId = _userManager.GetUserId(User);
             List<Ticket> tickets = await _ticketService.GetTicketsByUserIdAsync(userId, companyId);
             return View(tickets);
-        }        
-        
+        }
+
         // GET: ALL Tickets
         public async Task<IActionResult> AllTickets()
         {
@@ -120,6 +128,7 @@ namespace RemyNewWebApp.Controllers
         // POST: Tickets/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
@@ -130,19 +139,35 @@ namespace RemyNewWebApp.Controllers
                 ticket.Created = DateTimeOffset.Now;
                 ticket.OwnerUserId = btUser.Id;
                 ticket.TicketStatusId = (await _ticketService.LookupTicketStatusIdAsync(BTTicketStatus.New.ToString())).Value;
-                //_context.Add(ticket);
-                //await _context.SaveChangesAsync();
                 await _ticketService.AddNewTicketAsync(ticket);
-                //TODO: Add to History
-                //TODO: Send Notification
-                return RedirectToAction("Details", "Projects", new { id = ticket.ProjectId});
+                #region Ticket History
+                Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+                await _historyService.AddHistoryAsync(null, newTicket, btUser.Id);
+
+                BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
+                int companyId = User.Identity.GetCompanyId().Value;
+                Notification notification = new()
+                {
+                    TicketId = ticket.Id,
+                    Title = "New Ticket",
+                    Message = $"New Ticket: {ticket?.Title}, was created by {btUser?.FullName}",
+                    Created = DateTimeOffset.Now,
+                    SenderId = btUser?.Id,
+                    RecipientId = projectManager?.Id
+                };
+                if (projectManager != null)
+                {
+                    await _notificationService.AddNotificationAsync(notification);
+                    await _notificationService.SendEmailNotificationAsync(notification, "New Ticket Added");
+                }
+                else
+                {
+                    await _notificationService.AddNotificationAsync(notification);
+                    await _notificationService.SendEmailNotificationsByRole(notification, companyId, Roles.Admin.ToString());
+                }
+                #endregion
+                return RedirectToAction("Details", "Projects", new { id = ticket.ProjectId });
             }
-            //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
-            //ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.OwnerUserId);
-            //ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", ticket.ProjectId);
-            //ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id", ticket.TicketPriorityId);
-            //ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id", ticket.TicketStatusId);
-            //ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
 
             return View(ticket);
         }
@@ -154,15 +179,11 @@ namespace RemyNewWebApp.Controllers
             {
                 return NotFound();
             }
-            //var ticket = await _context.Tickets.FindAsync(id);
             var ticket = await _ticketService.GetTicketByIdAsync(id.Value);
             if (ticket == null)
             {
                 return NotFound();
             }
-            //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
-            //ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.OwnerUserId);
-            //ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", ticket.ProjectId);
             ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id", ticket.TicketPriorityId);
             ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id", ticket.TicketStatusId);
             ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
@@ -183,12 +204,15 @@ namespace RemyNewWebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                BTUser btUser = await _userManager.GetUserAsync(User);
+                Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
                 try
                 {
                     ticket.Updated = DateTimeOffset.Now;
                     //_context.Update(ticket);
                     //await _context.SaveChangesAsync();
                     await _ticketService.UpdateTicketAsync(ticket);
+
                     //TODO: Send notification
                 }
                 catch (DbUpdateConcurrencyException)
@@ -202,8 +226,10 @@ namespace RemyNewWebApp.Controllers
                         throw;
                     }
                 }
-                //TODO: Add history
-                return RedirectToAction(nameof(Index));
+                Ticket newticket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+                await _historyService.AddHistoryAsync(oldTicket, newticket, btUser.Id);
+
+                return RedirectToAction("AllTickets");
             }
             //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
             //ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.OwnerUserId);
@@ -219,7 +245,7 @@ namespace RemyNewWebApp.Controllers
             AssignDeveloperViewModel model = new();
             model.Ticket = await _ticketService.GetTicketByIdAsync(id);
             model.Developers = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.ProjectId, Roles.Developer.ToString()),
-                                              "Id","FullName");
+                                              "Id", "FullName");
             return View(model);
         }
 
@@ -227,12 +253,21 @@ namespace RemyNewWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignDeveloper(AssignDeveloperViewModel model)
         {
-            //TODO: Add history
-            //TODO: Send notifications
             if (model.DeveloperId != null)
             {
-                await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DeveloperId);
+                //TODO: Get oldticket
+                try
+                {
+                    await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DeveloperId);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
+            //TODO: Add history
+            //TODO: Get Newticket
+            //TODO: Send notifications
             return RedirectToAction("AllTickets");
         }
 
