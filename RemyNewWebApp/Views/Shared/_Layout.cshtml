@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using RemyNewWebApp.Extensions
+@using RemyNewWebApp.Models.Enums
 @inject UserManager<BTUser> UserManager
 @inject SignInManager<BTUser> SignInManager
 @inject RemyNewWebApp.Services.Interfaces.IBTRolesService rolesService
@@ -102,18 +103,21 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                {
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="AssignPMIndex">
+                                                    <span class="menu-title">Assign Project Managers</span>
+                                                </a>
                                             </span>
-                                            <a asp-area="" asp-controller="Projects" asp-action="AssignPMIndex">
-                                                <span class="menu-title">Assign Project Managers</span>
-                                            </a>
-                                        </span>
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                             <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                 <span class="menu-link">

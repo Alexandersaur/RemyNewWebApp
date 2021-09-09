@@ -71,18 +71,29 @@ namespace RemyNewWebApp.Controllers
             return View(projects);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> AssignPM(int id)
-        //{
-        //    //create new Viewomdel for Project and list of Project Managers
-        //}
+        [HttpGet]
+        public async Task<IActionResult> AssignPM(int id)
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            //create new Viewomdel for Project and list of Project Managers
+            AssignPMViewModel model = new();
+            model.Project = await _projectService.GetProjectByIdAsync(id, companyId);
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName");
+            return View(model);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> AssignPM(AddProjectManagerViewModel model)
-        //{
-        //    //Set parameter for AddProjectManagerViewModel
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignPM(AssignPMViewModel model)
+        {
+            //Set parameter for AddProjectManagerViewModel
+            if (!string.IsNullOrEmpty(model.PMId))
+            {
+                await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
+                return RedirectToAction("Details", "Projects", new { id = model.Project.Id });
+            }
+            return View();
+        }
 
 
         [HttpGet]
