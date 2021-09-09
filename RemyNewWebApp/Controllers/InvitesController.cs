@@ -2,21 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RemyNewWebApp.Data;
+using RemyNewWebApp.Extensions;
 using RemyNewWebApp.Models;
+using RemyNewWebApp.Services.Interfaces;
 
 namespace RemyNewWebApp.Controllers
 {
     public class InvitesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTProjectService _projectService;
+        private readonly IBTInviteService _inviteService;
+        private readonly IEmailSender _emailSender;
+        private readonly UserManager<BTUser> _userManager;
+        private readonly IDataProtector _protector;
 
-        public InvitesController(ApplicationDbContext context)
+        public InvitesController(ApplicationDbContext context, 
+                                 IBTProjectService projectService, 
+                                 IDataProtectionProvider dataProtectionProvider,
+                                 IBTInviteService inviteService,
+                                 IEmailSender emailSender,
+                                 UserManager<BTUser> userManager)
         {
             _context = context;
+            _projectService = projectService;
+            _inviteService = inviteService;
+            _emailSender = emailSender;
+            _userManager = userManager;
+            _protector = dataProtectionProvider.CreateProtector("CF.RemyNewWebApp.21");
         }
 
         // GET: Invites
@@ -49,12 +69,10 @@ namespace RemyNewWebApp.Controllers
         }
 
         // GET: Invites/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id");
-            ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["InvitorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name");
+            int companyId = User.Identity.GetCompanyId().Value;
+            ViewData["ProjectId"] = new SelectList(await _projectService.GetAllProjectsByCompany(companyId), "Id", "Name");
             return View();
         }
 
@@ -63,20 +81,76 @@ namespace RemyNewWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,InviteDate,JoinDate,CompanyToken,InviteeEmail,InviteeFirstName,InviteeLastName,IsValid,CompanyId,ProjectId,InvitorId,InviteeId")] Invite invite)
+        public async Task<IActionResult> Create([Bind("Id,InviteeEmail,InviteeFirstName,InviteeLastName,ProjectId,Message")] Invite invite)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(invite);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                int companyId = User.Identity.GetCompanyId().Value;
+                Guid guid = Guid.NewGuid();
+
+                var token = _protector.Protect(guid.ToString());
+                var email = _protector.Protect(invite.InviteeEmail);
+                var company = _protector.Protect(companyId.ToString());
+
+                var callbackUrl = Url.Action("ProcessInvite", "Invites", new { token, email, company }, protocol: Request.Scheme);
+                var body = invite.Message + Environment.NewLine + "Please join my Company." 
+                                          + Environment.NewLine + "Please click the following link to join <a href=\""
+                                          + callbackUrl + "\">COLLABORATE</a>";
+                var destination = invite.InviteeEmail;
+                var subject = "Company Invite";
+
+                await _emailSender.SendEmailAsync(destination, subject, body);
+
+                //Create record in the Invites table
+                invite.CompanyToken = guid;
+                invite.CompanyId = companyId;
+                invite.InviteDate = DateTimeOffset.Now;
+                invite.InvitorId = _userManager.GetUserId(User);
+                invite.IsValid = true;
+                await _inviteService.AddNewInviteAsync(invite);
+
+                return RedirectToAction("Index","Home");
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", invite.CompanyId);
-            ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id", invite.InviteeId);
-            ViewData["InvitorId"] = new SelectList(_context.Users, "Id", "Id", invite.InvitorId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", invite.ProjectId);
-            return View(invite);
+
+            return RedirectToAction("Create");
         }
+
+        // GET: Invites/ProcessInvite
+        [HttpGet]
+        public async Task<IActionResult> ProcessInvite(string token, string email, string company)
+        {
+            if (token == null)
+            {
+                return NotFound();
+            }
+            Guid companyToken = Guid.Parse(_protector.Unprotect(token));
+            string inviteeEmail = _protector.Unprotect(email);
+            int companyId = int.Parse(_protector.Unprotect(company));
+            try
+            {
+                Invite invite = await _inviteService.GetInviteAsync(companyToken, inviteeEmail, companyId);
+                if (invite != null)
+                {
+                    return View(invite);
+                }
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        // POST: Invites/ProcessInvite
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ProcessInvite(Invite invite)
+        {
+            return RedirectToPage("RegisterByInvite", new { invite });
+        }
+
+
 
         // GET: Invites/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -13,37 +13,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using RemyNewWebApp.Data;
 using RemyNewWebApp.Models;
 using RemyNewWebApp.Models.Enums;
+using RemyNewWebApp.Services.Interfaces;
 
 namespace RemyNewWebApp.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class RegisterModel : PageModel
+    public class RegisterByInviteModel : PageModel
     {
         private readonly SignInManager<BTUser> _signInManager;
         private readonly UserManager<BTUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly ApplicationDbContext _context;
+        private readonly IBTProjectService _projectService;
+        private readonly IBTInviteService _inviteService;
 
-        public RegisterModel(
-            UserManager<BTUser> userManager,
-            SignInManager<BTUser> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
-            ApplicationDbContext context)
+        public RegisterByInviteModel(
+               UserManager<BTUser> userManager,
+               SignInManager<BTUser> signInManager,
+               ILogger<RegisterModel> logger,
+               IEmailSender emailSender,
+               IBTProjectService projectService,
+               IBTInviteService inviteService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _context = context;
+            _projectService = projectService;
+            _inviteService = inviteService;
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; } = new InputModel();
 
         public string ReturnUrl { get; set; }
 
@@ -51,6 +54,20 @@ namespace RemyNewWebApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Display(Name = "Avatar")]
+            public byte[] ImageData { get; set; }
+
+            [Display(Name = "Company")]
+            public string Company { get; set; }
+
+            [Required]
+            [Display(Name = "CompanyId")]
+            public int CompanyId { get; set; }
+
+            [Required]
+            [Display(Name ="ProjectId")]
+            public int ProjectId { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -65,13 +82,6 @@ namespace RemyNewWebApp.Areas.Identity.Pages.Account
             public string LastName { get; set; }
 
             [Required]
-            [Display(Name = "Company Name")]
-            public string CompanyName { get; set; }
-
-            [Display(Name = "Company Description")]
-            public string CompanyDescription { get; set; }
-
-            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -83,10 +93,21 @@ namespace RemyNewWebApp.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(int id, int companyId, string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            //Use "id" to find the invite
+            Invite invite = await _inviteService.GetInviteAsync(id, companyId);
+
+            //load Inputmodel with Invite information according to invited
+            Input.Email = invite.InviteeEmail;
+            Input.FirstName = invite.InviteeFirstName;
+            Input.LastName = invite.InviteeLastName;
+            Input.Company = invite.Company.Name;
+            Input.CompanyId = invite.CompanyId;
+            Input.ProjectId = invite.ProjectId;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -95,24 +116,21 @@ namespace RemyNewWebApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BTUser { UserName = Input.Email, Email = Input.Email, FirstName=Input.FirstName, LastName=Input.LastName };
+                var user = new BTUser { 
+                    UserName = Input.Email, 
+                    Email = Input.Email, 
+                    FirstName = Input.FirstName, 
+                    LastName = Input.LastName,
+                    CompanyId = Input.CompanyId
+                };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    await _projectService.AddUserToProjectAsync(user.Id, Input.ProjectId);
+                    await _userManager.AddToRoleAsync(user, Roles.Submitter.ToString());
+
                     _logger.LogInformation("User created a new account with password.");
-
-                    await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
-                    Company company = new()
-                    {
-                        Name = Input.CompanyName,
-                        Description = Input.CompanyDescription
-                    };
-                    _context.Add(company);
-                    await _context.SaveChangesAsync();
-
-                    user.CompanyId = company.Id;
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

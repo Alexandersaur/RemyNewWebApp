@@ -48,7 +48,7 @@ namespace RemyNewWebApp.Services
             //--Add new PM--//
             try
             {
-                await AddProjectManagerAsync(userId, projectId);
+                await AddUserToProjectAsync(userId, projectId);
                 return true;
             }
             catch (Exception ex)

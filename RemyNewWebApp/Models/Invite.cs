@@ -33,6 +33,9 @@ namespace RemyNewWebApp.Models
         [DisplayName("Invitee Last Name")]
         public string InviteeLastName { get; set; }
 
+        [DisplayName("Invite Message")]
+        public string Message { get; set; }
+
         public bool IsValid { get; set; }
 
         // -- Foreign Keys -- //

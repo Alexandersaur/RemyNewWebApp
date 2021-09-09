@@ -1,7 +1,30 @@
 ﻿@page
 @model ConfirmEmailModel
 @{
-    ViewData["Title"] = "Confirm email";
+    ViewData["Title"] = "Email confirmed!";
+    Layout = null;
 }
 
-<h1>@ViewData["Title"]</h1>
+<div id="wrapper">
+    <div class="vertical-align-wrap">
+        <div class="vertical-align-middle auth-main">
+            <div class="auth-box">
+                <div class="top">
+                </div>
+                <div class="card">
+                    <div class="header">
+                        <p class="lead">@ViewData["Title"]</p>
+                    </div>
+                    <div class="body">
+                        <p>@Model.StatusMessage</p>
+                        <a class="btn btn-primary btn-lg btn-block" asp-area="Identity" asp-page="/Account/Login"><i class="fa fa-sign-in"></i><span> SIGN IN</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

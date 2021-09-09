@@ -43,7 +43,9 @@ namespace RemyNewWebApp.Controllers
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
+            var applicationDbContext = _context.Projects
+                                               .Include(p => p.Company)
+                                               .Include(p => p.ProjectPriority);
             return View(await applicationDbContext.ToListAsync());
         }        
         
@@ -92,7 +94,7 @@ namespace RemyNewWebApp.Controllers
                 await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
                 return RedirectToAction("Details", "Projects", new { id = model.Project.Id });
             }
-            return View();
+            return RedirectToAction("AssignPMIndex", "Projects");
         }
 
 
@@ -216,7 +218,7 @@ namespace RemyNewWebApp.Controllers
             }
             //ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
             //ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
-            return RedirectToAction("Create");
+            return RedirectToAction("Index");
         }
 
         // GET: Projects/Edit/5
