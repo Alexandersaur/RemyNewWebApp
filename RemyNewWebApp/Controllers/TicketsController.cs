@@ -76,16 +76,16 @@ namespace RemyNewWebApp.Controllers
             }
 
             var ticket = await _context.Tickets
-                .Include(t => t.DeveloperUser)
-                .Include(t => t.OwnerUser)
-                .Include(t => t.Project)
-                .Include(t => t.TicketPriority)
-                .Include(t => t.TicketStatus)
-                .Include(t => t.TicketType)
-                .Include(t => t.Comments).ThenInclude(t => t.User)
-                .Include(t => t.Attachments).ThenInclude(t => t.User)
-                .Include(t => t.Histories).ThenInclude(t => t.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                                       .Include(t => t.DeveloperUser)
+                                       .Include(t => t.OwnerUser)
+                                       .Include(t => t.Project)
+                                       .Include(t => t.TicketPriority)
+                                       .Include(t => t.TicketStatus)
+                                       .Include(t => t.TicketType)
+                                       .Include(t => t.Comments).ThenInclude(t => t.User)
+                                       .Include(t => t.Attachments).ThenInclude(t => t.User)
+                                       .Include(t => t.Histories).ThenInclude(t => t.User)
+                                       .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();

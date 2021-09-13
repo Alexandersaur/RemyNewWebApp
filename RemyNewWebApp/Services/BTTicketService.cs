@@ -258,6 +258,10 @@ namespace RemyNewWebApp.Services
                                      .Include(t => t.TicketType)
                                      .Include(t => t.Project)
                                      .Include(t => t.DeveloperUser)
+                                     .Include(t => t.Comments).ThenInclude(t => t.User)
+                                     .Include(t => t.Attachments).ThenInclude(t => t.User)
+                                     .Include(t => t.Histories).ThenInclude(t => t.User)
+                                     .Include(t => t.Notifications)
                                      .FirstOrDefaultAsync(t => t.Id == ticketId);
             }
             catch (Exception)

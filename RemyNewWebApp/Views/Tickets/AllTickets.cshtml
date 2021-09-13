@@ -20,89 +20,126 @@
                 <div class="card-toolbar">
                     <!--begin::Menu-->
                     <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
-                        <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
-                        <span class="svg-icon svg-icon-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
-                                    <rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-                                    <rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-                                    <rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-                                </g>
+                        <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen041.svg-->
+                        <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
+                                <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="black" />
+                                <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="black" />
                             </svg>
                         </span>
                         <!--end::Svg Icon-->
                     </button>
-                    <!--begin::Menu 2-->
-                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-bold w-200px" data-kt-menu="true">
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <div class="menu-content fs-6 text-dark fw-bolder px-3 py-4">Quick Actions</div>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu separator-->
-                        <div class="separator mb-3 opacity-75"></div>
-                        <!--end::Menu separator-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3">New Ticket</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3">New Customer</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start" data-kt-menu-flip="bottom, top">
-                            <!--begin::Menu item-->
-                            <a href="#" class="menu-link px-3">
-                                <span class="menu-title">New Group</span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <!--end::Menu item-->
-                            <!--begin::Menu sub-->
-                            <div class="menu-sub menu-sub-dropdown w-175px py-4">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Admin Group</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Staff Group</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Member Group</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu sub-->
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3">New Contact</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu separator-->
-                        <div class="separator mt-3 opacity-75"></div>
-                        <!--end::Menu separator-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <div class="menu-content px-3 py-3">
-                                <a class="btn btn-primary btn-sm px-4" href="#">Generate Reports</a>
-                            </div>
-                        </div>
-                        <!--end::Menu item-->
-                    </div>
-                    <!--end::Menu 2-->
+                    <a asp-action="Create">Create New</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Modal</a>
                     <!--end::Menu-->
                 </div>
             </div>
             <!--end::Header-->
+            <!--begin::Modal - New Target-->
+            <div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">
+                <!--begin::Modal dialog-->
+                <div class="modal-dialog modal-dialog-centered mw-650px">
+                    <!--begin::Modal content-->
+                    <div class="modal-content rounded">
+                        <!--begin::Modal header-->
+                        <div class="modal-header pb-0 border-0 justify-content-end">
+                            <!--begin::Close-->
+                            <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                                <span class="svg-icon svg-icon-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                                        <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </div>
+                            <!--end::Close-->
+                        </div>
+                        <!--begin::Modal header-->
+                        <!--begin::Modal body-->
+                        <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                            <!--begin:Form-->
+                            <form id="kt_modal_new_target_form" class="form" asp-action="Create">
+                                <!--begin::Heading-->
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="mb-10 text-center">
+                                    <!--begin::Title-->
+                                    <h1 class="mb-3">Create a new Ticket</h1>
+                                    <!--end::Title-->
+                                    <!--begin::Description-->
+                                    <div class="text-muted fw-bold fs-5">
+                                        If you need more info, please check
+                                        <a href="#" class="fw-bolder link-primary">Ticket Guidelines</a>.
+                                    </div>
+                                    <!--end::Description-->
+                                </div>
+                                <!--end::Heading-->
+                                <!--begin::Input group title -->
+                                <div class="d-flex flex-column mb-8 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                                        <span class="required">Title</span>
+                                        <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
+                                    </label>
+                                    <!--end::Label-->
+                                    @*<input type="text" class="form-control form-control-solid" placeholder="Enter Ticket Title" asp-for="Title" />*@
+                                </div>
+                                <!--end::Input group title-->
+                                <!--begin::Input group details-->
+                                <div class="d-flex flex-column mb-8">
+                                    <label class="fs-6 fw-bold mb-2">Description</label>
+                                    <textarea class="form-control form-control-solid" rows="3" name="target_details" placeholder="Describe Ticket Details"></textarea>
+                                </div>
+                                <!--end::Input group details-->
+                                <!--begin::Input group-->
+                                <div class="row g-9 mb-8">
+                                    <!--begin::Col proj-->
+                                    <div class="col-md-4 fv-row">
+                                        <label class="required fs-6 fw-bold mb-2">Project</label>
+                                        <select class="form-select form-select-solid" data-placeholder="Assign a Project">
+                                        </select>
+                                    </div>
+                                    <!--end::Col proj-->
+                                    <!--begin::Col type-->
+                                    <div class="col-md-4 fv-row">
+                                        <label class="required fs-6 fw-bold mb-2">Type</label>
+                                        <select class="form-select form-select-solid" data-placeholder="Select Ticket Type">
+                                        </select>
+                                    </div>
+                                    <!--end::Col type-->
+                                    <!--begin::Col priority-->
+                                    <div class="col-md-4 fv-row">
+                                        <label class="required fs-6 fw-bold mb-2">Priority</label>
+                                        <select class="form-select form-select-solid" data-placeholder="Choose Priority">
+                                        </select>
+                                    </div>
+                                    <!--end::Col priority-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Actions-->
+                                <div class="text-center">
+                                    <button type="reset" id="kt_modal_new_target_cancel" class="btn btn-light me-3">Cancel</button>
+                                    <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
+                                        <span class="indicator-label">Submit</span>
+                                        <span class="indicator-progress">
+                                            Please wait...
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </button>
+                                </div>
+                                <!--end::Actions-->
+                            </form>
+                            <!--end:Form-->
+                        </div>
+                        <!--end::Modal body-->
+                    </div>
+                    <!--end::Modal content-->
+                </div>
+                <!--end::Modal dialog-->
+            </div>
+            <!--end::Modal - New Target-->
             <!--begin::Body-->
             <div class="card-body py-3">
                 <!--begin::Table container-->
@@ -112,13 +149,14 @@
                         <!--begin::Table head-->
                         <thead>
                             <tr class="fw-bolder text-muted bg-light">
-                                <th class="ps-4 min-w-200px rounded-start">Title & Submitter</th>
-                                <th class="min-w-100px">Info</th>
-                                <th class="min-w-150px">Developer</th>
-                                <th class="min-w-175px">Type</th>
-                                <th class="min-w-150px">Status</th>
+                                <th class="ps-4 min-w-110px rounded-start">Title</th>
+                                <th class="min-w-100px">Submitter</th>
+                                @*<th class="min-w-100px">Updated</th>*@
+                                <th class="min-w-100px">Developer</th>
+                                <th class="min-w-100px">Type</th>
+                                <th class="min-w-100px">Status</th>
                                 <th class="min-w-100px">Priority</th>
-                                <th class="min-w-200px text-end rounded-end"></th>
+                                <th class="min-w-100px rounded-end">Actions</th>
                             </tr>
                         </thead>
                         <!--end::Table head-->
@@ -126,88 +164,87 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-50px me-5">
-                                            <span class="symbol-label bg-light">
-                                                <img src="/assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
-                                            </span>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            @*<div class="symbol symbol-50px me-5">
+                                                <span class="symbol-label bg-light">
+                                                    <img src="/assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
+                                                </span>
+                                            </div>*@
+                                            <div class="d-flex justify-content-start flex-column">
+                                                <a asp-action="Details" asp-route-id="@item.Id" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">
+                                                    @Html.DisplayFor(modelItem => item.Title)
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div class="d-flex justify-content-start flex-column">
-                                            <a asp-action="Details" asp-route-id="@item.Id" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">
-                                                @Html.DisplayFor(modelItem => item.Title)
-                                            </a>
-                                            <a class="text-muted fw-bold text-muted d-block fs-7">
-                                                @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
+                                    </td>
+                                    <td>
+                                        <a class="text-muted fw-bold text-muted d-block fs-7">
+                                            @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
+                                        </a>
+                                    </td>
+                                    @*<td>
+                                        <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
+                                            @Html.DisplayFor(modelItem => item.Updated)
+                                        </a>
+                                    </td>*@
                                 <td>
-                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
-                                        @Html.DisplayFor(modelItem => item.Updated)
-                                    </a>
-                                    <span class="text-muted fw-bold text-muted d-block fs-7">
-                                        @Html.DisplayFor(modelItem => item.Project.Name)
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
+                                    <a class="text-muted fw-bold text-muted d-block fs-7">
                                         @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
+                                    <a class="text-muted fw-bold text-muted d-block fs-7">
                                         @Html.DisplayFor(modelItem => item.TicketType.Name)
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
+                                    <a class="text-muted fw-bold text-muted d-block fs-7">
                                         @Html.DisplayFor(modelItem => item.TicketStatus.Name)
                                     </a>
                                 </td>
-                                @if (item.TicketPriority.Name == BTTicketPriority.Low.ToString())
-                                {
-                                    <td>
-                                        <span class="badge badge-light-primary fs-7 fw-bold">
-                                            @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-                                        </span>
-                                    </td>
-                                }
-                                @if (item.TicketPriority.Name == BTTicketPriority.Medium.ToString())
-                                {
-                                    <td>
-                                        <span class="badge badge-light-success fs-7 fw-bold">
-                                            @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-                                        </span>
-                                    </td>
-                                }
-                                @if (item.TicketPriority.Name == BTTicketPriority.High.ToString())
-                                {
-                                    <td>
-                                        <span class="badge badge-light-warning fs-7 fw-bold">
-                                            @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-                                        </span>
-                                    </td>
-                                }
-                                @if (item.TicketPriority.Name == BTTicketPriority.Urgent.ToString())
-                                {
-                                    <td>
-                                        <span class="badge badge-light-danger fs-7 fw-bold">
-                                            @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-                                        </span>
-                                    </td>
-                                }
-                                <td class="text-end">
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
-                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                    @if (item.TicketPriority.Name == BTTicketPriority.Low.ToString())
                                     {
-                                        <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign</a>
+                                        <td>
+                                            <span class="badge badge-light-primary fs-7 fw-bold">
+                                                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                            </span>
+                                        </td>
                                     }
-                                </td>
-                            </tr>
+                                    @if (item.TicketPriority.Name == BTTicketPriority.Medium.ToString())
+                                    {
+                                        <td>
+                                            <span class="badge badge-light-success fs-7 fw-bold">
+                                                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                            </span>
+                                        </td>
+                                    }
+                                    @if (item.TicketPriority.Name == BTTicketPriority.High.ToString())
+                                    {
+                                        <td>
+                                            <span class="badge badge-light-warning fs-7 fw-bold">
+                                                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                            </span>
+                                        </td>
+                                    }
+                                    @if (item.TicketPriority.Name == BTTicketPriority.Urgent.ToString())
+                                    {
+                                        <td>
+                                            <span class="badge badge-light-danger fs-7 fw-bold">
+                                                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                            </span>
+                                        </td>
+                                    }
+                                    <td class="text-end">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
+                                        @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                        {
+                                            <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign</a>
+                                        }
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                         <!--end::Table body-->
@@ -222,6 +259,6 @@
     </div>
 </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@
