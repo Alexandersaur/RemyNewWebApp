@@ -368,7 +368,7 @@ namespace RemyNewWebApp.Services
                                               .Include(t => t.Project)
                                               .Include(t => t.DeveloperUser)
                                               .AsNoTracking().FirstOrDefaultAsync(t => t.Id == ticketId);
-                return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
+                return ticket;
             }
             catch (Exception)
             {

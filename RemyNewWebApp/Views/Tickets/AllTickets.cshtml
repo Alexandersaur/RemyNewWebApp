@@ -61,7 +61,7 @@
                         <!--begin::Modal body-->
                         <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
                             <!--begin:Form-->
-                            <form id="kt_modal_new_target_form" class="form" asp-action="Create">
+                            <form id="kt_modal_new_target_form" class="form" asp-action="Create" method="post">
                                 <!--begin::Heading-->
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="mb-10 text-center">
@@ -84,13 +84,13 @@
                                         <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
                                     </label>
                                     <!--end::Label-->
-                                    @*<input type="text" class="form-control form-control-solid" placeholder="Enter Ticket Title" asp-for="Title" />*@
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Ticket Title" asp-for="@Model.FirstOrDefault().Title" />
                                 </div>
                                 <!--end::Input group title-->
                                 <!--begin::Input group details-->
                                 <div class="d-flex flex-column mb-8">
                                     <label class="fs-6 fw-bold mb-2">Description</label>
-                                    <textarea class="form-control form-control-solid" rows="3" name="target_details" placeholder="Describe Ticket Details"></textarea>
+                                    <textarea class="form-control form-control-solid" rows="3" name="target_details" asp-for="@Model.FirstOrDefault().Description" placeholder="Describe Ticket Details"></textarea>
                                 </div>
                                 <!--end::Input group details-->
                                 <!--begin::Input group-->
@@ -98,21 +98,21 @@
                                     <!--begin::Col proj-->
                                     <div class="col-md-4 fv-row">
                                         <label class="required fs-6 fw-bold mb-2">Project</label>
-                                        <select class="form-select form-select-solid" data-placeholder="Assign a Project">
+                                        <select class="form-select form-select-solid" asp-for="@Model.FirstOrDefault().ProjectId" data-placeholder="Assign a Project">
                                         </select>
                                     </div>
                                     <!--end::Col proj-->
                                     <!--begin::Col type-->
                                     <div class="col-md-4 fv-row">
                                         <label class="required fs-6 fw-bold mb-2">Type</label>
-                                        <select class="form-select form-select-solid" data-placeholder="Select Ticket Type">
+                                        <select class="form-select form-select-solid" asp-for="@Model.FirstOrDefault().TicketType.Id" data-placeholder="Select Ticket Type">
                                         </select>
                                     </div>
                                     <!--end::Col type-->
                                     <!--begin::Col priority-->
                                     <div class="col-md-4 fv-row">
                                         <label class="required fs-6 fw-bold mb-2">Priority</label>
-                                        <select class="form-select form-select-solid" data-placeholder="Choose Priority">
+                                        <select class="form-select form-select-solid" asp-for="@Model.FirstOrDefault().TicketPriorityId" data-placeholder="Choose Priority">
                                         </select>
                                     </div>
                                     <!--end::Col priority-->
@@ -120,7 +120,7 @@
                                 <!--end::Input group-->
                                 <!--begin::Actions-->
                                 <div class="text-center">
-                                    <button type="reset" id="kt_modal_new_target_cancel" class="btn btn-light me-3">Cancel</button>
+                                    <button type="reset" id="kt_modal_new_target_cancel" data-bs-dismiss="modal" class="btn btn-light me-3">Cancel</button>
                                     <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
                                         <span class="indicator-label">Submit</span>
                                         <span class="indicator-progress">
@@ -145,7 +145,7 @@
                 <!--begin::Table container-->
                 <div class="table-responsive">
                     <!--begin::Table-->
-                    <table class="table align-middle gs-0 gy-4">
+                    <table id="datatable" class="table align-middle gs-0 gy-4">
                         <!--begin::Table head-->
                         <thead>
                             <tr class="fw-bolder text-muted bg-light">
@@ -168,10 +168,10 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             @*<div class="symbol symbol-50px me-5">
-                                                <span class="symbol-label bg-light">
-                                                    <img src="/assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
-                                                </span>
-                                            </div>*@
+                                                    <span class="symbol-label bg-light">
+                                                        <img src="/assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
+                                                    </span>
+                                                </div>*@
                                             <div class="d-flex justify-content-start flex-column">
                                                 <a asp-action="Details" asp-route-id="@item.Id" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">
                                                     @Html.DisplayFor(modelItem => item.Title)
@@ -185,25 +185,35 @@
                                         </a>
                                     </td>
                                     @*<td>
-                                        <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
-                                            @Html.DisplayFor(modelItem => item.Updated)
+                                            <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
+                                                @Html.DisplayFor(modelItem => item.Updated)
+                                            </a>
+                                        </td>*@
+                                    <td>
+                                        @if (item.DeveloperUser != null)
+                                        {
+                                            <a class="text-muted fw-bold text-muted d-block fs-7">
+                                                @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                            {
+                                                <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign</a>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        <a class="text-muted fw-bold text-muted d-block fs-7">
+                                            @Html.DisplayFor(modelItem => item.TicketType.Name)
                                         </a>
-                                    </td>*@
-                                <td>
-                                    <a class="text-muted fw-bold text-muted d-block fs-7">
-                                        @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="text-muted fw-bold text-muted d-block fs-7">
-                                        @Html.DisplayFor(modelItem => item.TicketType.Name)
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="text-muted fw-bold text-muted d-block fs-7">
-                                        @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-                                    </a>
-                                </td>
+                                    </td>
+                                    <td>
+                                        <a class="text-muted fw-bold text-muted d-block fs-7">
+                                            @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                        </a>
+                                    </td>
                                     @if (item.TicketPriority.Name == BTTicketPriority.Low.ToString())
                                     {
                                         <td>
@@ -237,12 +247,8 @@
                                         </td>
                                     }
                                     <td class="text-end">
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>
+                                        @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>*@
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
-                                        @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
-                                        {
-                                            <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign</a>
-                                        }
                                     </td>
                                 </tr>
                             }
