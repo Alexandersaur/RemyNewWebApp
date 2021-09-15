@@ -30,6 +30,7 @@
 @*TODO: Link to My/All Tickets/Projects*@
 <!--begin::Body-->
 <body id="kt_body" class="page-loading-enabled page-loading header-fixed header-tablet-and-mobile-fixed sidebar-enabled">
+    <partial name="_LogoutPartial" />
     <!--begin::Main-->
     <!--begin::Root-->
     <div class="d-flex flex-column flex-root">
@@ -195,20 +196,8 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <a asp-area="" asp-controller="#" asp-action="#">
+                                            <a asp-area="Identity" asp-page="/Account/Manage/Index">
                                                 <span class="menu-title">My Profile</span>
-                                            </a>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <a asp-area="" asp-controller="#" asp-action="#">
-                                                <span class="menu-title">View Members</span>
                                             </a>
                                         </span>
                                     </div>
@@ -239,7 +228,7 @@
                                 </div>
                             </div>
                             <div class="menu-item">
-                                <form class="menu-link" asp-area="Identity" asp-page="/Account/Logout">
+                                <span class="menu-link">
                                     <span class="menu-icon">
                                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
                                         <span class="svg-icon svg-icon-5">
@@ -250,8 +239,10 @@
                                         </span>
                                         <!--end::Svg Icon-->
                                     </span>
-                                    <button type="submit" class="menu-title">Logout</button>
-                                </form>
+                                    <span class="menu-title">
+                                        <a href="javascript:document.getElementById('logoutForm').submit();" style="color:inherit">Logout</a>
+                                    </span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -426,9 +417,10 @@
     <!--end::Page Custom Javascript-->
 
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <script>$("#datatable").DataTable({
-    "autoWidth": true
-      });</script>
+    <script>
+    $("#datatable").DataTable({
+            "autoWidth": true
+        });</script>
 
     <!--end::Javascript-->
     @await RenderSectionAsync("Scripts", required: false)

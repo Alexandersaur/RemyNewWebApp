@@ -3,13 +3,14 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<BTUser> UserManager
 @inject IBTFileService BTFileService
-@inject IBTProjectService ProjectSerivce
-@inject IBTTicketService TicketService
+@inject IBTProjectService BTProjectSerivce
+@inject IBTTicketService BTTicketService
 
 @{
+    //int companyId = User.Identity.GetCompanyId();
+    //BTUser developer = await BTTicketService.GetTicketDeveloperAsync(Model.Id, companyId);
     BTUser btUser = await UserManager.GetUserAsync(User);
-    BTUser projectManager = await ProjectSerivce.GetProjectManagerAsync(Model.ProjectId);
-    //BTUser developer = await TicketService.GetTicketDeveloperAsync(Model.Id, Model.DeveloperUser.CompanyId);
+    BTUser projectManager = await BTProjectSerivce.GetProjectManagerAsync(Model.ProjectId);
 }
 
 @*
@@ -100,28 +101,30 @@
                                 <!--begin::Stats-->
                                 <div class="d-flex flex-wrap">
                                     <!--begin::Users-->
-                                    <div class="d-flex align-items-center ms-2 border border-white-300 border-dashed rounded min-w-100px py-3 px-4 me-3 mb-3">
-                                        <!--begin::Symbol-->
-                                        <div class="symbol symbol-40px me-3">
-                                            <div class="symbol-label bg-white bg-opacity-50">
-                                                <!--begin::Svg Icon | path: icons/duotune/abstract/abs045.svg-->
-                                                <span class="svg-icon svg-icon-1 svg-icon-dark">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                        <path opacity="0.3" d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM12 7C10.3 7 9 8.3 9 10C9 11.7 10.3 13 12 13C13.7 13 15 11.7 15 10C15 8.3 13.7 7 12 7Z" fill="black" />
-                                                        <path d="M12 22C14.6 22 17 21 18.7 19.4C17.9 16.9 15.2 15 12 15C8.8 15 6.09999 16.9 5.29999 19.4C6.99999 21 9.4 22 12 22Z" fill="black" />
-                                                    </svg>
-                                                </span>
-                                                <!--end::Svg Icon-->
+                                    <a asp-action="Edit" asp-route-id="@Model.Id">
+                                        <div class="d-flex align-items-center ms-2 border border-gray-300 border-dashed rounded min-w-100px py-3 px-4 me-3 mb-3" style="background-color:white">
+                                            <!--begin::Symbol-->
+                                            <div class="symbol symbol-40px me-3">
+                                                <div class="symbol-label bg-dark bg-opacity-15">
+                                                    <!--begin::Svg Icon | path: assets/media/icons/duotune/coding/cod001.svg-->
+                                                    <span class="svg-icon-dark svg-icon-2hx">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                            <path opacity="0.3" d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z" fill="black" />
+                                                            <path d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z" fill="black" />
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
                                             </div>
+                                            <!--end::Symbol-->
+                                            <!--begin::Title-->
+                                            <div>
+                                                <div class="fs-2 fw-bolder">Edit</div>
+                                                <div class="fw-bold fs-6" style="color:black">Info</div>
+                                            </div>
+                                            <!--end::Title-->
                                         </div>
-                                        <!--end::Symbol-->
-                                        <!--begin::Title-->
-                                        <div>
-                                            <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="@Model.Project.Members.ToList().Count()">0</div>
-                                            <div class="fw-bold fs-6" style="color:white">Users</div>
-                                        </div>
-                                        <!--end::Title-->
-                                    </div>
+                                    </a>
                                     <!--end::Users-->
                                     <!--begin::Comments-->
                                     <div class="d-flex align-items-center ms-2 border border-white-300 border-dashed rounded min-w-100px py-3 px-4 me-3 mb-3">
@@ -277,7 +280,7 @@
                                 <!--begin::Info-->
                                 <div class="d-flex flex-column">
                                     <a class="text-gray-900 text-hover-primary fs-6 fw-bolder">Development Team</a>
-                                    <span class="fw-bold" style="color:white">Number of users</span>
+                                    <span class="fw-bold" style="color:white">Submitter, Developer, & P.M.</span>
                                 </div>
                                 <!--end::Info-->
                             </div>
@@ -309,14 +312,74 @@
                             <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
                                 <!--begin::Title-->
                                 <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
-                                    <a href="#" class="fs-5 text-gray-800 text-hover-primary fw-bolder">User Name</a>
-                                    <span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>
+                                    <a href="#" class="fs-5 text-gray-800 text-hover-primary fw-bolder">Submitter</a>
+                                    @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
                                 </div>
                                 <!--end::Title-->
                                 <!--begin::Info-->
                                 <div class="text-end py-lg-0 py-2">
-                                    <span class="text-gray-800 fw-boldest fs-3">24,900</span>
-                                    <span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>
+                                    <span class="text-gray-800 fw-boldest fs-3">@Model.OwnerUser.FullName</span>
+                                    @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
+                                </div>
+                                <!--end::Info-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                <img src="/assets/media/stock/600x400/img-3.jpg" class="mw-100" alt="" />
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
+                                <!--begin::Title-->
+                                <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
+                                    <a href="#" class="fs-5 text-gray-800 text-hover-primary fw-bolder">Developer</a>
+                                    @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
+                                </div>
+                                <!--end::Title-->
+                                <!--begin::Info-->
+                                <div class="text-end py-lg-0 py-2">
+                                    @if (Model.DeveloperUser != null)
+                                    {
+                                        <span class="text-gray-800 fw-boldest fs-3">@Model.DeveloperUser.FullName</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-gray-800 fw-boldest fs-3">Currently Unassigned</span>
+                                    }
+                                    @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
+                                </div>
+                                <!--end::Info-->
+                            </div>
+                            <!--end::Section-->
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="d-flex mb-5">
+                            <!--begin::Symbol-->
+                            <div class="symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                <img src="/assets/media/stock/600x400/img-3.jpg" class="mw-100" alt="" />
+                            </div>
+                            <!--end::Symbol-->
+                            <!--begin::Section-->
+                            <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
+                                <!--begin::Title-->
+                                <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
+                                    <a href="#" class="fs-5 text-gray-800 text-hover-primary fw-bolder">Project Manager</a>
+                                    @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
+                                </div>
+                                <!--end::Title-->
+                                <!--begin::Info-->
+                                <div class="text-end py-lg-0 py-2">
+                                    @if (projectManager != null)
+                                    {
+                                        <span class="text-gray-800 fw-boldest fs-3">@projectManager.FullName</span>
+                                    }
+                                    @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
                                 </div>
                                 <!--end::Info-->
                             </div>
@@ -431,18 +494,22 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" asp-for="@Model.Id" name="TicketId">
                             <div class="media-body ml-3">
-                                <label class="form-label d-block mb-2">Description</label>
-                                <label>
-                                    <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control" />
-                                </label><br />
                                 <div class="row">
-                                    <div class="col-6">
+                                    <label class="form-label d-block mb-2">Description of File</label>
+                                    <label>
+                                        <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control" />
+                                    </label>
+                                </div>
+                                <div class="row align-content-center justify-content-center">
+                                    <div class="col">
                                         <label class="btn btn-outline-primary btn-sm">
-                                            <input asp-for="@Model.Attachments.FirstOrDefault().FormFile" type="file" />
+                                            <input class="btn btn-light btn-sm btn-active" asp-for="@Model.Attachments.FirstOrDefault().FormFile" type="file" />
                                         </label>
                                     </div>
-                                    <div class="col-6">
-                                        <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat btn-active">Submit</button>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-4">
+                                        <button type="submit" class="btn btn-light btn-sm btn-active">Submit</button>
                                     </div>
                                 </div>
                             </div>
@@ -469,12 +536,20 @@
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </div>*@
-                                                    <div class="icon">
+                                                    <div class="icon mb-2">
                                                         <img src="@BTFileService.GetFileIcon(item.FileName)" style="height:60px;width:60px" />
                                                     </div>
-                                                    <div>
-                                                        <small><span class="mb-1 text-muted">@System.IO.Path.GetFileNameWithoutExtension(item.FileName)</span></small><br />
-                                                        <small><span class="date text-muted">@item.Created.ToString("MMM dd, yyyy")</span></small>
+                                                    <div class="row justify-content-center">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <span class="mb-1">@System.IO.Path.GetFileNameWithoutExtension(item.FileName)</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <small><span class="date text-muted">@item.Created.ToString("dd/MM/yy")</span></small>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </form>
                                             </div>
@@ -534,45 +609,36 @@
                             <!--begin::Timeline-->
                             <div class="timeline-label">
                                 @foreach (TicketHistory ticketHistory in Model.Histories.OrderByDescending(h => h.Created))
-            {
-                                <!--begin::Item-->
-                                <div class="timeline-item">
-                                    <!--begin::Label-->
-                                    <div class="timeline-label fw-bolder text-gray-800 fs-6">@ticketHistory.Created.ToString("dd MM yyyy")</div>
-                                    <!--end::Label-->
-                                    <!--begin::Badge-->
-                                    <div class="timeline-badge">
-                                        <i class="fa fa-genderless text-success fs-1"></i>
-                                    </div>
-                                    <!--end::Badge-->
-                                    <!--begin::Content-->
-                                    <div class="timeline-content d-flex">
-                                        <span class="fw-bolder text-gray-800 ps-3">@ticketHistory.Description</span>
-                                        <span class="fw-bolder text-gray-800 ps-3">@ticketHistory.User.FullName</span>
-                                        <span class="fw-bolder text-gray-800 ps-3">@ticketHistory.Property was edited from @ticketHistory.OldValue to @ticketHistory.NewValue</span>
-                                    </div>
-                                    <!--end::Content-->
-                                </div>
-                                <!--end::Item-->
-            }
-
-                                <!--begin::Item-->
-                                <div class="timeline-item">
-                                    <!--begin::Label-->
-                                    <div class="timeline-label fw-bolder text-gray-800 fs-6">11:00</div>
-                                    <!--end::Label-->
-                                    <!--begin::Badge-->
-                                    <div class="timeline-badge">
-                                        <i class="fa fa-genderless text-success fs-1"></i>
-                                    </div>
-                                    <!--end::Badge-->
-                                    <!--begin::Content-->
-                                    <div class="timeline-content d-flex">
-                                        <span class="fw-bolder text-gray-800 ps-3">AEOL meeting 2</span>
+                                {
+                                    <!--begin::Item-->
+                                    <div class="timeline-item">
+                                        <!--begin::Label-->
+                                        <div class="timeline-label fw-bolder text-gray-800 fs-8">@ticketHistory.Created.ToString("MM/dd")</div>
+                                        <!--end::Label-->
+                                        <br />
+                                        <!--begin::Badge-->
+                                        <div class="timeline-badge">
+                                            <i class="fa fa-genderless text-success fs-1"></i>
+                                        </div>
+                                        <!--end::Badge-->
+                                        <!--begin::Content-->
+                                        <div class="timeline-content d-flex">
+                                            <div class="row">
+                                                <div class="row">
+                                                    <span class="fw-bolder text-gray-800 ps-3">Edited by: @ticketHistory.User.FullName</span>
+                                                </div>
+                                                <div class="row">
+                                                    <span class="fw-bolder text-gray-800 fs-8 ps-3">- @ticketHistory.Description</span>
+                                                </div>
+                                                <div class="row">
+                                                    <span class="fw-bolder text-gray-800 fs-8 ps-3">- @ticketHistory.Property was edited from "@ticketHistory.OldValue"</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!--end::Content-->
-                                </div>
-                                <!--end::Item-->
+                                    <!--end::Item-->
+                                }
                             </div>
                             <!--end::Timeline-->
                         </div>

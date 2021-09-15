@@ -1,1 +1,246 @@
-﻿
+﻿@model IEnumerable<RemyNewWebApp.Models.ViewModels.BTUserViewModel>
+@using RemyNewWebApp.Models.Enums
+@using RemyNewWebApp.Extensions
+@using RemyNewWebApp.Services.Interfaces
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<BTUser> UserManager
+@inject IBTRolesService RolesService
+
+
+
+@{
+    BTUser btUser = await UserManager.GetUserAsync(User);
+    IEnumerable<string> roles = await RolesService.GetUserRolesAsync(btUser);
+    //BTUser developer = await TicketService.GetTicketDeveloperAsync(Model.Id, Model.DeveloperUser.CompanyId);
+}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Container-->
+    <div class="container" id="kt_content_container">
+        <!--begin::Tables Widget 12-->
+        <div class="card mb-5 mb-xl-8">
+            <!--begin::Header-->
+            <div class="card-header border-0 pt-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="card-label fw-bolder fs-3 mb-1">All Tickets</span>
+                    <span class="text-muted mt-1 fw-bold fs-7">Currently Model.Count() users in Company: User.Identity.GetCompanyId().Value</span>
+                </h3>
+                <div class="card-toolbar">
+                    <!--begin::Menu-->
+                    <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
+                        <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen041.svg-->
+                        <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
+                                <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="black" />
+                                <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="black" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </button>
+                    <a asp-action="Create">Create New</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Modal</a>
+                    <!--end::Menu-->
+                </div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Modal - New Target-->
+            <!--<div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">-->
+            <!--begin::Modal dialog-->
+            <!--<div class="modal-dialog modal-dialog-centered mw-650px">-->
+            <!--begin::Modal content-->
+            <!--<div class="modal-content rounded">-->
+            <!--begin::Modal header-->
+            <!--<div class="modal-header pb-0 border-0 justify-content-end">-->
+            <!--begin::Close-->
+            <!--<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">-->
+            <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+            <!--<span class="svg-icon svg-icon-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                    <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                </svg>
+            </span>-->
+            <!--end::Svg Icon-->
+            <!--</div>-->
+            <!--end::Close-->
+            <!--</div>-->
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <!--<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">-->
+            <!--begin:Form-->
+            <!--<form id="kt_modal_new_target_form" class="form" asp-action="Create" method="post">-->
+            <!--begin::Heading-->
+            <!--<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-10 text-center">-->
+            <!--begin::Title-->
+            <!--<h1 class="mb-3">Create a new Ticket</h1>-->
+            <!--end::Title-->
+            <!--begin::Description-->
+            <!--<div class="text-muted fw-bold fs-5">
+                If you need more info, please check
+                <a href="#" class="fw-bolder link-primary">Ticket Guidelines</a>.
+            </div>-->
+            <!--end::Description-->
+            <!--</div>-->
+            <!--end::Heading-->
+            <!--begin::Input group title -->
+            <!--<div class="d-flex flex-column mb-8 fv-row">-->
+            <!--begin::Label-->
+            <!--<label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                <span class="required">Title</span>
+                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
+            </label>-->
+            <!--end::Label-->
+            <!--<input type="text" class="form-control form-control-solid" placeholder="Enter Ticket Title" asp-for="Model.FirstOrDefault().Title" />
+            </div>-->
+            <!--end::Input group title-->
+            <!--begin::Input group details-->
+            <!--<div class="d-flex flex-column mb-8">
+                <label class="fs-6 fw-bold mb-2">Description</label>
+                <textarea class="form-control form-control-solid" rows="3" name="target_details" asp-for="Model.FirstOrDefault().Description" placeholder="Describe Ticket Details"></textarea>
+            </div>-->
+            <!--end::Input group details-->
+            <!--begin::Input group-->
+            <!--<div class="row g-9 mb-8">-->
+            <!--begin::Col proj-->
+            <!--<div class="col-md-4 fv-row">
+                <label class="required fs-6 fw-bold mb-2">Project</label>
+                <select class="form-select form-select-solid" asp-for="Model.FirstOrDefault().ProjectId" data-placeholder="Assign a Project">
+                </select>
+            </div>-->
+            <!--end::Col proj-->
+            <!--begin::Col type-->
+            <!--<div class="col-md-4 fv-row">
+                <label class="required fs-6 fw-bold mb-2">Type</label>
+                <select class="form-select form-select-solid" asp-for="Model.FirstOrDefault().TicketType.Id" data-placeholder="Select Ticket Type">
+                </select>
+            </div>-->
+            <!--end::Col type-->
+            <!--begin::Col priority-->
+            <!--<div class="col-md-4 fv-row">
+                <label class="required fs-6 fw-bold mb-2">Priority</label>
+                <select class="form-select form-select-solid" asp-for="Model.FirstOrDefault().TicketPriorityId" data-placeholder="Choose Priority">
+                </select>
+            </div>-->
+            <!--end::Col priority-->
+            <!--</div>-->
+            <!--end::Input group-->
+            <!--begin::Actions-->
+            <!--<div class="text-center">
+                <button type="reset" id="kt_modal_new_target_cancel" data-bs-dismiss="modal" class="btn btn-light me-3">Cancel</button>
+                <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
+                    <span class="indicator-label">Submit</span>
+                    <span class="indicator-progress">
+                        Please wait...
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                </button>
+            </div>-->
+            <!--end::Actions-->
+            <!--</form>-->
+            <!--end:Form-->
+            <!--</div>-->
+            <!--end::Modal body-->
+            <!--</div>-->
+            <!--end::Modal content-->
+            <!--</div>-->
+            <!--end::Modal dialog-->
+            <!--</div>-->
+            <!--end::Modal - New Target-->
+            <!--begin::Body-->
+            <div class="card-body py-3">
+                <!--begin::Table container-->
+                <div class="table-responsive">
+                    <!--begin::Table-->
+                    <table id="datatable" class="table align-middle gs-0 gy-4">
+                        <!--begin::Table head-->
+                        <thead>
+                            <tr class="fw-bolder text-muted bg-light">
+                                <th class="ps-4 min-w-110px rounded-start">Avatar</th>
+                                <th class="min-w-100px">First Name</th>
+                                <th class="min-w-100px">Last Name</th>
+                                <th class="min-w-100px">Role</th>
+                                <th class="min-w-100px">Email</th>
+                                @*<th class="min-w-100px">Priority</th>*@
+                                <th class="min-w-100px rounded-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <!--end::Table head-->
+                        <!--begin::Table body-->
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <a class="text-muted fw-bold text-muted d-block fs-7">
+                                            @if (item.BTUser.AvatarFileData != null)
+                                            {
+                                                <img src="data:image/*;base64,@Convert.ToBase64String(item.BTUser.AvatarFileData)" />
+                                            }
+
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class="text-muted fw-bold text-muted d-block fs-7">
+                                            @Html.DisplayFor(modelItem => item.BTUser.FirstName)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class="text-muted fw-bold text-muted d-block fs-7">
+                                            @Html.DisplayFor(modelItem => item.BTUser.LastName)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @foreach (var role in item.Roles)
+                                        {
+                                            <a class="text-muted fw-bold text-muted d-block fs-7">
+                                                @role
+                                            </a>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a class="text-muted fw-bold text-muted d-block fs-7">
+                                            @Html.DisplayFor(modelItem => item.BTUser.Email)
+                                        </a>
+                                    </td>
+                                    @*<td>
+                                            @if (item.DeveloperUser != null)
+                                            {
+                                                <a class="text-muted fw-bold text-muted d-block fs-7">
+                                                    @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                                {
+                                                    <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign</a>
+                                                }
+                                            }
+                                        </td>*@
+                                    <td class="text-end">
+                                        @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>*@
+                                        @if (item.BTUser.Id == btUser.Id)
+                                        {
+                                            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <!--end::Table body-->
+                    </table>
+                    <!--end::Table-->
+                </div>
+                <!--end::Table container-->
+            </div>
+            <!--begin::Body-->
+        </div>
+        <!--end::Tables Widget 12-->
+    </div>
+</div>
+
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@

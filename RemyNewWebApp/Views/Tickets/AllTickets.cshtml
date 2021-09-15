@@ -1,9 +1,13 @@
 ﻿@model IEnumerable<RemyNewWebApp.Models.Ticket>
 @using RemyNewWebApp.Models.Enums
+@using RemyNewWebApp.Services.Interfaces
 @using RemyNewWebApp.Extensions
+@using Microsoft.AspNetCore.Identity
+@inject IBTProjectService ProjectService
+@inject UserManager<BTUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
+//BTUser btUser = await UserManager.GetUserAsync(User);
 }
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -15,7 +19,7 @@
             <div class="card-header border-0 pt-5">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="card-label fw-bolder fs-3 mb-1">All Tickets</span>
-                    <span class="text-muted mt-1 fw-bold fs-7">Currently @Model.Count() tickets in Company: @User.Identity.GetCompanyId().Value</span>
+                    <span class="text-muted mt-1 fw-bold fs-7">Currently @Model.Count() tickets in Company: @User.Identity.GetCompanyName()</span>
                 </h3>
                 <div class="card-toolbar">
                     <!--begin::Menu-->
@@ -38,13 +42,13 @@
             <!--end::Header-->
             <!--begin::Modal - New Target-->
             <div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">
-                <!--begin::Modal dialog-->
+                @*begin::Modal dialog*@
                 <div class="modal-dialog modal-dialog-centered mw-650px">
-                    <!--begin::Modal content-->
+                    @*begin::Modal content*@
                     <div class="modal-content rounded">
-                        <!--begin::Modal header-->
+                        @*begin::Modal header*@
                         <div class="modal-header pb-0 border-0 justify-content-end">
-                            <!--begin::Close-->
+                            @*begin::Close*@
                             <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
                                 <span class="svg-icon svg-icon-1">
@@ -98,21 +102,22 @@
                                     <!--begin::Col proj-->
                                     <div class="col-md-4 fv-row">
                                         <label class="required fs-6 fw-bold mb-2">Project</label>
-                                        <select class="form-select form-select-solid" asp-for="@Model.FirstOrDefault().ProjectId" data-placeholder="Assign a Project">
+                                        <select class="form-select form-select-solid" asp-for="@Model.FirstOrDefault().ProjectId" asp-items="ViewBag.ProjectId" data-placeholder="Assign a Project">
+                                            <option></option>
                                         </select>
                                     </div>
                                     <!--end::Col proj-->
                                     <!--begin::Col type-->
                                     <div class="col-md-4 fv-row">
                                         <label class="required fs-6 fw-bold mb-2">Type</label>
-                                        <select class="form-select form-select-solid" asp-for="@Model.FirstOrDefault().TicketType.Id" data-placeholder="Select Ticket Type">
+                                        <select class="form-select form-select-solid" asp-for="@Model.FirstOrDefault().TicketType.Id" asp-items="ViewBag.TicketTypeId" data-placeholder="Select Ticket Type">
                                         </select>
                                     </div>
                                     <!--end::Col type-->
                                     <!--begin::Col priority-->
                                     <div class="col-md-4 fv-row">
                                         <label class="required fs-6 fw-bold mb-2">Priority</label>
-                                        <select class="form-select form-select-solid" asp-for="@Model.FirstOrDefault().TicketPriorityId" data-placeholder="Choose Priority">
+                                        <select class="form-select form-select-solid" asp-for="@Model.FirstOrDefault().TicketPriorityId" asp-items="ViewBag.TicketPriorityId" data-placeholder="Choose Priority">
                                         </select>
                                     </div>
                                     <!--end::Col priority-->
