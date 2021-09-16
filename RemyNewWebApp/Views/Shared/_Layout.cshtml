@@ -21,7 +21,7 @@
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
     <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-
+    <link href="~/css/summernote-lite.css" rel="stylesheet" />
     <link href="/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 
     <!--end::Global Stylesheets Bundle-->
@@ -268,7 +268,7 @@
                                 <!--begin::User info-->
                                 <div class="ms-2">
                                     <!--begin::Name-->
-                                    <a href="#" class="text-gray-800 text-hover-primary fs-6 fw-bolder lh-1">@btUser.LastName, @btUser.FirstName</a>
+                                    <a asp-area="Identity" asp-page="/Account/Manage/Index" class="text-gray-800 text-hover-primary fs-6 fw-bolder lh-1">@btUser.LastName, @btUser.FirstName</a>
                                     <!--end::Name-->
                                     <!--begin::Major-->
                                     <span class="text-muted fw-bold d-block fs-7 lh-1">Role: @((await rolesService.GetUserRolesAsync(btUser)).FirstOrDefault())</span>
@@ -415,10 +415,11 @@
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
     <!--end::Page Custom Javascript-->
+    <script src="~/_js/summernote-lite.js"></script>
 
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script>
-    $("#datatable").DataTable({
+        $("#datatable").DataTable({
             "autoWidth": true
         });</script>
 
