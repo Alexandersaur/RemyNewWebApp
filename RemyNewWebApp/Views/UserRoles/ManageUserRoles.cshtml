@@ -1,34 +1,57 @@
 ﻿@model IEnumerable<RemyNewWebApp.Models.ViewModels.ManageUserRolesViewModel>
 
-<div class="row">
-    @foreach (var member in Model)
-        {
-        <div class="card col-6" style="margin:2px">
-            <div class="card-body">
-                <h2 class="m-t-0 h3"><b>Assign Roles to @member.BTUser.FullName</b></h2>
-                <p class="text-muted font-13 m-b-30">
-                    This form displays the current roles assigned to the user: @member.BTUser.FullName. Use the dropdown to select the roles that this user should be assigned. Once the role is selected, click "Assign Roles" to submit the form.
-                </p>
-                <hr />
-                <form asp-controller="UserRoles" asp-action="ManageUserRoles" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="@member.BTUser.Id" />
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label asp-for="@member.Roles" class="control-label">Roles for @member.BTUser.FullName</label>
-                                <select asp-for="@member.SelectedRoles" class="form-control" asp-items="@member.Roles" multiple="multiple"></select>
-                            </div>
-                        </div>
-                        <hr />
-                        <div class="col">
-                            <div class="form-group pull-right">
-                                <input type="submit" value="Assign Roles" class="btn btn-info" />
-                            </div>
+    <div class="container" id="kt_content_container">
+        <div class="row gy-5 g-xl-10">
+            <div class="col-xxl-6">
+                <!--begin::List Widget 4-->
+                <div class="card card-xl-stretch mb-5 mb-xl-10">
+                    <!--begin::Header-->
+                    @*<div class="card-header border-0 pt-5">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label fw-bolder text-dark">Trends</span>
+                            <span class="text-muted mt-1 fw-bold fs-7">Latest tech trends</span>
+                        </h3>
+                    </div>*@
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-5">
+                        <div class="row justify-content-around">
+                            @foreach (var member in Model)
+                            {
+                                <div class="card col-5 me-4" style="margin:2px">
+                                    <div class="card-body">
+                                        <h4 class="m-t-0">Assign Roles to:</h4>
+                                        <h2 class="m-t-0 h2"> <b> @member.BTUser.FullName</b></h2>
+                                            <p class="text-muted font-13 m-b-30">
+                                                This form displays the current roles assigned to the user: @member.BTUser.FullName. Use the dropdown to select the roles that this user should be assigned. Once the role is selected, click "Assign Roles" to submit the form.
+                                            </p>
+                                            <hr />
+                                            <form asp-controller="UserRoles" asp-action="ManageUserRoles" method="post">
+                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                <input type="hidden" asp-for="@member.BTUser.Id" />
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label asp-for="@member.Roles" class="control-label">Roles for @member.BTUser.FullName</label>
+                                                            <select asp-for="@member.SelectedRoles" class="form-control" asp-items="@member.Roles" multiple="multiple"></select>
+                                                        </div>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="col justify-content-center">
+                                                        <div class="form-group justify-content-center">
+                                                            <input type="submit" value="Assign Roles" class="btn btn-info" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
-                </form>
+                    <!--end::Body-->
+                </div>
+                <!--end::List Widget 4-->
             </div>
         </div>
-        }
-</div>
+    </div>

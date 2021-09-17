@@ -60,13 +60,23 @@ namespace RemyNewWebApp.Controllers
         // GET: ALL Projects
         public async Task<IActionResult> AllProjects()
         {
+            List<ProjectViewModel> model = new();
             int companyId = User.Identity.GetCompanyId().Value;
             List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
-            return View(projects);
+            foreach (Project project in projects)
+            {
+                ProjectViewModel viewModel = new();
+                viewModel.Project = project;
+                viewModel.ProjectManager = await _projectService.GetProjectManagerAsync(project.Id);
+                model.Add(viewModel);
+            }
+            return View(model);
         }
 
-        // GET: Assign PM index
-        public async Task<IActionResult> AssignPMIndex()
+
+
+// GET: Assign PM index
+public async Task<IActionResult> AssignPMIndex()
         {
             int companyId = User.Identity.GetCompanyId().Value;
             List<Project> projects = await _projectService.GetUnassignedProjectsAsync(companyId);

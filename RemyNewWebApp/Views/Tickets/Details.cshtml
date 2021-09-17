@@ -311,17 +311,19 @@
                             <!--begin::Section-->
                             <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
                                 <!--begin::Title-->
-                                <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
-                                    <a href="#" class="fs-5 text-gray-800 text-hover-primary fw-bolder">Submitter</a>
-                                    @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
+                                            <a href="#" class="fs-5 text-hover-primary fw-bolder" style="color:white">Submitter</a>
+                                            @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
+                                        </div>
+                                    </div>
+                                    <div class="py-lg-0 py-2">
+                                        <span class="text-gray-800 fw-boldest fs-3">@Model.OwnerUser.FullName</span>
+                                        @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
+                                    </div>
                                 </div>
                                 <!--end::Title-->
-                                <!--begin::Info-->
-                                <div class="text-end py-lg-0 py-2">
-                                    <span class="text-gray-800 fw-boldest fs-3">@Model.OwnerUser.FullName</span>
-                                    @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
-                                </div>
-                                <!--end::Info-->
                             </div>
                             <!--end::Section-->
                         </div>
@@ -336,24 +338,27 @@
                             <!--begin::Section-->
                             <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
                                 <!--begin::Title-->
-                                <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
-                                    <a href="#" class="fs-5 text-gray-800 text-hover-primary fw-bolder">Developer</a>
-                                    @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
+                                <div class="row">
+                                    <div class="col-12">
+
+                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
+                                            <a href="#" class="fs-5 text-hover-primary fw-bolder" style="color:white">Developer</a>
+                                            @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
+                                        </div>
+                                    </div>
+                                    <div class="py-lg-0 py-2">
+                                        @if (Model.DeveloperUser != null)
+                                        {
+                                            <span class="text-gray-800 fw-boldest fs-3">@Model.DeveloperUser.FullName</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-gray-800 fw-boldest fs-3">Currently Unassigned</span>
+                                        }
+                                        @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
+                                    </div>
                                 </div>
                                 <!--end::Title-->
-                                <!--begin::Info-->
-                                <div class="text-end py-lg-0 py-2">
-                                    @if (Model.DeveloperUser != null)
-                                    {
-                                        <span class="text-gray-800 fw-boldest fs-3">@Model.DeveloperUser.FullName</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-gray-800 fw-boldest fs-3">Currently Unassigned</span>
-                                    }
-                                    @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
-                                </div>
-                                <!--end::Info-->
                             </div>
                             <!--end::Section-->
                         </div>
@@ -368,20 +373,28 @@
                             <!--begin::Section-->
                             <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
                                 <!--begin::Title-->
-                                <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
-                                    <a href="#" class="fs-5 text-gray-800 text-hover-primary fw-bolder">Project Manager</a>
-                                    @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
+                                <div class="row">
+                                    <div class="col-12">
+
+                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
+                                            <a href="#" class="fs-5 text-hover-primary fw-bolder" style="color:white">Project Manager</a>
+                                            @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
+                                        </div>
+                                    </div>
+                                    <div class="py-lg-0 py-2">
+                                        @if (projectManager != null)
+                                        {
+                                            <span class="text-gray-800 fw-boldest fs-3">@projectManager.FullName</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-gray-800 fw-boldest fs-3">Currently Unassigned</span>
+                                        }
+                                        @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
+                                    </div>
                                 </div>
                                 <!--end::Title-->
-                                <!--begin::Info-->
-                                <div class="text-end py-lg-0 py-2">
-                                    @if (projectManager != null)
-                                    {
-                                        <span class="text-gray-800 fw-boldest fs-3">@projectManager.FullName</span>
-                                    }
-                                    @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
-                                </div>
-                                <!--end::Info-->
+
                             </div>
                             <!--end::Section-->
                         </div>
@@ -430,17 +443,23 @@
                         </div>
                         <!--end::Post-->
                         <!--begin::Separator-->
-                        <div class="separator mb-4"></div>
+                        <div class="separator mb-2"></div>
                         <!--end::Separator-->
                     </div>
                     <!--end::Header-->
                     <!--begin::Body-->
                     <div class="card-body">
-                        <!--begin::Chart-->
-                        <label asp-for="Comments" class="control-label"></label>
-                        <textarea asp-for="Comments" class="form-control"></textarea>
-                        <span asp-validation-for="Comments" class="text-danger"></span>
-                        <!--end::Chart-->
+                        <form asp-action="Create" asp-controller="TicketComments" method="post">
+                            <input hidden asp-for="Id" name="TicketId" />
+                            <label asp-for="Comments" class="control-label"></label>
+                            <textarea name="Comment" id="Comments" class="form-control"></textarea>
+                            <span asp-validation-for="Comments" class="text-danger"></span>
+                            <button class="btn btn-primary" type="submit">Test</button>
+                        </form>
+                        @foreach (var comment in Model.Comments)
+                        {
+                            @comment.Comment
+                        }
                     </div>
                     <!--end::Body-->
                 </div>
@@ -661,9 +680,22 @@
 
 @section Scripts
 {
-<script>
-    $('#Comments').summernote({
-        placeholder:"Leave a comment"
-    })
-</script>
+    <script>
+        $('#Comments').summernote({
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+            height: 200,
+            focus: true,
+            placeholder: 'Add comment *'
+        });
+    </script>
 }
+
+

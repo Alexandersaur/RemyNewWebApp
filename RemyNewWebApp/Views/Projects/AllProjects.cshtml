@@ -1,9 +1,12 @@
-﻿@model IEnumerable<RemyNewWebApp.Models.Project>
+﻿@model IEnumerable<RemyNewWebApp.Models.ViewModels.ProjectViewModel>
 @using RemyNewWebApp.Models.Enums
 @using RemyNewWebApp.Extensions
+@using RemyNewWebApp.Services.Interfaces
+@inject IBTProjectService BTProjectSerivce
+
 
 @{
-    ViewData["Title"] = "Index";
+//BTUser projectManager = await BTProjectSerivce.GetProjectManagerAsync(Model.Project.Id);
 }
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -15,8 +18,27 @@
             <div class="card-header border-0 pt-5">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="card-label fw-bolder fs-3 mb-1">All Projects</span>
-                    <span class="text-muted mt-1 fw-bold fs-7">Currently @Model.Count() projects in Company: @User.Identity.GetCompanyId().Value</span>
+                    <span class="text-muted mt-1 fw-bold fs-7">Currently @Model.Count() projects in @User.Identity.GetCompanyName()</span>
                 </h3>
+                @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                {
+                    <div class="card-toolbar">
+                        <!--begin::Menu-->
+                        <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
+                            <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen041.svg-->
+                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
+                                    <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="black" />
+                                    <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="black" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </button>
+                        <a asp-action="Create">Create New</a>
+                        <!--end::Menu-->
+                    </div>
+                }
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -24,15 +46,19 @@
                 <!--begin::Table container-->
                 <div class="table-responsive">
                     <!--begin::Table-->
-                    <table class="table align-middle gs-0 gy-4">
+                    <table id="datatable" class="table align-middle gs-0 gy-4">
                         <!--begin::Table head-->
                         <thead>
                             <tr class="fw-bolder text-muted bg-light">
-                                <th class="ps-4 min-w-200px rounded-start">Name & Creator</th>
+                                <th class="ps-4 min-w-200px rounded-start">Title</th>
                                 <th class="min-w-225px">Info</th>
+                                <th class="min-w-225px">Project Manager</th>
                                 <th class="min-w-150px">Timespan</th>
                                 <th class="min-w-50px">Priority</th>
-                                <th class="min-w-100px text-end rounded-end"></th>
+                                @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                {
+                                    <th class="min-w-100px text-end rounded-end"></th>
+                                }
                             </tr>
                         </thead>
                         <!--end::Table head-->
@@ -45,83 +71,96 @@
                                         <div class="d-flex align-items-center">
                                             <div class="symbol symbol-50px me-5">
                                                 <span class="symbol-label bg-light">
-                                                    @if (item.ImageFileData != null)
+                                                    @if (item.Project.ImageFileData != null)
                                                     {
-                                                        <img class="h-75 align-self-end" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" alt="" />
+                                                        <img class="h-75 align-self-end" src="data:image/*;base64,@(Convert.ToBase64String(item.Project.ImageFileData))" alt="" />
                                                     }
                                                 </span>
                                             </div>
                                             <div class="d-flex justify-content-start flex-column">
-                                                <a href="#" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </a>
-                                                <a class="text-muted fw-bold text-muted d-block fs-7">
-                                                    Members: @Model.Count()
+                                                <a asp-action="Details" asp-route-id="@item.Project.Id" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">
+                                                    @Html.DisplayFor(modelItem => item.Project.Name)
                                                 </a>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
+                                        <a class="text-dark fw-bold d-block fs-7">
+                                            Members: @Model.Count()
                                         </a>
                                         <span class="text-muted fw-bold text-muted d-block fs-7">
-                                            @Html.DisplayFor(modelItem => item.Description)
+                                            @Html.DisplayFor(modelItem => item.Project.Description)
                                         </span>
                                     </td>
                                     <td>
+                                        @if (item.ProjectManager != null)
+                                        {
+                                            <a class="text-dark fw-bold d-block fs-7">
+                                                @item.ProjectManager.FullName
+                                            </a>
+                                        }
+                                    </td>
+                                    <td>
                                         <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">
-                                            END: @Html.DisplayFor(modelItem => item.EndDate)
+                                            END: @item.Project.EndDate.ToString("dd/MM/yy")
                                         </a>
                                         <span class="text-muted fw-bold text-muted d-block fs-7">
-                                            BEGIN: @Html.DisplayFor(modelItem => item.StartDate)
+                                            BEGIN: @item.Project.StartDate.ToString("dd/MM/yy")
                                         </span>
                                     </td>
-                                    @if (item.ProjectPriority != null)
+                                    @if (item.Project.ProjectPriority != null)
                                     {
-                                        @if (item.ProjectPriority.Name == BTTicketPriority.Low.ToString())
+                                        @if (item.Project.ProjectPriority.Name == BTTicketPriority.Low.ToString())
                                         {
                                             <td>
                                                 <span class="badge badge-light-primary fs-7 fw-bold">
-                                                    @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                                    @Html.DisplayFor(modelItem => item.Project.ProjectPriority.Name)
                                                 </span>
                                             </td>
                                         }
-                                        @if (item.ProjectPriority.Name == BTTicketPriority.Medium.ToString())
+                                        @if (item.Project.ProjectPriority.Name == BTTicketPriority.Medium.ToString())
                                         {
                                             <td>
                                                 <span class="badge badge-light-success fs-7 fw-bold">
-                                                    @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                                    @Html.DisplayFor(modelItem => item.Project.ProjectPriority.Name)
                                                 </span>
                                             </td>
                                         }
-                                        @if (item.ProjectPriority.Name == BTTicketPriority.High.ToString())
+                                        @if (item.Project.ProjectPriority.Name == BTTicketPriority.High.ToString())
                                         {
                                             <td>
                                                 <span class="badge badge-light-warning fs-7 fw-bold">
-                                                    @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                                    @Html.DisplayFor(modelItem => item.Project.ProjectPriority.Name)
                                                 </span>
                                             </td>
                                         }
-                                        @if (item.ProjectPriority.Name == BTTicketPriority.Urgent.ToString())
+                                        @if (item.Project.ProjectPriority.Name == BTTicketPriority.Urgent.ToString())
                                         {
                                             <td>
                                                 <span class="badge badge-light-danger fs-7 fw-bold">
-                                                    @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+                                                    @Html.DisplayFor(modelItem => item.Project.ProjectPriority.Name)
                                                 </span>
                                             </td>
                                         }
                                     }
-                                    <td class="text-end">
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>
-                                        @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
-                                        {
-                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-info btn-sm px-4">Edit</a>
-                                            <a asp-action="AssignMembers" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Add Developers</a>
-                                            <a asp-action="AssignPM" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-success btn-sm px-4">Assign PM</a>
-                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-danger btn-sm px-4">Delete</a>
+                                    else
+                                    {
+                                        <td>
+                                            <span class="badge fs-7 fw-bold" style="color:black">
+                                                Unassigned
+                                            </span>
+                                        </td>
+                                    }
+                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                    {
+                                        <td class="text-end">
+                                            <a asp-action="Edit" asp-route-id="@item.Project.Id" class="btn btn-bg-light btn-color-muted btn-active-color-info btn-sm px-4">Edit</a>
+                                            <a asp-action="AssignMembers" asp-route-id="@item.Project.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Add Developers</a>
+                                            <a asp-action="AssignPM" asp-route-id="@item.Project.Id" class="btn btn-bg-light btn-color-muted btn-active-color-success btn-sm px-4">Assign PM</a>
+                                            @*<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-danger btn-sm px-4">Delete</a>*@
 
-                                        }
-                                    </td>
+                                        </td>
+                                    }
                                 </tr>
                             }
                         </tbody>
