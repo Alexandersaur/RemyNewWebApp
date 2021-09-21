@@ -28,402 +28,1623 @@
 </head>
 <!--end::Head-->
 @*TODO: Link to My/All Tickets/Projects*@
-<!--begin::Body-->
-<body id="kt_body" class="page-loading-enabled page-loading header-fixed header-tablet-and-mobile-fixed sidebar-enabled">
-    <partial name="_LogoutPartial" />
-    <!--begin::Main-->
-    <!--begin::Root-->
-    <div class="d-flex flex-column flex-root">
-        <!--begin::Page-->
-        <div class="page d-flex flex-row flex-column-fluid">
-            <!--begin::Aside-->
-            <div id="kt_aside" class="aside py-9" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
-                <!--begin::Brand-->
-                <div class="aside-logo flex-column-auto px-9 mb-9" id="kt_aside_logo">
-                    <!--begin::Logo-->
-                    <a href="">
-                        <img alt="Logo" src="/assets/Untitled_Artwork 1.jpg" class="h-200px logo" style="border-radius:25px" />
-                    </a>
-                    <!--end::Logo-->
-                </div>
-                <!--end::Brand-->
-                <!--begin::Aside menu-->
-                <div class="aside-menu flex-column-fluid ps-5 pe-3 mb-9" id="kt_aside_menu">
-                    <!--begin::Aside Menu-->
-                    <div class="w-100 hover-scroll-overlay-y d-flex pe-2" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside, #kt_aside_menu, #kt_aside_menu_wrapper" data-kt-scroll-offset="100">
-                        <!--begin::Menu-->
-                        <div class="menu menu-column menu-rounded fw-bold my-auto" id="#kt_aside_menu" data-kt-menu="true">
-                            <div class="menu-item">
-                                <a class="menu-link" asp-area="" asp-controller="Home" asp-action="Index">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-                                        <span class="svg-icon svg-icon-5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
-                                                <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">Dashboard</span>
-                                </a>
-                            </div>
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                <span class="menu-link">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-                                        <span class="svg-icon svg-icon-5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
-                                                <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">Projects</span>
-                                    <span class="menu-arrow"></span>
-                                </span>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+
+@if (User.IsInRole("Admin"))
+{
+    <!--begin::Body-->
+    <body id="bug_body" class="page-loading-enabled page-loading header-fixed header-tablet-and-mobile-fixed sidebar-enabled" style="background-color:#CBD4F4">
+        <partial name="_LogoutPartial" />
+        <!--begin::Main-->
+        <!--begin::Root-->
+        <div class="d-flex flex-column flex-root">
+            <!--begin::Page-->
+            <div class="page d-flex flex-row flex-column-fluid">
+                <!--begin::Aside-->
+                <div id="kt_aside" style="background-color:white" class="aside py-9" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
+                    <!--begin::Brand-->
+                    <div class="aside-logo flex-column-auto px-9 mb-9" id="kt_aside_logo">
+                        <!--begin::Logo-->
+                        <a href="">
+                            <img alt="Logo" src="/assets/Untitled_Artwork 1.jpg" class="h-200px logo" style="border-radius:25px" />
+                        </a>
+                        <!--end::Logo-->
+                    </div>
+                    <!--end::Brand-->
+                    <!--begin::Aside menu-->
+                    <div class="aside-menu flex-column-fluid ps-5 pe-3 mb-9" id="kt_aside_menu">
+                        <!--begin::Aside Menu-->
+                        <div class="w-100 hover-scroll-overlay-y d-flex pe-2" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside, #kt_aside_menu, #kt_aside_menu_wrapper" data-kt-scroll-offset="100">
+                            <!--begin::Menu-->
+                            <div class="menu menu-column menu-rounded fw-bold my-auto" id="#kt_aside_menu" data-kt-menu="true">
+                                <div class="menu-item">
+                                    <a class="menu-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
                                             </span>
-                                            <a asp-area="" asp-controller="Projects" asp-action="AllProjects">
-                                                <span class="menu-title">All Projects</span>
-                                            </a>
+                                            <!--end::Svg Icon-->
                                         </span>
-                                    </div>
+                                        <span class="menu-title">Dashboard</span>
+                                    </a>
                                 </div>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
                                             </span>
-                                            <a asp-area="" asp-controller="Projects" asp-action="MyProjects">
-                                                <span class="menu-title">My Projects</span>
-                                            </a>
+                                            <!--end::Svg Icon-->
                                         </span>
-                                    </div>
-                                </div>
-                                @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
-                                {
+                                        <span class="menu-title">Projects</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
                                     <div class="menu-sub menu-sub-accordion">
                                         <div class="menu-item menu-accordion">
                                             <span class="menu-link">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <a asp-area="" asp-controller="Projects" asp-action="AssignPMIndex">
-                                                    <span class="menu-title">Assign Project Managers</span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="AllProjects">
+                                                    <span class="menu-title">All Projects</span>
                                                 </a>
                                             </span>
                                         </div>
                                     </div>
-                                }
-                            </div>
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                <span class="menu-link">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-                                        <span class="svg-icon svg-icon-5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
-                                                <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
-                                            </svg>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="MyProjects">
+                                                    <span class="menu-title">My Projects</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Projects" asp-action="AssignPMIndex">
+                                                        <span class="menu-title">Assign Project Managers</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
                                         </span>
-                                        <!--end::Svg Icon-->
+                                        <span class="menu-title">Tickets</span>
+                                        <span class="menu-arrow"></span>
                                     </span>
-                                    <span class="menu-title">Tickets</span>
-                                    <span class="menu-arrow"></span>
-                                </span>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="AllTickets">
+                                                    <span class="menu-title">All Tickets</span>
+                                                </a>
                                             </span>
-                                            <a asp-area="" asp-controller="Tickets" asp-action="AllTickets">
-                                                <span class="menu-title">All Tickets</span>
-                                            </a>
-                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
+                                                    <span class="menu-title">My Assigned Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="Index">
+                                                    <span class="menu-title">My Submitted Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
                                             </span>
-                                            <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
-                                                <span class="menu-title">My Assigned Tickets</span>
-                                            </a>
+                                            <!--end::Svg Icon-->
                                         </span>
-                                    </div>
-                                </div>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <a asp-area="" asp-controller="Tickets" asp-action="Index">
-                                                <span class="menu-title">My Submitted Tickets</span>
-                                            </a>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                <span class="menu-link">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-                                        <span class="svg-icon svg-icon-5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
-                                                <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
+                                        <span class="menu-title">Members</span>
+                                        <span class="menu-arrow"></span>
                                     </span>
-                                    <span class="menu-title">Members</span>
-                                    <span class="menu-arrow"></span>
-                                </span>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="Identity" asp-page="/Account/Manage/Index">
+                                                    <span class="menu-title">My Profile</span>
+                                                </a>
                                             </span>
-                                            <a asp-area="Identity" asp-page="/Account/Manage/Index">
-                                                <span class="menu-title">My Profile</span>
-                                            </a>
-                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="UserRoles" asp-action="ManageUserRoles">
+                                                    <span class="menu-title">Role Manager</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Invites" asp-action="Create">
+                                                    <span class="menu-title">Invite New Member</span>
+                                                </a>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                <div class="menu-item">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
                                             </span>
-                                            <a asp-area="" asp-controller="UserRoles" asp-action="ManageUserRoles">
-                                                <span class="menu-title">Role Manager</span>
-                                            </a>
+                                            <!--end::Svg Icon-->
                                         </span>
-                                    </div>
-                                </div>
-                                <div class="menu-sub menu-sub-accordion">
-                                    <div class="menu-item menu-accordion">
-                                        <span class="menu-link">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <a asp-area="" asp-controller="Invites" asp-action="Create">
-                                                <span class="menu-title">Invite New Member</span>
-                                            </a>
+                                        <span class="menu-title">
+                                            <a href="javascript:document.getElementById('logoutForm').submit();" style="color:inherit">Logout</a>
                                         </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="menu-item">
-                                <span class="menu-link">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
-                                        <span class="svg-icon svg-icon-5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
-                                                <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-title">
-                                        <a href="javascript:document.getElementById('logoutForm').submit();" style="color:inherit">Logout</a>
-                                    </span>
-                                </span>
+                                </div>
                             </div>
                         </div>
+                        <!--end::Menu-->
                     </div>
-                    <!--end::Menu-->
+                    <!--end::Aside Menu-->
+                    <!--begin::Footer-->
+                    <div class="aside-footer flex-column-auto px-9" id="kt_aside_footer">
+                        <!--begin::User panel-->
+                        <div class="d-flex flex-stack">
+                            <!--begin::Wrapper-->
+                            <div class="d-flex align-items-center">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    BTUser btUser = await UserManager.GetUserAsync(User);
+
+                                    @if (btUser.AvatarFileData != null)
+                                    {
+                                        <div class="symbol symbol-circle symbol-40px">
+                                            <img src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="photo" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="symbol symbol-circle symbol-40px">
+                                            <img src="/assets/media/avatars/150-26.jpg" alt="photo" />
+                                        </div>
+                                    }
+                                    <!--end::Avatar-->
+                                    <!--begin::User info-->
+                                    <div class="ms-2">
+                                        <!--begin::Name-->
+                                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="text-gray-800 text-hover-primary fs-6 fw-bolder lh-1">@btUser.LastName, @btUser.FirstName</a>
+                                        <!--end::Name-->
+                                        <!--begin::Major-->
+                                        <span class="text-muted fw-bold d-block fs-7 lh-1">Role: @((await rolesService.GetUserRolesAsync(btUser)).FirstOrDefault())</span>
+
+                                        <!--end::Major-->
+                                    </div>
+                                }
+                                <!--end::User info-->
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::User panel-->
+                    </div>
+                    <!--end::Footer-->
                 </div>
-                <!--end::Aside Menu-->
-                <!--end::Aside menu-->
-                <!--begin::Footer-->
-                <div class="aside-footer flex-column-auto px-9" id="kt_aside_footer">
-                    <!--begin::User panel-->
-                    <div class="d-flex flex-stack">
+                <!--end::Aside-->
+            </div>
+
+            <!--begin::Wrapper-->
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <!--begin::Header-->
+                <div id="kt_header" class="header">
+                    <!--begin::Container-->
+                    <div class="container d-flex align-items-center justify-content-between" id="kt_header_container">
+                        <!--begin::Page title-->
+                        <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-lg-2 pb-5 pb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
+                            <!--begin::Heading-->
+                            <h1 class="d-flex flex-column text-dark fw-bolder my-0 fs-1">
+                                <partial name="_LoginPartial" />
+                            </h1>
+                            <!--end::Heading-->
+                        </div>
+                        <!--end::Page title=-->
                         <!--begin::Wrapper-->
-                        <div class="d-flex align-items-center">
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                BTUser btUser = await UserManager.GetUserAsync(User);
-
-                                <!--begin::Avatar-->
-                                <div class="symbol symbol-circle symbol-40px">
-                                    <img src="/assets/media/avatars/150-26.jpg" alt="photo" />
-                                </div>
-                                <!--end::Avatar-->
-                                <!--begin::User info-->
-                                <div class="ms-2">
-                                    <!--begin::Name-->
-                                    <a asp-area="Identity" asp-page="/Account/Manage/Index" class="text-gray-800 text-hover-primary fs-6 fw-bolder lh-1">@btUser.LastName, @btUser.FirstName</a>
-                                    <!--end::Name-->
-                                    <!--begin::Major-->
-                                    <span class="text-muted fw-bold d-block fs-7 lh-1">Role: @((await rolesService.GetUserRolesAsync(btUser)).FirstOrDefault())</span>
-
-                                    <!--end::Major-->
-                                </div>
-                            }
-                            <!--end::User info-->
+                        <div class="d-flex d-lg-none align-items-center ms-n2 me-2">
+                            <!--begin::Aside mobile toggle-->
+                            <div class="btn btn-icon btn-active-icon-primary" id="kt_aside_toggle">
+                                <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
+                                <span class="svg-icon svg-icon-1 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black" />
+                                        <path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" fill="black" />
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </div>
+                            <!--end::Aside mobile toggle-->
+                            <!--begin::Logo-->
+                            <a href="#" class="d-flex align-items-center">
+                                <img alt="Logo" src="/assets/media/logos/logo-demo3-default.svg" class="h-20px" />
+                            </a>
+                            <!--end::Logo-->
                         </div>
                         <!--end::Wrapper-->
+                        <!--begin::Topbar-->
+                        <div class="d-flex align-items-center flex-shrink-0">
+                            <!--begin::Sidebar Toggler-->
+                            <!--<button class="btn btn-icon btn-active-icon-primary d-xxl-none ms-2 me-n2" id="kt_sidebar_toggler">-->
+                            <!--begin::Svg Icon | path: icons/duotune/coding/cod001.svg-->
+                            <!--<span class="svg-icon svg-icon-2x">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path opacity="0.3" d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z" fill="black" />
+                                    <path d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z" fill="black" />
+                                </svg>
+                            </span>-->
+                            <!--end::Svg Icon-->
+                            <!--</button>-->
+                            <!--end::Sidebar Toggler-->
+                            <small class="fs-6 fw-bold ms-1 text-muted pt-1" style="color:white">Company: @User.Identity.GetCompanyName()</small>
+                            @*<small class="text-muted fs-6 fw-bold ms-1 pt-1">Company @User.Identity.GetCompanyId().Value</small>*@
+
+                        </div>
+                        <!--end::Topbar-->
                     </div>
-                    <!--end::User panel-->
+                    <!--end::Container-->
+                </div>
+                <!--end::Header-->
+                <!--begin::Content-->
+                @RenderBody()
+                <!--end::Content-->
+                <!--begin::Footer-->
+                <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
+                    <!--begin::Container-->
+                    <div class="container d-flex flex-column flex-md-row flex-stack">
+                        <!--begin::Copyright-->
+                        <div class="text-dark order-2 order-md-1">
+                            <span class="text-gray-400 fw-bold me-1">Created by</span>
+                            <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary fw-bold me-2 fs-6">Jeremy Steward</a>
+                        </div>
+                        <!--end::Copyright-->
+                        <!--begin::Menu-->
+                        <ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1">
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">About</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Portfolio</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Contact</a>
+                            </li>
+                        </ul>
+                        <!--end::Menu-->
+                    </div>
+                    <!--end::Container-->
                 </div>
                 <!--end::Footer-->
             </div>
+            <!--end::Wrapper-->
         </div>
-        <!--end::Aside-->
-        <!--begin::Wrapper-->
-        <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-            <!--begin::Header-->
-            <div id="kt_header" class="header">
-                <!--begin::Container-->
-                <div class="container d-flex align-items-center justify-content-between" id="kt_header_container">
-                    <!--begin::Page title-->
-                    <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-lg-2 pb-5 pb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
-                        <!--begin::Heading-->
-                        <h1 class="d-flex flex-column text-dark fw-bolder my-0 fs-1">
-                            <partial name="_LoginPartial" />
-                        </h1>
-                        <!--end::Heading-->
-                    </div>
-                    <!--end::Page title=-->
-                    <!--begin::Wrapper-->
-                    <div class="d-flex d-lg-none align-items-center ms-n2 me-2">
-                        <!--begin::Aside mobile toggle-->
-                        <div class="btn btn-icon btn-active-icon-primary" id="kt_aside_toggle">
-                            <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
-                            <span class="svg-icon svg-icon-1 mt-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black" />
-                                    <path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" fill="black" />
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->
-                        </div>
-                        <!--end::Aside mobile toggle-->
+
+        <!--end::Root-->
+        <!--begin::Scrolltop-->
+        <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+            <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+            <span class="svg-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="black" />
+                    <path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="black" />
+                </svg>
+            </span>
+            <!--end::Svg Icon-->
+        </div>
+        <!--end::Scrolltop-->
+        <!--end::Main-->
+        <!--begin::Javascript-->
+        <!--begin::Global Javascript Bundle(used by all pages)-->
+        <script src="/assets/plugins/global/plugins.bundle.js"></script>
+        <script src="/assets/js/scripts.bundle.js"></script>
+        <!--end::Global Javascript Bundle-->
+        <!--begin::Page Vendors Javascript(used by this page)-->
+        <script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+        <!--end::Page Vendors Javascript-->
+        <!--begin::Page Custom Javascript(used by this page)-->
+        <script src="/assets/js/custom/widgets.js"></script>
+        <script src="/assets/js/custom/apps/chat/chat.js"></script>
+        <script src="/assets/js/custom/modals/create-app.js"></script>
+        <script src="/assets/js/custom/modals/upgrade-plan.js"></script>
+        <script src="/assets/js/custom/intro.js"></script>
+        <script src="~/_js/charts.js"></script>
+        <script src="~/_js/core.js"></script>
+        <script src="~/_js/maps.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+        <!--end::Page Custom Javascript-->
+        <script src="~/_js/summernote-lite.js"></script>
+
+        <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        <script>
+            $("#datatable").DataTable({
+                "autoWidth": true
+            });</script>
+
+        <!--end::Javascript-->
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+}
+
+@if (User.IsInRole("Submitter"))
+{
+    <!--begin::Body-->
+    <body id="bug_body" class="page-loading-enabled page-loading header-fixed header-tablet-and-mobile-fixed sidebar-enabled" style="background-color: #F4EBCB">
+        <partial name="_LogoutPartial" />
+        <!--begin::Main-->
+        <!--begin::Root-->
+        <div class="d-flex flex-column flex-root">
+            <!--begin::Page-->
+            <div class="page d-flex flex-row flex-column-fluid">
+                <!--begin::Aside-->
+                <div id="kt_aside" style="background-color:white" class="aside py-9" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
+                    <!--begin::Brand-->
+                    <div class="aside-logo flex-column-auto px-9 mb-9" id="kt_aside_logo">
                         <!--begin::Logo-->
-                        <a href="#" class="d-flex align-items-center">
-                            <img alt="Logo" src="/assets/media/logos/logo-demo3-default.svg" class="h-20px" />
+                        <a href="">
+                            <img alt="Logo" src="/assets/Untitled_Artwork 1.jpg" class="h-200px logo" style="border-radius:25px" />
                         </a>
                         <!--end::Logo-->
                     </div>
-                    <!--end::Wrapper-->
-                    <!--begin::Topbar-->
-                    <div class="d-flex align-items-center flex-shrink-0">
-                        <!--begin::Sidebar Toggler-->
-                        <!--<button class="btn btn-icon btn-active-icon-primary d-xxl-none ms-2 me-n2" id="kt_sidebar_toggler">-->
-                        <!--begin::Svg Icon | path: icons/duotune/coding/cod001.svg-->
-                        <!--<span class="svg-icon svg-icon-2x">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path opacity="0.3" d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z" fill="black" />
-                                <path d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z" fill="black" />
-                            </svg>
-                        </span>-->
-                        <!--end::Svg Icon-->
-                        <!--</button>-->
-                        <!--end::Sidebar Toggler-->
-                        <small class="text-muted fs-6 fw-bold ms-1 pt-1">Company: @User.Identity.GetCompanyName()</small>
-                        @*<small class="text-muted fs-6 fw-bold ms-1 pt-1">Company @User.Identity.GetCompanyId().Value</small>*@
+                    <!--end::Brand-->
+                    <!--begin::Aside menu-->
+                    <div class="aside-menu flex-column-fluid ps-5 pe-3 mb-9" id="kt_aside_menu">
+                        <!--begin::Aside Menu-->
+                        <div class="w-100 hover-scroll-overlay-y d-flex pe-2" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside, #kt_aside_menu, #kt_aside_menu_wrapper" data-kt-scroll-offset="100">
+                            <!--begin::Menu-->
+                            <div class="menu menu-column menu-rounded fw-bold my-auto" id="#kt_aside_menu" data-kt-menu="true">
+                                <div class="menu-item">
+                                    <a class="menu-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Dashboard</span>
+                                    </a>
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Projects</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="AllProjects">
+                                                    <span class="menu-title">All Projects</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="MyProjects">
+                                                    <span class="menu-title">My Projects</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Projects" asp-action="AssignPMIndex">
+                                                        <span class="menu-title">Assign Project Managers</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Tickets</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="AllTickets">
+                                                    <span class="menu-title">All Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
+                                                    <span class="menu-title">My Assigned Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="Index">
+                                                    <span class="menu-title">My Submitted Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Members</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="Identity" asp-page="/Account/Manage/Index">
+                                                    <span class="menu-title">My Profile</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="UserRoles" asp-action="ManageUserRoles">
+                                                    <span class="menu-title">Role Manager</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Invites" asp-action="Create">
+                                                    <span class="menu-title">Invite New Member</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">
+                                            <a href="javascript:document.getElementById('logoutForm').submit();" style="color:inherit">Logout</a>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                    <!--end::Aside Menu-->
+                    <!--begin::Footer-->
+                    <div class="aside-footer flex-column-auto px-9" id="kt_aside_footer">
+                        <!--begin::User panel-->
+                        <div class="d-flex flex-stack">
+                            <!--begin::Wrapper-->
+                            <div class="d-flex align-items-center">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    BTUser btUser = await UserManager.GetUserAsync(User);
 
+                                    <!--begin::Avatar-->
+                                    <div class="symbol symbol-circle symbol-40px">
+                                        <img src="/assets/media/avatars/150-26.jpg" alt="photo" />
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <!--begin::User info-->
+                                    <div class="ms-2">
+                                        <!--begin::Name-->
+                                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="text-gray-800 text-hover-primary fs-6 fw-bolder lh-1">@btUser.LastName, @btUser.FirstName</a>
+                                        <!--end::Name-->
+                                        <!--begin::Major-->
+                                        <span class="text-muted fw-bold d-block fs-7 lh-1">Role: @((await rolesService.GetUserRolesAsync(btUser)).FirstOrDefault())</span>
+
+                                        <!--end::Major-->
+                                    </div>
+                                }
+                                <!--end::User info-->
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::User panel-->
                     </div>
-                    <!--end::Topbar-->
+                    <!--end::Footer-->
                 </div>
-                <!--end::Container-->
+                <!--end::Aside-->
             </div>
-            <!--end::Header-->
-            <!--begin::Content-->
-            @RenderBody()
-            <!--end::Content-->
-            <!--begin::Footer-->
-            <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
-                <!--begin::Container-->
-                <div class="container d-flex flex-column flex-md-row flex-stack">
-                    <!--begin::Copyright-->
-                    <div class="text-dark order-2 order-md-1">
-                        <span class="text-gray-400 fw-bold me-1">Created by</span>
-                        <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary fw-bold me-2 fs-6">Jeremy Steward</a>
+
+            <!--begin::Wrapper-->
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <!--begin::Header-->
+                <div id="kt_header" class="header">
+                    <!--begin::Container-->
+                    <div class="container d-flex align-items-center justify-content-between" id="kt_header_container">
+                        <!--begin::Page title-->
+                        <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-lg-2 pb-5 pb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
+                            <!--begin::Heading-->
+                            <h1 class="d-flex flex-column text-dark fw-bolder my-0 fs-1">
+                                <partial name="_LoginPartial" />
+                            </h1>
+                            <!--end::Heading-->
+                        </div>
+                        <!--end::Page title=-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex d-lg-none align-items-center ms-n2 me-2">
+                            <!--begin::Aside mobile toggle-->
+                            <div class="btn btn-icon btn-active-icon-primary" id="kt_aside_toggle">
+                                <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
+                                <span class="svg-icon svg-icon-1 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black" />
+                                        <path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" fill="black" />
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </div>
+                            <!--end::Aside mobile toggle-->
+                            <!--begin::Logo-->
+                            <a href="#" class="d-flex align-items-center">
+                                <img alt="Logo" src="/assets/media/logos/logo-demo3-default.svg" class="h-20px" />
+                            </a>
+                            <!--end::Logo-->
+                        </div>
+                        <!--end::Wrapper-->
+                        <!--begin::Topbar-->
+                        <div class="d-flex align-items-center flex-shrink-0">
+                            <!--begin::Sidebar Toggler-->
+                            <!--<button class="btn btn-icon btn-active-icon-primary d-xxl-none ms-2 me-n2" id="kt_sidebar_toggler">-->
+                            <!--begin::Svg Icon | path: icons/duotune/coding/cod001.svg-->
+                            <!--<span class="svg-icon svg-icon-2x">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path opacity="0.3" d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z" fill="black" />
+                                    <path d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z" fill="black" />
+                                </svg>
+                            </span>-->
+                            <!--end::Svg Icon-->
+                            <!--</button>-->
+                            <!--end::Sidebar Toggler-->
+                            <small class="fs-6 fw-bold ms-1 text-muted pt-1" style="color:white">Company: @User.Identity.GetCompanyName()</small>
+                            @*<small class="text-muted fs-6 fw-bold ms-1 pt-1">Company @User.Identity.GetCompanyId().Value</small>*@
+
+                        </div>
+                        <!--end::Topbar-->
                     </div>
-                    <!--end::Copyright-->
-                    <!--begin::Menu-->
-                    <ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1">
-                        <li class="menu-item">
-                            <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">About</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Portfolio</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Contact</a>
-                        </li>
-                    </ul>
-                    <!--end::Menu-->
+                    <!--end::Container-->
                 </div>
-                <!--end::Container-->
+                <!--end::Header-->
+                <!--begin::Content-->
+                @RenderBody()
+                <!--end::Content-->
+                <!--begin::Footer-->
+                <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
+                    <!--begin::Container-->
+                    <div class="container d-flex flex-column flex-md-row flex-stack">
+                        <!--begin::Copyright-->
+                        <div class="text-dark order-2 order-md-1">
+                            <span class="text-gray-400 fw-bold me-1">Created by</span>
+                            <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary fw-bold me-2 fs-6">Jeremy Steward</a>
+                        </div>
+                        <!--end::Copyright-->
+                        <!--begin::Menu-->
+                        <ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1">
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">About</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Portfolio</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Contact</a>
+                            </li>
+                        </ul>
+                        <!--end::Menu-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Footer-->
             </div>
-            <!--end::Footer-->
+            <!--end::Wrapper-->
         </div>
-        <!--end::Wrapper-->
-    </div>
-    <!--end::Page-->
-    </div>
-    <!--end::Root-->
-    <!--begin::Scrolltop-->
-    <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
-        <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
-        <span class="svg-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="black" />
-                <path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="black" />
-            </svg>
-        </span>
-        <!--end::Svg Icon-->
-    </div>
-    <!--end::Scrolltop-->
-    <!--end::Main-->
-    <!--begin::Javascript-->
-    <!--begin::Global Javascript Bundle(used by all pages)-->
-    <script src="/assets/plugins/global/plugins.bundle.js"></script>
-    <script src="/assets/js/scripts.bundle.js"></script>
-    <!--end::Global Javascript Bundle-->
-    <!--begin::Page Vendors Javascript(used by this page)-->
-    <script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
-    <!--end::Page Vendors Javascript-->
-    <!--begin::Page Custom Javascript(used by this page)-->
-    <script src="/assets/js/custom/widgets.js"></script>
-    <script src="/assets/js/custom/apps/chat/chat.js"></script>
-    <script src="/assets/js/custom/modals/create-app.js"></script>
-    <script src="/assets/js/custom/modals/upgrade-plan.js"></script>
-    <script src="/assets/js/custom/intro.js"></script>
-    <script src="~/_js/charts.js"></script>
-    <script src="~/_js/core.js"></script>
-    <script src="~/_js/maps.js"></script>
-    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
-    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
-    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
-    <!--end::Page Custom Javascript-->
-    <script src="~/_js/summernote-lite.js"></script>
 
-    <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-    <script>
-        $("#datatable").DataTable({
-            "autoWidth": true
-        });</script>
+        <!--end::Root-->
+        <!--begin::Scrolltop-->
+        <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+            <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+            <span class="svg-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="black" />
+                    <path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="black" />
+                </svg>
+            </span>
+            <!--end::Svg Icon-->
+        </div>
+        <!--end::Scrolltop-->
+        <!--end::Main-->
+        <!--begin::Javascript-->
+        <!--begin::Global Javascript Bundle(used by all pages)-->
+        <script src="/assets/plugins/global/plugins.bundle.js"></script>
+        <script src="/assets/js/scripts.bundle.js"></script>
+        <!--end::Global Javascript Bundle-->
+        <!--begin::Page Vendors Javascript(used by this page)-->
+        <script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+        <!--end::Page Vendors Javascript-->
+        <!--begin::Page Custom Javascript(used by this page)-->
+        <script src="/assets/js/custom/widgets.js"></script>
+        <script src="/assets/js/custom/apps/chat/chat.js"></script>
+        <script src="/assets/js/custom/modals/create-app.js"></script>
+        <script src="/assets/js/custom/modals/upgrade-plan.js"></script>
+        <script src="/assets/js/custom/intro.js"></script>
+        <script src="~/_js/charts.js"></script>
+        <script src="~/_js/core.js"></script>
+        <script src="~/_js/maps.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+        <!--end::Page Custom Javascript-->
+        <script src="~/_js/summernote-lite.js"></script>
 
-    <!--end::Javascript-->
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
+        <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        <script>
+            $("#datatable").DataTable({
+                "autoWidth": true
+            });</script>
+
+        <!--end::Javascript-->
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+}
+@if (User.IsInRole("Developer"))
+{
+    <!--begin::Body-->
+    <body id="bug_body" class="page-loading-enabled page-loading header-fixed header-tablet-and-mobile-fixed sidebar-enabled" style="background-color: #F7D9E3">
+        <partial name="_LogoutPartial" />
+        <!--begin::Main-->
+        <!--begin::Root-->
+        <div class="d-flex flex-column flex-root">
+            <!--begin::Page-->
+            <div class="page d-flex flex-row flex-column-fluid">
+                <!--begin::Aside-->
+                <div id="kt_aside" style="background-color:white" class="aside py-9" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
+                    <!--begin::Brand-->
+                    <div class="aside-logo flex-column-auto px-9 mb-9" id="kt_aside_logo">
+                        <!--begin::Logo-->
+                        <a href="">
+                            <img alt="Logo" src="/assets/Untitled_Artwork 1.jpg" class="h-200px logo" style="border-radius:25px" />
+                        </a>
+                        <!--end::Logo-->
+                    </div>
+                    <!--end::Brand-->
+                    <!--begin::Aside menu-->
+                    <div class="aside-menu flex-column-fluid ps-5 pe-3 mb-9" id="kt_aside_menu">
+                        <!--begin::Aside Menu-->
+                        <div class="w-100 hover-scroll-overlay-y d-flex pe-2" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside, #kt_aside_menu, #kt_aside_menu_wrapper" data-kt-scroll-offset="100">
+                            <!--begin::Menu-->
+                            <div class="menu menu-column menu-rounded fw-bold my-auto" id="#kt_aside_menu" data-kt-menu="true">
+                                <div class="menu-item">
+                                    <a class="menu-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Dashboard</span>
+                                    </a>
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Projects</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="AllProjects">
+                                                    <span class="menu-title">All Projects</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="MyProjects">
+                                                    <span class="menu-title">My Projects</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Projects" asp-action="AssignPMIndex">
+                                                        <span class="menu-title">Assign Project Managers</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Tickets</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="AllTickets">
+                                                    <span class="menu-title">All Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
+                                                    <span class="menu-title">My Assigned Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="Index">
+                                                    <span class="menu-title">My Submitted Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Members</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="Identity" asp-page="/Account/Manage/Index">
+                                                    <span class="menu-title">My Profile</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="UserRoles" asp-action="ManageUserRoles">
+                                                    <span class="menu-title">Role Manager</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Invites" asp-action="Create">
+                                                    <span class="menu-title">Invite New Member</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">
+                                            <a href="javascript:document.getElementById('logoutForm').submit();" style="color:inherit">Logout</a>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                    <!--end::Aside Menu-->
+                    <!--begin::Footer-->
+                    <div class="aside-footer flex-column-auto px-9" id="kt_aside_footer">
+                        <!--begin::User panel-->
+                        <div class="d-flex flex-stack">
+                            <!--begin::Wrapper-->
+                            <div class="d-flex align-items-center">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    BTUser btUser = await UserManager.GetUserAsync(User);
+
+                                    <!--begin::Avatar-->
+                                    <div class="symbol symbol-circle symbol-40px">
+                                        <img src="/assets/media/avatars/150-26.jpg" alt="photo" />
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <!--begin::User info-->
+                                    <div class="ms-2">
+                                        <!--begin::Name-->
+                                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="text-gray-800 text-hover-primary fs-6 fw-bolder lh-1">@btUser.LastName, @btUser.FirstName</a>
+                                        <!--end::Name-->
+                                        <!--begin::Major-->
+                                        <span class="text-muted fw-bold d-block fs-7 lh-1">Role: @((await rolesService.GetUserRolesAsync(btUser)).FirstOrDefault())</span>
+
+                                        <!--end::Major-->
+                                    </div>
+                                }
+                                <!--end::User info-->
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::User panel-->
+                    </div>
+                    <!--end::Footer-->
+                </div>
+                <!--end::Aside-->
+            </div>
+
+            <!--begin::Wrapper-->
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <!--begin::Header-->
+                <div id="kt_header" class="header">
+                    <!--begin::Container-->
+                    <div class="container d-flex align-items-center justify-content-between" id="kt_header_container">
+                        <!--begin::Page title-->
+                        <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-lg-2 pb-5 pb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
+                            <!--begin::Heading-->
+                            <h1 class="d-flex flex-column text-dark fw-bolder my-0 fs-1">
+                                <partial name="_LoginPartial" />
+                            </h1>
+                            <!--end::Heading-->
+                        </div>
+                        <!--end::Page title=-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex d-lg-none align-items-center ms-n2 me-2">
+                            <!--begin::Aside mobile toggle-->
+                            <div class="btn btn-icon btn-active-icon-primary" id="kt_aside_toggle">
+                                <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
+                                <span class="svg-icon svg-icon-1 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black" />
+                                        <path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" fill="black" />
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </div>
+                            <!--end::Aside mobile toggle-->
+                            <!--begin::Logo-->
+                            <a href="#" class="d-flex align-items-center">
+                                <img alt="Logo" src="/assets/media/logos/logo-demo3-default.svg" class="h-20px" />
+                            </a>
+                            <!--end::Logo-->
+                        </div>
+                        <!--end::Wrapper-->
+                        <!--begin::Topbar-->
+                        <div class="d-flex align-items-center flex-shrink-0">
+                            <!--begin::Sidebar Toggler-->
+                            <!--<button class="btn btn-icon btn-active-icon-primary d-xxl-none ms-2 me-n2" id="kt_sidebar_toggler">-->
+                            <!--begin::Svg Icon | path: icons/duotune/coding/cod001.svg-->
+                            <!--<span class="svg-icon svg-icon-2x">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path opacity="0.3" d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z" fill="black" />
+                                    <path d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z" fill="black" />
+                                </svg>
+                            </span>-->
+                            <!--end::Svg Icon-->
+                            <!--</button>-->
+                            <!--end::Sidebar Toggler-->
+                            <small class="fs-6 fw-bold ms-1 text-muted pt-1" style="color:white">Company: @User.Identity.GetCompanyName()</small>
+                            @*<small class="text-muted fs-6 fw-bold ms-1 pt-1">Company @User.Identity.GetCompanyId().Value</small>*@
+
+                        </div>
+                        <!--end::Topbar-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Header-->
+                <!--begin::Content-->
+                @RenderBody()
+                <!--end::Content-->
+                <!--begin::Footer-->
+                <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
+                    <!--begin::Container-->
+                    <div class="container d-flex flex-column flex-md-row flex-stack">
+                        <!--begin::Copyright-->
+                        <div class="text-dark order-2 order-md-1">
+                            <span class="text-gray-400 fw-bold me-1">Created by</span>
+                            <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary fw-bold me-2 fs-6">Jeremy Steward</a>
+                        </div>
+                        <!--end::Copyright-->
+                        <!--begin::Menu-->
+                        <ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1">
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">About</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Portfolio</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Contact</a>
+                            </li>
+                        </ul>
+                        <!--end::Menu-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Footer-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+
+        <!--end::Root-->
+        <!--begin::Scrolltop-->
+        <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+            <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+            <span class="svg-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="black" />
+                    <path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="black" />
+                </svg>
+            </span>
+            <!--end::Svg Icon-->
+        </div>
+        <!--end::Scrolltop-->
+        <!--end::Main-->
+        <!--begin::Javascript-->
+        <!--begin::Global Javascript Bundle(used by all pages)-->
+        <script src="/assets/plugins/global/plugins.bundle.js"></script>
+        <script src="/assets/js/scripts.bundle.js"></script>
+        <!--end::Global Javascript Bundle-->
+        <!--begin::Page Vendors Javascript(used by this page)-->
+        <script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+        <!--end::Page Vendors Javascript-->
+        <!--begin::Page Custom Javascript(used by this page)-->
+        <script src="/assets/js/custom/widgets.js"></script>
+        <script src="/assets/js/custom/apps/chat/chat.js"></script>
+        <script src="/assets/js/custom/modals/create-app.js"></script>
+        <script src="/assets/js/custom/modals/upgrade-plan.js"></script>
+        <script src="/assets/js/custom/intro.js"></script>
+        <script src="~/_js/charts.js"></script>
+        <script src="~/_js/core.js"></script>
+        <script src="~/_js/maps.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+        <!--end::Page Custom Javascript-->
+        <script src="~/_js/summernote-lite.js"></script>
+
+        <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        <script>
+            $("#datatable").DataTable({
+                "autoWidth": true
+            });</script>
+
+        <!--end::Javascript-->
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+}
+@if (User.IsInRole("ProjectManager"))
+{
+    <!--begin::Body-->
+    <body id="bug_body" class="page-loading-enabled page-loading header-fixed header-tablet-and-mobile-fixed sidebar-enabled" style="background-color: #CBF0F4">
+        <partial name="_LogoutPartial" />
+        <!--begin::Main-->
+        <!--begin::Root-->
+        <div class="d-flex flex-column flex-root">
+            <!--begin::Page-->
+            <div class="page d-flex flex-row flex-column-fluid">
+                <!--begin::Aside-->
+                <div id="kt_aside" style="background-color:white" class="aside py-9" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
+                    <!--begin::Brand-->
+                    <div class="aside-logo flex-column-auto px-9 mb-9" id="kt_aside_logo">
+                        <!--begin::Logo-->
+                        <a href="">
+                            <img alt="Logo" src="/assets/Untitled_Artwork 1.jpg" class="h-200px logo" style="border-radius:25px" />
+                        </a>
+                        <!--end::Logo-->
+                    </div>
+                    <!--end::Brand-->
+                    <!--begin::Aside menu-->
+                    <div class="aside-menu flex-column-fluid ps-5 pe-3 mb-9" id="kt_aside_menu">
+                        <!--begin::Aside Menu-->
+                        <div class="w-100 hover-scroll-overlay-y d-flex pe-2" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside, #kt_aside_menu, #kt_aside_menu_wrapper" data-kt-scroll-offset="100">
+                            <!--begin::Menu-->
+                            <div class="menu menu-column menu-rounded fw-bold my-auto" id="#kt_aside_menu" data-kt-menu="true">
+                                <div class="menu-item">
+                                    <a class="menu-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Dashboard</span>
+                                    </a>
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Projects</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="AllProjects">
+                                                    <span class="menu-title">All Projects</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="MyProjects">
+                                                    <span class="menu-title">My Projects</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Projects" asp-action="AssignPMIndex">
+                                                        <span class="menu-title">Assign Project Managers</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Tickets</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="AllTickets">
+                                                    <span class="menu-title">All Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
+                                                    <span class="menu-title">My Assigned Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Tickets" asp-action="Index">
+                                                    <span class="menu-title">My Submitted Tickets</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">Members</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="Identity" asp-page="/Account/Manage/Index">
+                                                    <span class="menu-title">My Profile</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="UserRoles" asp-action="ManageUserRoles">
+                                                    <span class="menu-title">Role Manager</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <a asp-area="" asp-controller="Invites" asp-action="Create">
+                                                    <span class="menu-title">Invite New Member</span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr001.svg-->
+                                            <span class="svg-icon svg-icon-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="black" />
+                                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="black" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-title">
+                                            <a href="javascript:document.getElementById('logoutForm').submit();" style="color:inherit">Logout</a>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                    <!--end::Aside Menu-->
+                    <!--begin::Footer-->
+                    <div class="aside-footer flex-column-auto px-9" id="kt_aside_footer">
+                        <!--begin::User panel-->
+                        <div class="d-flex flex-stack">
+                            <!--begin::Wrapper-->
+                            <div class="d-flex align-items-center">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    BTUser btUser = await UserManager.GetUserAsync(User);
+
+                                    <!--begin::Avatar-->
+
+                                    @if (btUser.AvatarFileData != null)
+                                    {
+                                        <img class="h-75 align-self-end" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="" />
+                                    }
+                                    else
+                                    {
+                                        <div class="symbol symbol-circle symbol-40px">
+                                            <img src="/assets/media/avatars/150-26.jpg" alt="photo" />
+                                        </div>
+                                    }
+
+                                    <!--end::Avatar-->
+                                    <!--begin::User info-->
+                                    <div class="ms-2">
+                                        <!--begin::Name-->
+                                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="text-gray-800 text-hover-primary fs-6 fw-bolder lh-1">@btUser.LastName, @btUser.FirstName</a>
+                                        <!--end::Name-->
+                                        <!--begin::Major-->
+                                        <span class="text-muted fw-bold d-block fs-7 lh-1">Role: @((await rolesService.GetUserRolesAsync(btUser)).FirstOrDefault())</span>
+
+                                        <!--end::Major-->
+                                    </div>
+                                }
+                                <!--end::User info-->
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::User panel-->
+                    </div>
+                    <!--end::Footer-->
+                </div>
+                <!--end::Aside-->
+            </div>
+
+            <!--begin::Wrapper-->
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <!--begin::Header-->
+                <div id="kt_header" class="header">
+                    <!--begin::Container-->
+                    <div class="container d-flex align-items-center justify-content-between" id="kt_header_container">
+                        <!--begin::Page title-->
+                        <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-lg-2 pb-5 pb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
+                            <!--begin::Heading-->
+                            <h1 class="d-flex flex-column text-dark fw-bolder my-0 fs-1">
+                                <partial name="_LoginPartial" />
+                            </h1>
+                            <!--end::Heading-->
+                        </div>
+                        <!--end::Page title=-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex d-lg-none align-items-center ms-n2 me-2">
+                            <!--begin::Aside mobile toggle-->
+                            <div class="btn btn-icon btn-active-icon-primary" id="kt_aside_toggle">
+                                <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
+                                <span class="svg-icon svg-icon-1 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black" />
+                                        <path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" fill="black" />
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </div>
+                            <!--end::Aside mobile toggle-->
+                            <!--begin::Logo-->
+                            <a href="#" class="d-flex align-items-center">
+                                <img alt="Logo" src="/assets/media/logos/logo-demo3-default.svg" class="h-20px" />
+                            </a>
+                            <!--end::Logo-->
+                        </div>
+                        <!--end::Wrapper-->
+                        <!--begin::Topbar-->
+                        <div class="d-flex align-items-center flex-shrink-0">
+                            <!--begin::Sidebar Toggler-->
+                            <!--<button class="btn btn-icon btn-active-icon-primary d-xxl-none ms-2 me-n2" id="kt_sidebar_toggler">-->
+                            <!--begin::Svg Icon | path: icons/duotune/coding/cod001.svg-->
+                            <!--<span class="svg-icon svg-icon-2x">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path opacity="0.3" d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z" fill="black" />
+                                    <path d="M17.1 12.1C17.1 14.9 14.9 17.1 12.1 17.1C9.30001 17.1 7.10001 14.9 7.10001 12.1C7.10001 9.29998 9.30001 7.09998 12.1 7.09998C14.9 7.09998 17.1 9.29998 17.1 12.1ZM12.1 10.1C11 10.1 10.1 11 10.1 12.1C10.1 13.2 11 14.1 12.1 14.1C13.2 14.1 14.1 13.2 14.1 12.1C14.1 11 13.2 10.1 12.1 10.1Z" fill="black" />
+                                </svg>
+                            </span>-->
+                            <!--end::Svg Icon-->
+                            <!--</button>-->
+                            <!--end::Sidebar Toggler-->
+                            <small class="fs-6 fw-bold ms-1 text-muted pt-1" style="color:white">Company: @User.Identity.GetCompanyName()</small>
+                            @*<small class="text-muted fs-6 fw-bold ms-1 pt-1">Company @User.Identity.GetCompanyId().Value</small>*@
+
+                        </div>
+                        <!--end::Topbar-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Header-->
+                <!--begin::Content-->
+                @RenderBody()
+                <!--end::Content-->
+                <!--begin::Footer-->
+                <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
+                    <!--begin::Container-->
+                    <div class="container d-flex flex-column flex-md-row flex-stack">
+                        <!--begin::Copyright-->
+                        <div class="text-dark order-2 order-md-1">
+                            <span class="text-gray-400 fw-bold me-1">Created by</span>
+                            <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary fw-bold me-2 fs-6">Jeremy Steward</a>
+                        </div>
+                        <!--end::Copyright-->
+                        <!--begin::Menu-->
+                        <ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1">
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">About</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Portfolio</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://www.jeremysteward.com" target="_blank" class="text-muted text-hover-primary px-2">Contact</a>
+                            </li>
+                        </ul>
+                        <!--end::Menu-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Footer-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+
+        <!--end::Root-->
+        <!--begin::Scrolltop-->
+        <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+            <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
+            <span class="svg-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="black" />
+                    <path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="black" />
+                </svg>
+            </span>
+            <!--end::Svg Icon-->
+        </div>
+        <!--end::Scrolltop-->
+        <!--end::Main-->
+        <!--begin::Javascript-->
+        <!--begin::Global Javascript Bundle(used by all pages)-->
+        <script src="/assets/plugins/global/plugins.bundle.js"></script>
+        <script src="/assets/js/scripts.bundle.js"></script>
+        <!--end::Global Javascript Bundle-->
+        <!--begin::Page Vendors Javascript(used by this page)-->
+        <script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+        <!--end::Page Vendors Javascript-->
+        <!--begin::Page Custom Javascript(used by this page)-->
+        <script src="/assets/js/custom/widgets.js"></script>
+        <script src="/assets/js/custom/apps/chat/chat.js"></script>
+        <script src="/assets/js/custom/modals/create-app.js"></script>
+        <script src="/assets/js/custom/modals/upgrade-plan.js"></script>
+        <script src="/assets/js/custom/intro.js"></script>
+        <script src="~/_js/charts.js"></script>
+        <script src="~/_js/core.js"></script>
+        <script src="~/_js/maps.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+        <!--end::Page Custom Javascript-->
+        <script src="~/_js/summernote-lite.js"></script>
+
+        <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        <script>
+            $("#datatable").DataTable({
+                "autoWidth": true
+            });</script>
+
+        <!--end::Javascript-->
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+}
 </html>

@@ -59,6 +59,13 @@
   box-sizing: border-box;
 }
 
+#bug_body {
+    if (User.IsInRole("Submitter")) 
+    {
+        background-color:#F4EBCB;
+    }
+}
+
 body {
   margin: 0;
   font-family: var(--bs-body-font-family);

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RemyNewWebApp.Models;
+using RemyNewWebApp.Services.Interfaces;
 
 namespace RemyNewWebApp.Areas.Identity.Pages.Account.Manage
 {
@@ -14,13 +16,16 @@ namespace RemyNewWebApp.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<BTUser> _userManager;
         private readonly SignInManager<BTUser> _signInManager;
+        private readonly IBTFileService _fileService;
 
         public IndexModel(
             UserManager<BTUser> userManager,
-            SignInManager<BTUser> signInManager)
+            SignInManager<BTUser> signInManager,
+            IBTFileService fileService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _fileService = fileService;
         }
 
         public string Username { get; set; }
@@ -36,18 +41,34 @@ namespace RemyNewWebApp.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Display(Name = "Avatar")]
+            public IFormFile ImageFormFile { get; set; }
+
+
         }
+
 
         private async Task LoadAsync(BTUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var firstName = user.FirstName;
+            var lastName = user.LastName;
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = firstName,
+                LastName = lastName
             };
         }
 
@@ -66,6 +87,7 @@ namespace RemyNewWebApp.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -86,6 +108,28 @@ namespace RemyNewWebApp.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            var firstName = user.FirstName;
+            if(Input.FirstName != firstName)
+            {
+                Input.FirstName = firstName;
+                await _userManager.UpdateAsync(user);
+            }
+
+            var lastName = user.LastName;
+            if (Input.LastName != lastName)
+            {
+                Input.LastName = lastName;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if(Input.ImageFormFile != null)
+            {
+                user.AvatarFileData = await _fileService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
+                user.AvatarFileName = Input.ImageFormFile.FileName;
+                user.AvatarContentType = Input.ImageFormFile.ContentType;
+                await _userManager.UpdateAsync(user);
             }
 
             await _signInManager.RefreshSignInAsync(user);

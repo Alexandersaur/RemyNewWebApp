@@ -2,20 +2,21 @@
 @using RemyNewWebApp.Extensions
 @inject SignInManager<BTUser> SignInManager
 @inject UserManager<BTUser> UserManager
+@inject RemyNewWebApp.Services.Interfaces.IBTRolesService rolesService
 
 <ul style="display:inline-block; align-content:space-evenly" class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-            BTUser btUser = await UserManager.GetUserAsync(User);
+        BTUser btUser = await UserManager.GetUserAsync(User);
 
-            <li style="display:inline-block" class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Greetings, @btUser.FullName!</a>
-            </li>
-            
-            @*<li style="display:inline-block" class="nav-item">
+        <li style="display:inline-block" class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Welcome, @((await rolesService.GetUserRolesAsync(btUser)).FirstOrDefault()): @btUser.FullName!</a>
+        </li>
+
+        @*<li style="display:inline-block" class="nav-item">
                 <small class="text-muted fs-6 fw-bold ms-1 pt-1">Company Id: @User.Identity.GetCompanyId().Value</small>
             </li>*@
-            @*<li style="display:inline-block" class="nav-item">
+        @*<li style="display:inline-block" class="nav-item">
                 <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                     <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
                 </form>
@@ -23,11 +24,11 @@
     }
     else
     {
-            <li style="display:inline-block" class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-            </li>
-            <li style="display:inline-block" class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-            </li>
+        <li style="display:inline-block" class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li style="display:inline-block" class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
     }
 </ul>
