@@ -20,24 +20,24 @@ namespace RemyNewWebApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IBTCompanyInfoService _companyInfoService;
-        private readonly IBTProjectService _projectService;
         private readonly IBTRolesService _rolesService;
         private readonly IBTFileService _fileService;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTProjectService _projectService;
 
         public ProjectsController(ApplicationDbContext context,
                                   IBTCompanyInfoService companyInfoService,
-                                  IBTProjectService projectService,
                                   IBTRolesService rolesService,
                                   IBTFileService fileService,
-                                  UserManager<BTUser> userManager)
+                                  UserManager<BTUser> userManager,
+                                  IBTProjectService projectService)
         {
             _context = context;
             _companyInfoService = companyInfoService;
-            _projectService = projectService;
             _rolesService = rolesService;
             _fileService = fileService;
             _userManager = userManager;
+            _projectService = projectService;
         }
 
         // GET: Projects
@@ -244,8 +244,8 @@ public async Task<IActionResult> AssignPMIndex()
             {
                 return NotFound();
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
+            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 
@@ -261,7 +261,6 @@ public async Task<IActionResult> AssignPMIndex()
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -282,8 +281,8 @@ public async Task<IActionResult> AssignPMIndex()
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
+            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 

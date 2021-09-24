@@ -32,6 +32,14 @@ namespace RemyNewWebApp.Models
         [DisplayName("End Date")]
         public DateTimeOffset EndDate { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayName("Created")]
+        public DateTimeOffset Created { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayName("Updated")]
+        public DateTimeOffset? Updated { get; set; }
+
         [NotMapped]
         [DataType(DataType.Upload)]
         public IFormFile ImageFormFile { get; set; }

@@ -105,6 +105,24 @@ namespace RemyNewWebApp.Services
             return teamMembers;
         }
 
+        public async Task<Project> GetProjectAsNoTrackingAsync(int projectId)
+        {
+            try
+            {
+                Project project = await _context.Projects
+                                              .Include(t => t.ProjectPriority)
+                                              .Include(t => t.Name)
+                                              .Include(t => t.Description)
+                                              .Include(t => t.ImageFormFile)
+                                              .AsNoTracking().FirstOrDefaultAsync(t => t.Id == projectId);
+                return project;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
         {
             List<Project> projects = new();

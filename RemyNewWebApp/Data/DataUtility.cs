@@ -165,7 +165,8 @@ namespace RemyNewWebApp.Data
                          Description="Single page html, css & javascript page.  Serves as a landing page for candidates and contains a bio and links to all applications and challenges." ,
                          StartDate = new DateTime(2021,8,20),
                          EndDate = new DateTime(2021,8,20).AddMonths(1),
-                         ProjectPriorityId = priorityLow
+                         ProjectPriorityId = priorityLow,
+                         Created = DateTime.Now
                      },
                      new Project()
                      {
@@ -174,7 +175,8 @@ namespace RemyNewWebApp.Data
                          Description="Candidate's custom built web application using .Net Core with MVC, a postgres database and hosted in a heroku container.  The app is designed for the candidate to create, update and maintain a live blog site.",
                          StartDate = new DateTime(2021,8,20),
                          EndDate = new DateTime(2021,8,20).AddMonths(4),
-                         ProjectPriorityId = priorityMedium
+                         ProjectPriorityId = priorityMedium,
+                         Created = DateTime.Now
                      },
                      new Project()
                      {
@@ -183,7 +185,8 @@ namespace RemyNewWebApp.Data
                          Description="A custom designed .Net Core application with postgres database.  The application is a multi tennent application designed to track issue tickets' progress.  Implemented with identity and user roles, Tickets are maintained in projects which are maintained by users in the role of projectmanager.  Each project has a team and team members.",
                          StartDate = new DateTime(2021,8,20),
                          EndDate = new DateTime(2021,8,20).AddMonths(6),
-                         ProjectPriorityId = priorityHigh
+                         ProjectPriorityId = priorityHigh,
+                         Created = DateTime.Now
                      },
                      new Project()
                      {
@@ -192,7 +195,8 @@ namespace RemyNewWebApp.Data
                          Description="A custom designed .Net Core application with postgres database.  This is an application to serve as a rolodex of contacts for a given user..",
                          StartDate = new DateTime(2021,8,20),
                          EndDate = new DateTime(2021,8,20).AddMonths(2),
-                         ProjectPriorityId = priorityLow
+                         ProjectPriorityId = priorityLow,
+                         Created = DateTime.Now
                      },
                     new Project()
                      {
@@ -201,7 +205,8 @@ namespace RemyNewWebApp.Data
                          Description="A custom designed .Net Core application with postgres database.  An API based application allows users to input and import movie posters and details including cast and crew information.",
                          StartDate = new DateTime(2021,8,20),
                          EndDate = new DateTime(2021,8,20).AddMonths(3),
-                         ProjectPriorityId = priorityHigh
+                         ProjectPriorityId = priorityHigh,
+                         Created = DateTime.Now
                      }
                 };
 
