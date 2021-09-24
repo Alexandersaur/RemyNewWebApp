@@ -6,802 +6,818 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<BTUser> UserManager
 @inject IBTRolesService RolesService
-
+@inject IBTProjectService _projectService
+@inject IBTTicketService _ticketService
 
 
 @{
     BTUser btUser = await UserManager.GetUserAsync(User);
+    int companyId = User.Identity.GetCompanyId().Value;
     IEnumerable<string> roles = await RolesService.GetUserRolesAsync(btUser);
-    //BTUser developer = await TicketService.GetTicketDeveloperAsync(Model.Id, Model.DeveloperUser.CompanyId);
-}
+    List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
+    List<Ticket> tickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+    List<Project> urgentProjects = await _projectService.GetAllProjectsByPriority(companyId, BTProjectPriority.Urgent.ToString());
+    List<Project> highProjects = await _projectService.GetAllProjectsByPriority(companyId, BTProjectPriority.High.ToString());
+    List<Project> mediumProjects = await _projectService.GetAllProjectsByPriority(companyId, BTProjectPriority.Medium.ToString());
+    List<Project> lowProjects = await _projectService.GetAllProjectsByPriority(companyId, BTProjectPriority.Low.ToString());
+    List<Ticket> newTickets = await _ticketService.GetAllTicketsByStatusAsync(companyId, BTTicketStatus.New.ToString());
+    List<Ticket> developmentTickets = await _ticketService.GetAllTicketsByStatusAsync(companyId, BTTicketStatus.Development.ToString());
+    List<Ticket> testingTickets = await _ticketService.GetAllTicketsByStatusAsync(companyId, BTTicketStatus.Testing.ToString());
+    List<Ticket> resolvedTickets = await _ticketService.GetAllTicketsByStatusAsync(companyId, BTTicketStatus.Resolved.ToString());
+    int unresolvedTickets = (from n in tickets
+                             where ((n.TicketStatus.Name == BTTicketStatus.New.ToString()) && (n.TicketStatus.Name == BTTicketStatus.Development.ToString()) && (n.TicketStatus.Name == BTTicketStatus.Testing.ToString()))
+                             select n).Count();
+    //int unresolvedRatio = resolvedTickets.Count() / unresolvedTickets
+        }
 
-<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-    <!--begin::Container-->
-    <div class="container" id="kt_content_container">
-        <div class="row gy-5 g-xl-10">
-            <!--begin::Col-->
-            <div class="col-xl-4">
-                <!--begin::Mixed Widget 13-->
-                <div class="card card-xxl-stretch mb-5 mb-xl-10">
-                    <!--begin::Body-->
-                    <div class="card-body d-flex flex-column">
-                        <!--begin::Wrapper-->
-                        <div class="d-flex flex-column mb-7">
-                            <!--begin::Title-->
-                            <a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Project Summary</a>
-                            <!--end::Title-->
-                            <div class="py-1" style="color:white">
-                                <span class="fw-bold fs-7 text-gray-600">By Priority</span>
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <!--begin::Container-->
+        <div class="container" id="kt_content_container">
+            <div class="row gy-5 g-xl-10">
+                <!--begin::Col-->
+                <div class="col-xl-4">
+                    <!--begin::Mixed Widget 13-->
+                    <div class="card card-xxl-stretch mb-5 mb-xl-10">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column">
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-column mb-7">
+                                <!--begin::Title-->
+                                <a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Project Summary</a>
+                                <!--end::Title-->
+                                <div class="py-1" style="color:white">
+                                    <span class="fw-bold fs-7 text-gray-600">By Priority</span>
+                                </div>
                             </div>
+                            <!--end::Wrapper-->
+                            <!--begin::Row-->
+                            <div class="row g-0">
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center mb-9 me-2">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-40px me-3">
+                                            <div class="symbol-label bg-white bg-opacity-50">
+                                                <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen007.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path opacity="0.3" d="M12 22C13.6569 22 15 20.6569 15 19C15 17.3431 13.6569 16 12 16C10.3431 16 9 17.3431 9 19C9 20.6569 10.3431 22 12 22Z" fill="black" />
+                                                        <path d="M19 15V18C19 18.6 18.6 19 18 19H6C5.4 19 5 18.6 5 18V15C6.1 15 7 14.1 7 13V10C7 7.6 8.7 5.6 11 5.1V3C11 2.4 11.4 2 12 2C12.6 2 13 2.4 13 3V5.1C15.3 5.6 17 7.6 17 10V13C17 14.1 17.9 15 19 15ZM11 10C11 9.4 11.4 9 12 9C12.6 9 13 8.6 13 8C13 7.4 12.6 7 12 7C10.3 7 9 8.3 9 10C9 10.6 9.4 11 10 11C10.6 11 11 10.6 11 10Z" fill="black" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </div>
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Title-->
+                                        <div>
+                                            <div class="fs-5 text-dark fw-bolder lh-1">@urgentProjects.Count()</div>
+                                            <div class="fs-7 text-gray-600 fw-bold">Urgent</div>
+                                        </div>
+                                        <!--end::Title-->
+                                    </div>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center mb-9 ms-2">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-40px me-3">
+                                            <div class="symbol-label bg-white bg-opacity-50">
+                                                <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr078.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <rect opacity="0.3" x="12.75" y="4.25" width="12" height="2" rx="1" transform="rotate(90 12.75 4.25)" fill="black" />
+                                                        <path d="M12.0573 6.11875L13.5203 7.87435C13.9121 8.34457 14.6232 8.37683 15.056 7.94401C15.4457 7.5543 15.4641 6.92836 15.0979 6.51643L12.4974 3.59084C12.0996 3.14332 11.4004 3.14332 11.0026 3.59084L8.40206 6.51643C8.0359 6.92836 8.0543 7.5543 8.44401 7.94401C8.87683 8.37683 9.58785 8.34458 9.9797 7.87435L11.4427 6.11875C11.6026 5.92684 11.8974 5.92684 12.0573 6.11875Z" fill="black" />
+                                                        <path d="M18.75 8.25H17.75C17.1977 8.25 16.75 8.69772 16.75 9.25C16.75 9.80228 17.1977 10.25 17.75 10.25C18.3023 10.25 18.75 10.6977 18.75 11.25V18.25C18.75 18.8023 18.3023 19.25 17.75 19.25H5.75C5.19772 19.25 4.75 18.8023 4.75 18.25V11.25C4.75 10.6977 5.19771 10.25 5.75 10.25C6.30229 10.25 6.75 9.80228 6.75 9.25C6.75 8.69772 6.30229 8.25 5.75 8.25H4.75C3.64543 8.25 2.75 9.14543 2.75 10.25V19.25C2.75 20.3546 3.64543 21.25 4.75 21.25H18.75C19.8546 21.25 20.75 20.3546 20.75 19.25V10.25C20.75 9.14543 19.8546 8.25 18.75 8.25Z" fill="#C4C4C4" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </div>
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Title-->
+                                        <div>
+                                            <div class="fs-5 text-dark fw-bolder lh-1">@highProjects.Count()</div>
+                                            <div class="fs-7 text-gray-600 fw-bold">High</div>
+                                        </div>
+                                        <!--end::Title-->
+                                    </div>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center me-2">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-40px me-3">
+                                            <div class="symbol-label bg-white bg-opacity-50">
+                                                <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr076.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <rect opacity="0.3" width="12" height="2" rx="1" transform="matrix(-1 0 0 1 15.5 11)" fill="black" />
+                                                        <path d="M13.6313 11.6927L11.8756 10.2297C11.4054 9.83785 11.3732 9.12683 11.806 8.69401C12.1957 8.3043 12.8216 8.28591 13.2336 8.65206L16.1592 11.2526C16.6067 11.6504 16.6067 12.3496 16.1592 12.7474L13.2336 15.3479C12.8216 15.7141 12.1957 15.6957 11.806 15.306C11.3732 14.8732 11.4054 14.1621 11.8756 13.7703L13.6313 12.3073C13.8232 12.1474 13.8232 11.8526 13.6313 11.6927Z" fill="black" />
+                                                        <path d="M8 5V6C8 6.55228 8.44772 7 9 7C9.55228 7 10 6.55228 10 6C10 5.44772 10.4477 5 11 5H18C18.5523 5 19 5.44772 19 6V18C19 18.5523 18.5523 19 18 19H11C10.4477 19 10 18.5523 10 18C10 17.4477 9.55228 17 9 17C8.44772 17 8 17.4477 8 18V19C8 20.1046 8.89543 21 10 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H10C8.89543 3 8 3.89543 8 5Z" fill="#C4C4C4" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </div>
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Title-->
+                                        <div>
+                                            <div class="fs-5 text-dark fw-bolder lh-1">@mediumProjects.Count()</div>
+                                            <div class="fs-7 text-gray-600 fw-bold">Med.</div>
+                                        </div>
+                                        <!--end::Title-->
+                                    </div>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center ms-2">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-40px me-3">
+                                            <div class="symbol-label bg-white bg-opacity-50">
+                                                <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr091.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <rect opacity="0.3" width="12" height="2" rx="1" transform="matrix(0 -1 -1 0 12.75 19.75)" fill="black" />
+                                                        <path d="M12.0573 17.8813L13.5203 16.1256C13.9121 15.6554 14.6232 15.6232 15.056 16.056C15.4457 16.4457 15.4641 17.0716 15.0979 17.4836L12.4974 20.4092C12.0996 20.8567 11.4004 20.8567 11.0026 20.4092L8.40206 17.4836C8.0359 17.0716 8.0543 16.4457 8.44401 16.056C8.87683 15.6232 9.58785 15.6554 9.9797 16.1256L11.4427 17.8813C11.6026 18.0732 11.8974 18.0732 12.0573 17.8813Z" fill="black" />
+                                                        <path d="M18.75 15.75H17.75C17.1977 15.75 16.75 15.3023 16.75 14.75C16.75 14.1977 17.1977 13.75 17.75 13.75C18.3023 13.75 18.75 13.3023 18.75 12.75V5.75C18.75 5.19771 18.3023 4.75 17.75 4.75L5.75 4.75C5.19772 4.75 4.75 5.19771 4.75 5.75V12.75C4.75 13.3023 5.19771 13.75 5.75 13.75C6.30229 13.75 6.75 14.1977 6.75 14.75C6.75 15.3023 6.30229 15.75 5.75 15.75H4.75C3.64543 15.75 2.75 14.8546 2.75 13.75V4.75C2.75 3.64543 3.64543 2.75 4.75 2.75L18.75 2.75C19.8546 2.75 20.75 3.64543 20.75 4.75V13.75C20.75 14.8546 19.8546 15.75 18.75 15.75Z" fill="#C4C4C4" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </div>
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Title-->
+                                        <div>
+                                            <div class="fs-5 text-dark fw-bolder lh-1">@lowProjects.Count()</div>
+                                            <div class="fs-7 text-gray-600 fw-bold">Low</div>
+                                        </div>
+                                        <!--end::Title-->
+                                    </div>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Row-->
                         </div>
-                        <!--end::Wrapper-->
-                        <!--begin::Row-->
-                        <div class="row g-0">
-                            <!--begin::Col-->
-                            <div class="col-6">
-                                <div class="d-flex align-items-center mb-9 me-2">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40px me-3">
-                                        <div class="symbol-label bg-white bg-opacity-50">
-                                            <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen007.svg-->
-                                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path opacity="0.3" d="M12 22C13.6569 22 15 20.6569 15 19C15 17.3431 13.6569 16 12 16C10.3431 16 9 17.3431 9 19C9 20.6569 10.3431 22 12 22Z" fill="black" />
-                                                    <path d="M19 15V18C19 18.6 18.6 19 18 19H6C5.4 19 5 18.6 5 18V15C6.1 15 7 14.1 7 13V10C7 7.6 8.7 5.6 11 5.1V3C11 2.4 11.4 2 12 2C12.6 2 13 2.4 13 3V5.1C15.3 5.6 17 7.6 17 10V13C17 14.1 17.9 15 19 15ZM11 10C11 9.4 11.4 9 12 9C12.6 9 13 8.6 13 8C13 7.4 12.6 7 12 7C10.3 7 9 8.3 9 10C9 10.6 9.4 11 10 11C10.6 11 11 10.6 11 10Z" fill="black" />
-                                                </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                        </div>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Title-->
-                                    <div>
-                                        <div class="fs-5 text-dark fw-bolder lh-1">[#]</div>
-                                        <div class="fs-7 text-gray-600 fw-bold">Urgent</div>
-                                    </div>
-                                    <!--end::Title-->
-                                </div>
-                            </div>
-                            <!--end::Col-->
-                            <!--begin::Col-->
-                            <div class="col-6">
-                                <div class="d-flex align-items-center mb-9 ms-2">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40px me-3">
-                                        <div class="symbol-label bg-white bg-opacity-50">
-                                            <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr078.svg-->
-                                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <rect opacity="0.3" x="12.75" y="4.25" width="12" height="2" rx="1" transform="rotate(90 12.75 4.25)" fill="black" />
-                                                    <path d="M12.0573 6.11875L13.5203 7.87435C13.9121 8.34457 14.6232 8.37683 15.056 7.94401C15.4457 7.5543 15.4641 6.92836 15.0979 6.51643L12.4974 3.59084C12.0996 3.14332 11.4004 3.14332 11.0026 3.59084L8.40206 6.51643C8.0359 6.92836 8.0543 7.5543 8.44401 7.94401C8.87683 8.37683 9.58785 8.34458 9.9797 7.87435L11.4427 6.11875C11.6026 5.92684 11.8974 5.92684 12.0573 6.11875Z" fill="black" />
-                                                    <path d="M18.75 8.25H17.75C17.1977 8.25 16.75 8.69772 16.75 9.25C16.75 9.80228 17.1977 10.25 17.75 10.25C18.3023 10.25 18.75 10.6977 18.75 11.25V18.25C18.75 18.8023 18.3023 19.25 17.75 19.25H5.75C5.19772 19.25 4.75 18.8023 4.75 18.25V11.25C4.75 10.6977 5.19771 10.25 5.75 10.25C6.30229 10.25 6.75 9.80228 6.75 9.25C6.75 8.69772 6.30229 8.25 5.75 8.25H4.75C3.64543 8.25 2.75 9.14543 2.75 10.25V19.25C2.75 20.3546 3.64543 21.25 4.75 21.25H18.75C19.8546 21.25 20.75 20.3546 20.75 19.25V10.25C20.75 9.14543 19.8546 8.25 18.75 8.25Z" fill="#C4C4C4" />
-                                                </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                        </div>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Title-->
-                                    <div>
-                                        <div class="fs-5 text-dark fw-bolder lh-1">[#]</div>
-                                        <div class="fs-7 text-gray-600 fw-bold">High</div>
-                                    </div>
-                                    <!--end::Title-->
-                                </div>
-                            </div>
-                            <!--end::Col-->
-                            <!--begin::Col-->
-                            <div class="col-6">
-                                <div class="d-flex align-items-center me-2">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40px me-3">
-                                        <div class="symbol-label bg-white bg-opacity-50">
-                                            <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr076.svg-->
-                                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <rect opacity="0.3" width="12" height="2" rx="1" transform="matrix(-1 0 0 1 15.5 11)" fill="black" />
-                                                    <path d="M13.6313 11.6927L11.8756 10.2297C11.4054 9.83785 11.3732 9.12683 11.806 8.69401C12.1957 8.3043 12.8216 8.28591 13.2336 8.65206L16.1592 11.2526C16.6067 11.6504 16.6067 12.3496 16.1592 12.7474L13.2336 15.3479C12.8216 15.7141 12.1957 15.6957 11.806 15.306C11.3732 14.8732 11.4054 14.1621 11.8756 13.7703L13.6313 12.3073C13.8232 12.1474 13.8232 11.8526 13.6313 11.6927Z" fill="black" />
-                                                    <path d="M8 5V6C8 6.55228 8.44772 7 9 7C9.55228 7 10 6.55228 10 6C10 5.44772 10.4477 5 11 5H18C18.5523 5 19 5.44772 19 6V18C19 18.5523 18.5523 19 18 19H11C10.4477 19 10 18.5523 10 18C10 17.4477 9.55228 17 9 17C8.44772 17 8 17.4477 8 18V19C8 20.1046 8.89543 21 10 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H10C8.89543 3 8 3.89543 8 5Z" fill="#C4C4C4" />
-                                                </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                        </div>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Title-->
-                                    <div>
-                                        <div class="fs-5 text-dark fw-bolder lh-1">[#]</div>
-                                        <div class="fs-7 text-gray-600 fw-bold">Med.</div>
-                                    </div>
-                                    <!--end::Title-->
-                                </div>
-                            </div>
-                            <!--end::Col-->
-                            <!--begin::Col-->
-                            <div class="col-6">
-                                <div class="d-flex align-items-center ms-2">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40px me-3">
-                                        <div class="symbol-label bg-white bg-opacity-50">
-                                            <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr091.svg-->
-                                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <rect opacity="0.3" width="12" height="2" rx="1" transform="matrix(0 -1 -1 0 12.75 19.75)" fill="black" />
-                                                    <path d="M12.0573 17.8813L13.5203 16.1256C13.9121 15.6554 14.6232 15.6232 15.056 16.056C15.4457 16.4457 15.4641 17.0716 15.0979 17.4836L12.4974 20.4092C12.0996 20.8567 11.4004 20.8567 11.0026 20.4092L8.40206 17.4836C8.0359 17.0716 8.0543 16.4457 8.44401 16.056C8.87683 15.6232 9.58785 15.6554 9.9797 16.1256L11.4427 17.8813C11.6026 18.0732 11.8974 18.0732 12.0573 17.8813Z" fill="black" />
-                                                    <path d="M18.75 15.75H17.75C17.1977 15.75 16.75 15.3023 16.75 14.75C16.75 14.1977 17.1977 13.75 17.75 13.75C18.3023 13.75 18.75 13.3023 18.75 12.75V5.75C18.75 5.19771 18.3023 4.75 17.75 4.75L5.75 4.75C5.19772 4.75 4.75 5.19771 4.75 5.75V12.75C4.75 13.3023 5.19771 13.75 5.75 13.75C6.30229 13.75 6.75 14.1977 6.75 14.75C6.75 15.3023 6.30229 15.75 5.75 15.75H4.75C3.64543 15.75 2.75 14.8546 2.75 13.75V4.75C2.75 3.64543 3.64543 2.75 4.75 2.75L18.75 2.75C19.8546 2.75 20.75 3.64543 20.75 4.75V13.75C20.75 14.8546 19.8546 15.75 18.75 15.75Z" fill="#C4C4C4" />
-                                                </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                        </div>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Title-->
-                                    <div>
-                                        <div class="fs-5 text-dark fw-bolder lh-1">[#]</div>
-                                        <div class="fs-7 text-gray-600 fw-bold">Low</div>
-                                    </div>
-                                    <!--end::Title-->
-                                </div>
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Row-->
                     </div>
-                </div>
 
-                <!--end::Mixed Widget 13-->
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-4">
-                <!--begin::Mixed Widget 14-->
-                <div class="card card-stretch mb-xl-10">
-                    <!--begin::Body-->
-                    <div class="card-body d-flex flex-column">
-                        <!--begin::Wrapper-->
-                        <div class="d-flex flex-column flex-grow-1">
-                            <!--begin::Title-->
-                            <a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Ticket Progress</a>
-                            <!--end::Title-->
-                            <div class="py-1" style="color:white">
-                                @*<span class="text-dark fs-1 fw-bolder me-2">50%</span>*@
-                                <span class="fw-bold fs-7 text-gray-600">Resolved vs. Unresolved</span>
+                    <!--end::Mixed Widget 13-->
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-4">
+                    <!--begin::Mixed Widget 14-->
+                    <div class="card card-stretch mb-xl-10">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column">
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-column flex-grow-1">
+                                <!--begin::Title-->
+                                <a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Ticket Progress</a>
+                                <!--end::Title-->
+                                <div class="py-1" style="color:white">
+                                    @*<span class="text-dark fs-1 fw-bolder me-2">50%</span>*@
+                                    <span class="fw-bold fs-7 text-gray-600">Resolved vs. Unresolved</span>
+                                </div>
+                                <br />
+                                <div class="progress h-7px bg-success bg-opacity-50 mt-7">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="@unresolvedTickets" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <!--begin::Chart-->
+                                @*<div class="mixed-widget-14-chart" style="height: 100px"></div>*@
+                                <!--end::Chart-->
                             </div>
                             <br />
-                            <div class="progress h-7px bg-success bg-opacity-50 mt-7">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            <br />
+                            <!--end::Wrapper-->
+                            <!--begin::Stats-->
+                            <div class="pt-5">
+                                <!--begin::Number-->
+                                <span class="text-dark fw-bolder fs-3x me-2 lh-0">@unresolvedTickets%</span>
+                                <!--end::Number-->
+                                <!--begin::Text-->
+                                <span class="text-dark fw-bolder fs-6 lh-0">completed</span>
+                                <!--end::Text-->
                             </div>
-                            <!--begin::Chart-->
-                            @*<div class="mixed-widget-14-chart" style="height: 100px"></div>*@
-                            <!--end::Chart-->
+                            <!-- end::Stats-->
                         </div>
-                        <br />
-                        <br />
-                        <!--end::Wrapper-->
-                        <!--begin::Stats-->
-                        <div class="pt-5">
-                            <!--begin::Number-->
-                            <span class="text-dark fw-bolder fs-3x me-2 lh-0">50%</span>
-                            <!--end::Number-->
-                            <!--begin::Text-->
-                            <span class="text-dark fw-bolder fs-6 lh-0">completed</span>
-                            <!--end::Text-->
+                    </div>
+                    <!--end::Mixed Widget 14-->
+
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-4">
+                    <!--begin::Mixed Widget 14-->
+                    <div class="card card-xxl-stretch mb-5 mb-xl-10">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column">
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-column mb-7">
+                                <!--begin::Title-->
+                                <a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Ticket Summary</a>
+                                <!--end::Title-->
+                                <div class="py-1" style="color:white">
+                                    <span class="fw-bold fs-7 text-gray-600">By Status</span>
+                                </div>
+                            </div>
+                            <!--end::Wrapper-->
+                            <!--begin::Row-->
+                            <div class="row g-0">
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center mb-9 me-2">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-40px me-3">
+                                            <div class="symbol-label bg-white bg-opacity-50">
+                                                <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen055.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd" d="M2 4.63158C2 3.1782 3.1782 2 4.63158 2H13.47C14.0155 2 14.278 2.66919 13.8778 3.04006L12.4556 4.35821C11.9009 4.87228 11.1726 5.15789 10.4163 5.15789H7.1579C6.05333 5.15789 5.15789 6.05333 5.15789 7.1579V16.8421C5.15789 17.9467 6.05333 18.8421 7.1579 18.8421H16.8421C17.9467 18.8421 18.8421 17.9467 18.8421 16.8421V13.7518C18.8421 12.927 19.1817 12.1387 19.7809 11.572L20.9878 10.4308C21.3703 10.0691 22 10.3403 22 10.8668V19.3684C22 20.8218 20.8218 22 19.3684 22H4.63158C3.1782 22 2 20.8218 2 19.3684V4.63158Z" fill="black" />
+                                                        <path d="M10.9256 11.1882C10.5351 10.7977 10.5351 10.1645 10.9256 9.77397L18.0669 2.6327C18.8479 1.85165 20.1143 1.85165 20.8953 2.6327L21.3665 3.10391C22.1476 3.88496 22.1476 5.15129 21.3665 5.93234L14.2252 13.0736C13.8347 13.4641 13.2016 13.4641 12.811 13.0736L10.9256 11.1882Z" fill="black" />
+                                                        <path d="M8.82343 12.0064L8.08852 14.3348C7.8655 15.0414 8.46151 15.7366 9.19388 15.6242L11.8974 15.2092C12.4642 15.1222 12.6916 14.4278 12.2861 14.0223L9.98595 11.7221C9.61452 11.3507 8.98154 11.5055 8.82343 12.0064Z" fill="black" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </div>
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Title-->
+                                        <div>
+                                            <div class="fs-5 text-dark fw-bolder lh-1">@newTickets.Count()</div>
+                                            <div class="fs-7 text-gray-600 fw-bold">New</div>
+                                        </div>
+                                        <!--end::Title-->
+                                    </div>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center mb-9 ms-2">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-40px me-3">
+                                            <div class="symbol-label bg-white bg-opacity-50">
+                                                <!--begin::Svg Icon | path: assets/media/icons/duotune/abstract/abs037.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path opacity="0.3" d="M2.10001 10C3.00001 5.6 6.69998 2.3 11.2 2L8.79999 4.39999L11.1 7C9.60001 7.3 8.30001 8.19999 7.60001 9.59999L4.5 12.4L2.10001 10ZM19.3 11.5L16.4 14C15.7 15.5 14.4 16.6 12.7 16.9L15 19.5L12.6 21.9C17.1 21.6 20.8 18.2 21.7 13.9L19.3 11.5Z" fill="black" />
+                                                        <path d="M13.8 2.09998C18.2 2.99998 21.5 6.69998 21.8 11.2L19.4 8.79997L16.8 11C16.5 9.39998 15.5 8.09998 14 7.39998L11.4 4.39998L13.8 2.09998ZM12.3 19.4L9.69998 16.4C8.29998 15.7 7.3 14.4 7 12.8L4.39999 15.1L2 12.7C2.3 17.2 5.7 20.9 10 21.8L12.3 19.4Z" fill="black" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </div>
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Title-->
+                                        <div>
+                                            <div class="fs-5 text-dark fw-bolder lh-1">@developmentTickets.Count()</div>
+                                            <div class="fs-7 text-gray-600 fw-bold">Dev.</div>
+                                        </div>
+                                        <!--end::Title-->
+                                    </div>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center me-2">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-40px me-3">
+                                            <div class="symbol-label bg-white bg-opacity-50">
+                                                <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen004.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <path d="M21.7 18.9L18.6 15.8C17.9 16.9 16.9 17.9 15.8 18.6L18.9 21.7C19.3 22.1 19.9 22.1 20.3 21.7L21.7 20.3C22.1 19.9 22.1 19.3 21.7 18.9Z" fill="black" />
+                                                        <path opacity="0.3" d="M11 20C6 20 2 16 2 11C2 6 6 2 11 2C16 2 20 6 20 11C20 16 16 20 11 20ZM11 4C7.1 4 4 7.1 4 11C4 14.9 7.1 18 11 18C14.9 18 18 14.9 18 11C18 7.1 14.9 4 11 4ZM8 11C8 9.3 9.3 8 11 8C11.6 8 12 7.6 12 7C12 6.4 11.6 6 11 6C8.2 6 6 8.2 6 11C6 11.6 6.4 12 7 12C7.6 12 8 11.6 8 11Z" fill="black" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </div>
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Title-->
+                                        <div>
+                                            <div class="fs-5 text-dark fw-bolder lh-1">@testingTickets.Count()</div>
+                                            <div class="fs-7 text-gray-600 fw-bold">Test</div>
+                                        </div>
+                                        <!--end::Title-->
+                                    </div>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center ms-2">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-40px me-3">
+                                            <div class="symbol-label bg-white bg-opacity-50">
+                                                <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr086.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                        <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
+                                                        <path opacity="0.5" d="M12.4343 12.4343L10.75 10.75C10.3358 10.3358 9.66421 10.3358 9.25 10.75C8.83579 11.1642 8.83579 11.8358 9.25 12.25L12.2929 15.2929C12.6834 15.6834 13.3166 15.6834 13.7071 15.2929L19.25 9.75C19.6642 9.33579 19.6642 8.66421 19.25 8.25C18.8358 7.83579 18.1642 7.83579 17.75 8.25L13.5657 12.4343C13.2533 12.7467 12.7467 12.7467 12.4343 12.4343Z" fill="black" />
+                                                        <path d="M8.43431 12.4343L6.75 10.75C6.33579 10.3358 5.66421 10.3358 5.25 10.75C4.83579 11.1642 4.83579 11.8358 5.25 12.25L8.29289 15.2929C8.68342 15.6834 9.31658 15.6834 9.70711 15.2929L15.25 9.75C15.6642 9.33579 15.6642 8.66421 15.25 8.25C14.8358 7.83579 14.1642 7.83579 13.75 8.25L9.56569 12.4343C9.25327 12.7467 8.74673 12.7467 8.43431 12.4343Z" fill="black" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </div>
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Title-->
+                                        <div>
+                                            <div class="fs-5 text-dark fw-bolder lh-1">@resolvedTickets.Count()</div>
+                                            <div class="fs-7 text-gray-600 fw-bold">Resolved</div>
+                                        </div>
+                                        <!--end::Title-->
+                                    </div>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Row-->
                         </div>
-                        <!-- end::Stats-->
+                    </div>
+                    <!--end::Mixed Widget 14-->
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--begin::Tables Widget 12-->
+            <div class="card mb-5 mb-xl-8">
+                <!--begin::Header-->
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bolder fs-3 mb-1">Welcome to your team</span>
+                        <span class="text-muted mt-1 fw-bold fs-7">Currently @Model.Count() users in @User.Identity.GetCompanyName()</span>
+                    </h3>
+                    <div class="card-toolbar">
+                        <!--begin::Menu-->
+                        <!--<button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">-->
+                        <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen041.svg-->
+                        <!--<span class="svg-icon svg-icon-muted svg-icon-2hx">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
+                                <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="black" />
+                                <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="black" />
+                            </svg>
+                        </span>-->
+                        <!--end::Svg Icon-->
+                        <!--</button>
+                        <a asp-action="Create">Create New</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Modal</a>-->
+                        <!--end::Menu-->
                     </div>
                 </div>
-                <!--end::Mixed Widget 14-->
-
-            </div>
-            <!--end::Col-->
-            <!--begin::Col-->
-            <div class="col-xl-4">
-                <!--begin::Mixed Widget 14-->
-                <div class="card card-xxl-stretch mb-5 mb-xl-10">
-                    <!--begin::Body-->
-                    <div class="card-body d-flex flex-column">
-                        <!--begin::Wrapper-->
-                        <div class="d-flex flex-column mb-7">
-                            <!--begin::Title-->
-                            <a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Ticket Summary</a>
-                            <!--end::Title-->
-                            <div class="py-1" style="color:white">
-                                <span class="fw-bold fs-7 text-gray-600">By Status</span>
-                            </div>
-                        </div>
-                        <!--end::Wrapper-->
-                        <!--begin::Row-->
-                        <div class="row g-0">
-                            <!--begin::Col-->
-                            <div class="col-6">
-                                <div class="d-flex align-items-center mb-9 me-2">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40px me-3">
-                                        <div class="symbol-label bg-white bg-opacity-50">
-                                            <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen055.svg-->
-                                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd" d="M2 4.63158C2 3.1782 3.1782 2 4.63158 2H13.47C14.0155 2 14.278 2.66919 13.8778 3.04006L12.4556 4.35821C11.9009 4.87228 11.1726 5.15789 10.4163 5.15789H7.1579C6.05333 5.15789 5.15789 6.05333 5.15789 7.1579V16.8421C5.15789 17.9467 6.05333 18.8421 7.1579 18.8421H16.8421C17.9467 18.8421 18.8421 17.9467 18.8421 16.8421V13.7518C18.8421 12.927 19.1817 12.1387 19.7809 11.572L20.9878 10.4308C21.3703 10.0691 22 10.3403 22 10.8668V19.3684C22 20.8218 20.8218 22 19.3684 22H4.63158C3.1782 22 2 20.8218 2 19.3684V4.63158Z" fill="black" />
-                                                    <path d="M10.9256 11.1882C10.5351 10.7977 10.5351 10.1645 10.9256 9.77397L18.0669 2.6327C18.8479 1.85165 20.1143 1.85165 20.8953 2.6327L21.3665 3.10391C22.1476 3.88496 22.1476 5.15129 21.3665 5.93234L14.2252 13.0736C13.8347 13.4641 13.2016 13.4641 12.811 13.0736L10.9256 11.1882Z" fill="black" />
-                                                    <path d="M8.82343 12.0064L8.08852 14.3348C7.8655 15.0414 8.46151 15.7366 9.19388 15.6242L11.8974 15.2092C12.4642 15.1222 12.6916 14.4278 12.2861 14.0223L9.98595 11.7221C9.61452 11.3507 8.98154 11.5055 8.82343 12.0064Z" fill="black" />
-                                                </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                        </div>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Title-->
-                                    <div>
-                                        <div class="fs-5 text-dark fw-bolder lh-1">[#]</div>
-                                        <div class="fs-7 text-gray-600 fw-bold">New</div>
-                                    </div>
-                                    <!--end::Title-->
-                                </div>
-                            </div>
-                            <!--end::Col-->
-                            <!--begin::Col-->
-                            <div class="col-6">
-                                <div class="d-flex align-items-center mb-9 ms-2">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40px me-3">
-                                        <div class="symbol-label bg-white bg-opacity-50">
-                                            <!--begin::Svg Icon | path: assets/media/icons/duotune/abstract/abs037.svg-->
-                                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path opacity="0.3" d="M2.10001 10C3.00001 5.6 6.69998 2.3 11.2 2L8.79999 4.39999L11.1 7C9.60001 7.3 8.30001 8.19999 7.60001 9.59999L4.5 12.4L2.10001 10ZM19.3 11.5L16.4 14C15.7 15.5 14.4 16.6 12.7 16.9L15 19.5L12.6 21.9C17.1 21.6 20.8 18.2 21.7 13.9L19.3 11.5Z" fill="black" />
-                                                    <path d="M13.8 2.09998C18.2 2.99998 21.5 6.69998 21.8 11.2L19.4 8.79997L16.8 11C16.5 9.39998 15.5 8.09998 14 7.39998L11.4 4.39998L13.8 2.09998ZM12.3 19.4L9.69998 16.4C8.29998 15.7 7.3 14.4 7 12.8L4.39999 15.1L2 12.7C2.3 17.2 5.7 20.9 10 21.8L12.3 19.4Z" fill="black" />
-                                                </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                        </div>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Title-->
-                                    <div>
-                                        <div class="fs-5 text-dark fw-bolder lh-1">[#]</div>
-                                        <div class="fs-7 text-gray-600 fw-bold">Dev.</div>
-                                    </div>
-                                    <!--end::Title-->
-                                </div>
-                            </div>
-                            <!--end::Col-->
-                            <!--begin::Col-->
-                            <div class="col-6">
-                                <div class="d-flex align-items-center me-2">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40px me-3">
-                                        <div class="symbol-label bg-white bg-opacity-50">
-                                            <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen004.svg-->
-                                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path d="M21.7 18.9L18.6 15.8C17.9 16.9 16.9 17.9 15.8 18.6L18.9 21.7C19.3 22.1 19.9 22.1 20.3 21.7L21.7 20.3C22.1 19.9 22.1 19.3 21.7 18.9Z" fill="black" />
-                                                    <path opacity="0.3" d="M11 20C6 20 2 16 2 11C2 6 6 2 11 2C16 2 20 6 20 11C20 16 16 20 11 20ZM11 4C7.1 4 4 7.1 4 11C4 14.9 7.1 18 11 18C14.9 18 18 14.9 18 11C18 7.1 14.9 4 11 4ZM8 11C8 9.3 9.3 8 11 8C11.6 8 12 7.6 12 7C12 6.4 11.6 6 11 6C8.2 6 6 8.2 6 11C6 11.6 6.4 12 7 12C7.6 12 8 11.6 8 11Z" fill="black" />
-                                                </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                        </div>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Title-->
-                                    <div>
-                                        <div class="fs-5 text-dark fw-bolder lh-1">[#]</div>
-                                        <div class="fs-7 text-gray-600 fw-bold">Test</div>
-                                    </div>
-                                    <!--end::Title-->
-                                </div>
-                            </div>
-                            <!--end::Col-->
-                            <!--begin::Col-->
-                            <div class="col-6">
-                                <div class="d-flex align-items-center ms-2">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-40px me-3">
-                                        <div class="symbol-label bg-white bg-opacity-50">
-                                            <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr086.svg-->
-                                            <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
-                                                    <path opacity="0.5" d="M12.4343 12.4343L10.75 10.75C10.3358 10.3358 9.66421 10.3358 9.25 10.75C8.83579 11.1642 8.83579 11.8358 9.25 12.25L12.2929 15.2929C12.6834 15.6834 13.3166 15.6834 13.7071 15.2929L19.25 9.75C19.6642 9.33579 19.6642 8.66421 19.25 8.25C18.8358 7.83579 18.1642 7.83579 17.75 8.25L13.5657 12.4343C13.2533 12.7467 12.7467 12.7467 12.4343 12.4343Z" fill="black" />
-                                                    <path d="M8.43431 12.4343L6.75 10.75C6.33579 10.3358 5.66421 10.3358 5.25 10.75C4.83579 11.1642 4.83579 11.8358 5.25 12.25L8.29289 15.2929C8.68342 15.6834 9.31658 15.6834 9.70711 15.2929L15.25 9.75C15.6642 9.33579 15.6642 8.66421 15.25 8.25C14.8358 7.83579 14.1642 7.83579 13.75 8.25L9.56569 12.4343C9.25327 12.7467 8.74673 12.7467 8.43431 12.4343Z" fill="black" />
-                                                </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->
-                                        </div>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Title-->
-                                    <div>
-                                        <div class="fs-5 text-dark fw-bolder lh-1">[#]</div>
-                                        <div class="fs-7 text-gray-600 fw-bold">Resolved</div>
-                                    </div>
-                                    <!--end::Title-->
-                                </div>
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Row-->
-                    </div>
-                </div>
-                <!--end::Mixed Widget 14-->
-            </div>
-            <!--end::Col-->
-        </div>
-        <!--begin::Tables Widget 12-->
-        <div class="card mb-5 mb-xl-8">
-            <!--begin::Header-->
-            <div class="card-header border-0 pt-5">
-                <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label fw-bolder fs-3 mb-1">Welcome to your team</span>
-                    <span class="text-muted mt-1 fw-bold fs-7">Currently @Model.Count() users in @User.Identity.GetCompanyName()</span>
-                </h3>
-                <div class="card-toolbar">
-                    <!--begin::Menu-->
-                    <!--<button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">-->
-                    <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen041.svg-->
-                    <!--<span class="svg-icon svg-icon-muted svg-icon-2hx">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
-                            <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="black" />
-                            <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="black" />
-                        </svg>
-                    </span>-->
-                    <!--end::Svg Icon-->
-                    <!--</button>
-                    <a asp-action="Create">Create New</a>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Modal</a>-->
-                    <!--end::Menu-->
-                </div>
-            </div>
-            <!--end::Header-->
-            <!--begin::Modal - New Target-->
-            <!--<div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">-->
-            <!--begin::Modal dialog-->
-            <!--<div class="modal-dialog modal-dialog-centered mw-650px">-->
-            <!--begin::Modal content-->
-            <!--<div class="modal-content rounded">-->
-            <!--begin::Modal header-->
-            <!--<div class="modal-header pb-0 border-0 justify-content-end">-->
-            <!--begin::Close-->
-            <!--<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">-->
-            <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
-            <!--<span class="svg-icon svg-icon-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
-                    <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
-                </svg>
-            </span>-->
-            <!--end::Svg Icon-->
-            <!--</div>-->
-            <!--end::Close-->
-            <!--</div>-->
-            <!--begin::Modal header-->
-            <!--begin::Modal body-->
-            <!--<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">-->
-            <!--begin:Form-->
-            <!--<form id="kt_modal_new_target_form" class="form" asp-action="Create" method="post">-->
-            <!--begin::Heading-->
-            <!--<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="mb-10 text-center">-->
-            <!--begin::Title-->
-            <!--<h1 class="mb-3">Create a new Ticket</h1>-->
-            <!--end::Title-->
-            <!--begin::Description-->
-            <!--<div class="text-muted fw-bold fs-5">
-                If you need more info, please check
-                <a href="#" class="fw-bolder link-primary">Ticket Guidelines</a>.
-            </div>-->
-            <!--end::Description-->
-            <!--</div>-->
-            <!--end::Heading-->
-            <!--begin::Input group title -->
-            <!--<div class="d-flex flex-column mb-8 fv-row">-->
-            <!--begin::Label-->
-            <!--<label class="d-flex align-items-center fs-6 fw-bold mb-2">
-                <span class="required">Title</span>
-                <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
-            </label>-->
-            <!--end::Label-->
-            <!--<input type="text" class="form-control form-control-solid" placeholder="Enter Ticket Title" asp-for="Model.FirstOrDefault().Title" />
-            </div>-->
-            <!--end::Input group title-->
-            <!--begin::Input group details-->
-            <!--<div class="d-flex flex-column mb-8">
-                <label class="fs-6 fw-bold mb-2">Description</label>
-                <textarea class="form-control form-control-solid" rows="3" name="target_details" asp-for="Model.FirstOrDefault().Description" placeholder="Describe Ticket Details"></textarea>
-            </div>-->
-            <!--end::Input group details-->
-            <!--begin::Input group-->
-            <!--<div class="row g-9 mb-8">-->
-            <!--begin::Col proj-->
-            <!--<div class="col-md-4 fv-row">
-                <label class="required fs-6 fw-bold mb-2">Project</label>
-                <select class="form-select form-select-solid" asp-for="Model.FirstOrDefault().ProjectId" data-placeholder="Assign a Project">
-                </select>
-            </div>-->
-            <!--end::Col proj-->
-            <!--begin::Col type-->
-            <!--<div class="col-md-4 fv-row">
-                <label class="required fs-6 fw-bold mb-2">Type</label>
-                <select class="form-select form-select-solid" asp-for="Model.FirstOrDefault().TicketType.Id" data-placeholder="Select Ticket Type">
-                </select>
-            </div>-->
-            <!--end::Col type-->
-            <!--begin::Col priority-->
-            <!--<div class="col-md-4 fv-row">
-                <label class="required fs-6 fw-bold mb-2">Priority</label>
-                <select class="form-select form-select-solid" asp-for="Model.FirstOrDefault().TicketPriorityId" data-placeholder="Choose Priority">
-                </select>
-            </div>-->
-            <!--end::Col priority-->
-            <!--</div>-->
-            <!--end::Input group-->
-            <!--begin::Actions-->
-            <!--<div class="text-center">
-                <button type="reset" id="kt_modal_new_target_cancel" data-bs-dismiss="modal" class="btn btn-light me-3">Cancel</button>
-                <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
-                    <span class="indicator-label">Submit</span>
-                    <span class="indicator-progress">
-                        Please wait...
-                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                    </span>
-                </button>
-            </div>-->
-            <!--end::Actions-->
-            <!--</form>-->
-            <!--end:Form-->
-            <!--</div>-->
-            <!--end::Modal body-->
-            <!--</div>-->
-            <!--end::Modal content-->
-            <!--</div>-->
-            <!--end::Modal dialog-->
-            <!--</div>-->
-            <!--end::Modal - New Target-->
-            <!--begin::Body-->
-            <div class="card-body py-3">
-                <!--begin::Table container-->
-                <div class="table-responsive">
-                    <!--begin::Table-->
-                    <table id="datatable" class="table align-middle gs-0 gy-4">
-                        <!--begin::Table head-->
-                        <thead>
-                            <tr class="fw-bolder text-muted bg-light">
-                                <th class="ps-4 min-w-110px rounded-start">Avatar</th>
-                                <th class="min-w-100px">First Name</th>
-                                <th class="min-w-100px">Last Name</th>
-                                <th class="min-w-100px">Role</th>
-                                <th class="min-w-100px">Email</th>
-                                @*<th class="min-w-100px">Priority</th>*@
-                                <th class="min-w-100px rounded-end">Actions</th>
-                            </tr>
-                        </thead>
-                        <!--end::Table head-->
-                        <!--begin::Table body-->
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        <a class="text-muted fw-bold text-muted d-block fs-7">
-                                            @if (item.BTUser.AvatarFileData != null)
-                                            {
-                                                <img src="data:image/*;base64,@Convert.ToBase64String(item.BTUser.AvatarFileData)" />
-                                            }
-
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="text-muted fw-bold text-muted d-block fs-7">
-                                            @Html.DisplayFor(modelItem => item.BTUser.FirstName)
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="text-muted fw-bold text-muted d-block fs-7">
-                                            @Html.DisplayFor(modelItem => item.BTUser.LastName)
-                                        </a>
-                                    </td>
-                                    <td>
-                                        @foreach (var role in item.Roles)
-                                        {
+                <!--end::Header-->
+                <!--begin::Modal - New Target-->
+                <!--<div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">-->
+                <!--begin::Modal dialog-->
+                <!--<div class="modal-dialog modal-dialog-centered mw-650px">-->
+                <!--begin::Modal content-->
+                <!--<div class="modal-content rounded">-->
+                <!--begin::Modal header-->
+                <!--<div class="modal-header pb-0 border-0 justify-content-end">-->
+                <!--begin::Close-->
+                <!--<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">-->
+                <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                <!--<span class="svg-icon svg-icon-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                        <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                    </svg>
+                </span>-->
+                <!--end::Svg Icon-->
+                <!--</div>-->
+                <!--end::Close-->
+                <!--</div>-->
+                <!--begin::Modal header-->
+                <!--begin::Modal body-->
+                <!--<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">-->
+                <!--begin:Form-->
+                <!--<form id="kt_modal_new_target_form" class="form" asp-action="Create" method="post">-->
+                <!--begin::Heading-->
+                <!--<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-10 text-center">-->
+                <!--begin::Title-->
+                <!--<h1 class="mb-3">Create a new Ticket</h1>-->
+                <!--end::Title-->
+                <!--begin::Description-->
+                <!--<div class="text-muted fw-bold fs-5">
+                    If you need more info, please check
+                    <a href="#" class="fw-bolder link-primary">Ticket Guidelines</a>.
+                </div>-->
+                <!--end::Description-->
+                <!--</div>-->
+                <!--end::Heading-->
+                <!--begin::Input group title -->
+                <!--<div class="d-flex flex-column mb-8 fv-row">-->
+                <!--begin::Label-->
+                <!--<label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                    <span class="required">Title</span>
+                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
+                </label>-->
+                <!--end::Label-->
+                <!--<input type="text" class="form-control form-control-solid" placeholder="Enter Ticket Title" asp-for="Model.FirstOrDefault().Title" />
+                </div>-->
+                <!--end::Input group title-->
+                <!--begin::Input group details-->
+                <!--<div class="d-flex flex-column mb-8">
+                    <label class="fs-6 fw-bold mb-2">Description</label>
+                    <textarea class="form-control form-control-solid" rows="3" name="target_details" asp-for="Model.FirstOrDefault().Description" placeholder="Describe Ticket Details"></textarea>
+                </div>-->
+                <!--end::Input group details-->
+                <!--begin::Input group-->
+                <!--<div class="row g-9 mb-8">-->
+                <!--begin::Col proj-->
+                <!--<div class="col-md-4 fv-row">
+                    <label class="required fs-6 fw-bold mb-2">Project</label>
+                    <select class="form-select form-select-solid" asp-for="Model.FirstOrDefault().ProjectId" data-placeholder="Assign a Project">
+                    </select>
+                </div>-->
+                <!--end::Col proj-->
+                <!--begin::Col type-->
+                <!--<div class="col-md-4 fv-row">
+                    <label class="required fs-6 fw-bold mb-2">Type</label>
+                    <select class="form-select form-select-solid" asp-for="Model.FirstOrDefault().TicketType.Id" data-placeholder="Select Ticket Type">
+                    </select>
+                </div>-->
+                <!--end::Col type-->
+                <!--begin::Col priority-->
+                <!--<div class="col-md-4 fv-row">
+                    <label class="required fs-6 fw-bold mb-2">Priority</label>
+                    <select class="form-select form-select-solid" asp-for="Model.FirstOrDefault().TicketPriorityId" data-placeholder="Choose Priority">
+                    </select>
+                </div>-->
+                <!--end::Col priority-->
+                <!--</div>-->
+                <!--end::Input group-->
+                <!--begin::Actions-->
+                <!--<div class="text-center">
+                    <button type="reset" id="kt_modal_new_target_cancel" data-bs-dismiss="modal" class="btn btn-light me-3">Cancel</button>
+                    <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
+                        <span class="indicator-label">Submit</span>
+                        <span class="indicator-progress">
+                            Please wait...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                </div>-->
+                <!--end::Actions-->
+                <!--</form>-->
+                <!--end:Form-->
+                <!--</div>-->
+                <!--end::Modal body-->
+                <!--</div>-->
+                <!--end::Modal content-->
+                <!--</div>-->
+                <!--end::Modal dialog-->
+                <!--</div>-->
+                <!--end::Modal - New Target-->
+                <!--begin::Body-->
+                <div class="card-body py-3">
+                    <!--begin::Table container-->
+                    <div class="table-responsive">
+                        <!--begin::Table-->
+                        <table id="datatable" class="table align-middle gs-0 gy-4">
+                            <!--begin::Table head-->
+                            <thead>
+                                <tr class="fw-bolder text-muted bg-light">
+                                    <th class="ps-4 min-w-110px rounded-start">Avatar</th>
+                                    <th class="min-w-100px">First Name</th>
+                                    <th class="min-w-100px">Last Name</th>
+                                    <th class="min-w-100px">Role</th>
+                                    <th class="min-w-100px rounded-end">Email</th>
+                                    @*<th class="min-w-100px">Priority</th>*@
+                                    @*<th class="min-w-100px rounded-end">Actions</th>*@
+                                </tr>
+                            </thead>
+                            <!--end::Table head-->
+                            <!--begin::Table body-->
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
                                             <a class="text-muted fw-bold text-muted d-block fs-7">
-                                                @role
+                                                @if (item.BTUser.AvatarFileData != null)
+                                                {
+                                                    <div class="symbol symbol-circle symbol-75px">
+                                                        <img src="data:image/*;base64,@Convert.ToBase64String(item.BTUser.AvatarFileData)" />
+                                                    </div>
+                                                }
+
                                             </a>
-                                        }
-                                    </td>
-                                    <td>
-                                        <a class="text-muted fw-bold text-muted d-block fs-7">
-                                            @Html.DisplayFor(modelItem => item.BTUser.Email)
-                                        </a>
-                                    </td>
-                                    @*<td>
-                                            @if (item.DeveloperUser != null)
+                                        </td>
+                                        <td>
+                                            <a class="text-muted fw-bold text-muted d-block fs-7">
+                                                @Html.DisplayFor(modelItem => item.BTUser.FirstName)
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="text-muted fw-bold text-muted d-block fs-7">
+                                                @Html.DisplayFor(modelItem => item.BTUser.LastName)
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @foreach (var role in item.Roles)
                                             {
                                                 <a class="text-muted fw-bold text-muted d-block fs-7">
-                                                    @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
+                                                    @role
                                                 </a>
                                             }
-                                            else
-                                            {
-                                                @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                        </td>
+                                        <td>
+                                            <a class="text-muted text-end fw-bold text-muted d-block fs-7">
+                                                @Html.DisplayFor(modelItem => item.BTUser.Email)
+                                            </a>
+                                        </td>
+                                        @*<td>
+                                                @if (item.DeveloperUser != null)
                                                 {
-                                                    <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign</a>
+                                                    <a class="text-muted fw-bold text-muted d-block fs-7">
+                                                        @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
+                                                    </a>
                                                 }
+                                                else
+                                                {
+                                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                                    {
+                                                        <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign</a>
+                                                    }
+                                                }
+                                            </td>*@
+                                        <!--<td class="text-end">-->
+                                            <!--if (item.BTUser.Id == btUser.Id)
+                                            {
+                                                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
                                             }
-                                        </td>*@
-                                    <td class="text-end">
-                                        @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>*@
-                                        @if (item.BTUser.Id == btUser.Id)
-                                        {
-                                            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                        <!--end::Table body-->
-                    </table>
-                    <!--end::Table-->
+                                        </td>-->
+                                    </tr>
+                                }
+                            </tbody>
+                            <!--end::Table body-->
+                        </table>
+                        <!--end::Table-->
+                    </div>
+                    <!--end::Table container-->
                 </div>
-                <!--end::Table container-->
+                <!--begin::Body-->
             </div>
-            <!--begin::Body-->
-        </div>
-        <!--end::Tables Widget 12-->
-    </div>
-</div>
-
-
-<!--
-<div class="row">
-    <div class="card card-bordered">
-        <div class="card-body">
-            <div id="kt_amcharts_3" style="height: 500px;"></div>
+            <!--end::Tables Widget 12-->
         </div>
     </div>
-</div>-->
-<!--begin::Row-->
-<!--<div class="row gy-5 g-xl-10">-->
-<!--begin::Col-->
-<!--<div class="col-xl-12">-->
-<!--begin::Mixed Widget 13-->
-<!--<div class="card card-xl-stretch mb-xl-10" style="background-color: #F7D9E3">-->
-<!--begin::Body-->
-<!--<div class="card-body d-flex flex-column">-->
-<!--begin::Wrapper-->
-<!--<div class="d-flex flex-column flex-grow-1">-->
-<!--begin::Title-->
-<!--<a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Projects</a>-->
-<!--end::Title-->
-<!--begin::Projects Table-->
-<!--<div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Html.DisplayNameFor(model => model.Name)
-                </th>-->
-@*<th>
-        @Html.DisplayNameFor(model => model.Description)
-    </th>*@
-<!--<th>
-    Html.DisplayNameFor(model => model.StartDate)
-</th>
-<th>
-    Html.DisplayNameFor(model => model.EndDate)
-</th>-->
-@*<th>
-        @Html.DisplayNameFor(model => model.ImageFileName)
-    </th>*@
-<!--<th>
-    Html.DisplayNameFor(model => model.ImageFileData)
-</th>-->
-@*<th>
-        @Html.DisplayNameFor(model => model.ImageFileContentType)
-    </th>*@
-<!--<th>
-    Html.DisplayNameFor(model => model.Archived)
-</th>-->
-@*<th>
-        @Html.DisplayNameFor(model => model.Company)
-    </th>*@
-<!--<th>
-            Html.DisplayNameFor(model => model.ProjectPriority)
-        </th>
-        <th></th>
-    </tr>
-</thead>
-<tbody>
-    foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                item.Name
-            </td>-->
-@*<td>
-        @Html.DisplayFor(modelItem => item.Description)
-    </td>*@
-<!--<td>
-    item.StartDate.DateTime.ToString("MM.dd.yyyy")
-</td>
-<td>
-    item.EndDate.DateTime.ToString("MM.dd.yyyy")
-</td>-->
-@*<td>
-        @Html.DisplayFor(modelItem => item.ImageFileName)
-    </td>*@
-<!--<td>
-    item.ImageFileData
-</td>-->
-@*<td>
-        @Html.DisplayFor(modelItem => item.ImageFileContentType)
-    </td>*@
-<!--<td>
-    Html.DisplayFor(modelItem => item.Archived)
-</td>-->
-@*<td>
-        @Html.DisplayFor(modelItem => item.Company.Id)
-    </td>*@
-<!--<td>
-    if (item.ProjectPriority != null)
-    {
-        item.ProjectPriority.Name
-    }
-</td>
-<td>-->
-@*<a asp-action="Edit" asp-controller="Projects" asp-route-id="@item.Id">Edit</a> |*@
-<!--<a class="btn btn-dark btn-xs" asp-action="Details" asp-controller="Projects" asp-route-id="item.Id">Details</a>-->
-@*<a asp-action="AssignMembers" asp-controller="Projects" asp-route-id="@item.Id">Assign Members</a> |*@
-@*<a asp-action="Delete" asp-controller="Projects" asp-route-id="@item.Id">Delete</a>*@
-<!--</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 
-</div>-->
-<!--end::Projects Table-->
-<!--</div>-->
-<!--end::Wrapper-->
-<!--begin::Stats-->
-<!--<div class="pt-5">-->
-<!--begin::Symbol-->
-<!--<span class="text-dark fw-bolder fs-2x lh-0">#</span>-->
-<!--end::Symbol-->
-<!--begin::Number-->
-<!--<span class="text-dark fw-bolder fs-3x me-2 lh-0">[Number]</span>-->
-<!--end::Number-->
-<!--begin::Text-->
-<!--<span class="text-dark fw-bolder fs-6 lh-0">projects in total</span>-->
-<!--end::Text-->
-<!--</div>-->
-<!--end::Stats-->
-<!--</div>-->
-<!--end::Body-->
-<!--</div>-->
-<!--end::Mixed Widget 13-->
-<!--</div>-->
-<!--end::Col-->
-<!--</div>-->
-<!--end::Row-->
-<!--begin::Row-->
-<!--<div class="row gy-5 g-xl-10">-->
-<!--begin::Col-->
-<!--<div class="col-xl-12">-->
-<!--begin::Mixed Widget 14-->
-<!--<div class="card card-xxl-stretch mb-xl-10" style="background-color: #CBF0F4">-->
-<!--begin::Body-->
-<!--<div class="card-body d-flex flex-column">-->
-<!--begin::Wrapper-->
-<!--<div class="d-flex flex-column flex-grow-1">-->
-<!--begin::Title-->
-<!--<a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Tickets</a>-->
-<!--end::Title-->
-<!--begin::Tickets Table-->
-<!--@*<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Title
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Created
-            </th>
-            <th>
-                Updated
-            </th>
-            <th>
-                Archived
-            </th>
-            <th>
-                Project
-            </th>
-            <th>
-                TicketType
-            </th>
-            <th>
-                TicketStatus
-            </th>
-            <th>
-                TicketPriority
-            </th>
-            <th>
-                OwnerUser
-            </th>
-            <th>
-                DeveloperUser
+
+    <!--
+    <div class="row">
+        <div class="card card-bordered">
+            <div class="card-body">
+                <div id="kt_amcharts_3" style="height: 500px;"></div>
+            </div>
+        </div>
+    </div>-->
+    <!--begin::Row-->
+    <!--<div class="row gy-5 g-xl-10">-->
+    <!--begin::Col-->
+    <!--<div class="col-xl-12">-->
+    <!--begin::Mixed Widget 13-->
+    <!--<div class="card card-xl-stretch mb-xl-10" style="background-color: #F7D9E3">-->
+    <!--begin::Body-->
+    <!--<div class="card-body d-flex flex-column">-->
+    <!--begin::Wrapper-->
+    <!--<div class="d-flex flex-column flex-grow-1">-->
+    <!--begin::Title-->
+    <!--<a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Projects</a>-->
+    <!--end::Title-->
+    <!--begin::Projects Table-->
+    <!--<div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Html.DisplayNameFor(model => model.Name)
+                    </th>-->
+    @*<th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>*@
+    <!--<th>
+        Html.DisplayNameFor(model => model.StartDate)
+    </th>
+    <th>
+        Html.DisplayNameFor(model => model.EndDate)
+    </th>-->
+    @*<th>
+            @Html.DisplayNameFor(model => model.ImageFileName)
+        </th>*@
+    <!--<th>
+        Html.DisplayNameFor(model => model.ImageFileData)
+    </th>-->
+    @*<th>
+            @Html.DisplayNameFor(model => model.ImageFileContentType)
+        </th>*@
+    <!--<th>
+        Html.DisplayNameFor(model => model.Archived)
+    </th>-->
+    @*<th>
+            @Html.DisplayNameFor(model => model.Company)
+        </th>*@
+    <!--<th>
+                Html.DisplayNameFor(model => model.ProjectPriority)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.SelectMany(p => p.Tickets))
+        foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Updated)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Archived)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Project.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketType.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketStatus.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketPriority.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OwnerUser.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DeveloperUser.Id)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-controller="Tickets" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-controller="Tickets" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+                    item.Name
+                </td>-->
+    @*<td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>*@
+    <!--<td>
+        item.StartDate.DateTime.ToString("MM.dd.yyyy")
+    </td>
+    <td>
+        item.EndDate.DateTime.ToString("MM.dd.yyyy")
+    </td>-->
+    @*<td>
+            @Html.DisplayFor(modelItem => item.ImageFileName)
+        </td>*@
+    <!--<td>
+        item.ImageFileData
+    </td>-->
+    @*<td>
+            @Html.DisplayFor(modelItem => item.ImageFileContentType)
+        </td>*@
+    <!--<td>
+        Html.DisplayFor(modelItem => item.Archived)
+    </td>-->
+    @*<td>
+            @Html.DisplayFor(modelItem => item.Company.Id)
+        </td>*@
+    <!--<td>
+        if (item.ProjectPriority != null)
+        {
+            item.ProjectPriority.Name
         }
-    </tbody>
-</table>*@-->
-<!--end::Tickets Table-->
-<!--</div>-->
-<!--end::Wrapper-->
-<!--begin::Stats-->
-<!--<div class="pt-5">-->
-<!--begin::Number-->
-<!--<span class="text-dark fw-bolder fs-3x me-2 lh-0">[Number]</span>-->
-<!--end::Number-->
-<!--begin::Text-->
-<!--<span class="text-dark fw-bolder fs-6 lh-0">tickets in total</span>-->
-<!--end::Text-->
-<!--</div>-->
-<!--end::Stats-->
-<!--</div>
-</div>-->
-<!--end::Mixed Widget 14-->
-<!--</div>-->
-<!--end::Col-->
-<!--</div>-->
-<!--end::Row-->
-<!--</div>-->
-<!--end::Container-->
-<!--</div>-->
+    </td>
+    <td>-->
+    @*<a asp-action="Edit" asp-controller="Projects" asp-route-id="@item.Id">Edit</a> |*@
+    <!--<a class="btn btn-dark btn-xs" asp-action="Details" asp-controller="Projects" asp-route-id="item.Id">Details</a>-->
+    @*<a asp-action="AssignMembers" asp-controller="Projects" asp-route-id="@item.Id">Assign Members</a> |*@
+    @*<a asp-action="Delete" asp-controller="Projects" asp-route-id="@item.Id">Delete</a>*@
+    <!--</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>-->
+    <!--end::Projects Table-->
+    <!--</div>-->
+    <!--end::Wrapper-->
+    <!--begin::Stats-->
+    <!--<div class="pt-5">-->
+    <!--begin::Symbol-->
+    <!--<span class="text-dark fw-bolder fs-2x lh-0">#</span>-->
+    <!--end::Symbol-->
+    <!--begin::Number-->
+    <!--<span class="text-dark fw-bolder fs-3x me-2 lh-0">[Number]</span>-->
+    <!--end::Number-->
+    <!--begin::Text-->
+    <!--<span class="text-dark fw-bolder fs-6 lh-0">projects in total</span>-->
+    <!--end::Text-->
+    <!--</div>-->
+    <!--end::Stats-->
+    <!--</div>-->
+    <!--end::Body-->
+    <!--</div>-->
+    <!--end::Mixed Widget 13-->
+    <!--</div>-->
+    <!--end::Col-->
+    <!--</div>-->
+    <!--end::Row-->
+    <!--begin::Row-->
+    <!--<div class="row gy-5 g-xl-10">-->
+    <!--begin::Col-->
+    <!--<div class="col-xl-12">-->
+    <!--begin::Mixed Widget 14-->
+    <!--<div class="card card-xxl-stretch mb-xl-10" style="background-color: #CBF0F4">-->
+    <!--begin::Body-->
+    <!--<div class="card-body d-flex flex-column">-->
+    <!--begin::Wrapper-->
+    <!--<div class="d-flex flex-column flex-grow-1">-->
+    <!--begin::Title-->
+    <!--<a href="#" class="text-dark text-hover-primary fw-bolder fs-3">Tickets</a>-->
+    <!--end::Title-->
+    <!--begin::Tickets Table-->
+    <!--@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Created
+                </th>
+                <th>
+                    Updated
+                </th>
+                <th>
+                    Archived
+                </th>
+                <th>
+                    Project
+                </th>
+                <th>
+                    TicketType
+                </th>
+                <th>
+                    TicketStatus
+                </th>
+                <th>
+                    TicketPriority
+                </th>
+                <th>
+                    OwnerUser
+                </th>
+                <th>
+                    DeveloperUser
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SelectMany(p => p.Tickets))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Updated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Archived)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketType.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketStatus.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketPriority.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OwnerUser.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeveloperUser.Id)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="Tickets" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-controller="Tickets" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@-->
+    <!--end::Tickets Table-->
+    <!--</div>-->
+    <!--end::Wrapper-->
+    <!--begin::Stats-->
+    <!--<div class="pt-5">-->
+    <!--begin::Number-->
+    <!--<span class="text-dark fw-bolder fs-3x me-2 lh-0">[Number]</span>-->
+    <!--end::Number-->
+    <!--begin::Text-->
+    <!--<span class="text-dark fw-bolder fs-6 lh-0">tickets in total</span>-->
+    <!--end::Text-->
+    <!--</div>-->
+    <!--end::Stats-->
+    <!--</div>
+    </div>-->
+    <!--end::Mixed Widget 14-->
+    <!--</div>-->
+    <!--end::Col-->
+    <!--</div>-->
+    <!--end::Row-->
+    <!--</div>-->
+    <!--end::Container-->
+    <!--</div>-->

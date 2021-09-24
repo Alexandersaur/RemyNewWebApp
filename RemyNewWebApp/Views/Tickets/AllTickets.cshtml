@@ -7,7 +7,7 @@
 @inject UserManager<BTUser> UserManager
 
 @{
-//BTUser btUser = await UserManager.GetUserAsync(User);
+    //BTUser btUser = await UserManager.GetUserAsync(User);
 }
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -24,15 +24,15 @@
                 <div class="card-toolbar">
                     <!--begin::Menu-->
                     <!--<button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">-->
-                        <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen041.svg-->
-                        <!--<span class="svg-icon svg-icon-muted svg-icon-2hx">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
-                                <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="black" />
-                                <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="black" />
-                            </svg>
-                        </span>-->
-                        <!--end::Svg Icon-->
+                    <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen041.svg-->
+                    <!--<span class="svg-icon svg-icon-muted svg-icon-2hx">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
+                            <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="black" />
+                            <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="black" />
+                        </svg>
+                    </span>-->
+                    <!--end::Svg Icon-->
                     <!--</button>
                     <a asp-action="Create">Create New</a>-->
                     <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
@@ -217,7 +217,13 @@
                                             {
                                                 <a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Assign</a>
                                             }
+                                            else
+                                            {
+                                                <a class="text-muted fw-bold text-muted d-block fs-7">Unassinged</a>
+                                            }
                                         }
+
+
                                     </td>
                                     <td>
                                         <a class="text-muted fw-bold text-muted d-block fs-7">

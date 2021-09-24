@@ -125,6 +125,21 @@
                                             </div>
                                         </div>
                                     }
+                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Projects" asp-action="AssignMembers">
+                                                        <span class="menu-title">Assign Developers</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <span class="menu-link">
@@ -671,10 +686,18 @@
                                 {
                                     BTUser btUser = await UserManager.GetUserAsync(User);
 
-                                    <!--begin::Avatar-->
-                                    <div class="symbol symbol-circle symbol-40px">
-                                        <img src="/assets/media/avatars/150-26.jpg" alt="photo" />
-                                    </div>
+                                    @if (btUser.AvatarFileData != null)
+                                    {
+                                        <div class="symbol symbol-circle symbol-40px">
+                                            <img src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="photo" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="symbol symbol-circle symbol-40px">
+                                            <img src="/assets/media/avatars/150-26.jpg" alt="photo" />
+                                        </div>
+                                    }
                                     <!--end::Avatar-->
                                     <!--begin::User info-->
                                     <div class="ms-2">
@@ -1071,10 +1094,18 @@
                                 {
                                     BTUser btUser = await UserManager.GetUserAsync(User);
 
-                                    <!--begin::Avatar-->
-                                    <div class="symbol symbol-circle symbol-40px">
-                                        <img src="/assets/media/avatars/150-26.jpg" alt="photo" />
-                                    </div>
+                                    @if (btUser.AvatarFileData != null)
+                                    {
+                                        <div class="symbol symbol-circle symbol-40px">
+                                            <img src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="photo" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="symbol symbol-circle symbol-40px">
+                                            <img src="/assets/media/avatars/150-26.jpg" alt="photo" />
+                                        </div>
+                                    }
                                     <!--end::Avatar-->
                                     <!--begin::User info-->
                                     <div class="ms-2">
@@ -1471,11 +1502,11 @@
                                 {
                                     BTUser btUser = await UserManager.GetUserAsync(User);
 
-                                    <!--begin::Avatar-->
-
                                     @if (btUser.AvatarFileData != null)
                                     {
-                                        <img class="h-75 align-self-end" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="" />
+                                        <div class="symbol symbol-circle symbol-40px">
+                                            <img src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="photo" />
+                                        </div>
                                     }
                                     else
                                     {

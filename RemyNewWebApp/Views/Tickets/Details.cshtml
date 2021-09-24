@@ -59,15 +59,15 @@
                             <div class="d-flex flex-column">
                                 <!--begin::Name-->
                                 <div class="d-flex align-items-center mb-2">
-                                        <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr069.svg-->
-                                        <span class="svg-icon svg-icon-primary svg-icon-2hx me-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M14.4 11H2.99999C2.39999 11 1.99999 11.4 1.99999 12C1.99999 12.6 2.39999 13 2.99999 13H14.4V11Z" fill="black" />
-                                                <path d="M17.7762 13.2561C18.4572 12.5572 18.4572 11.4429 17.7762 10.7439L13.623 6.48107C13.1221 5.96697 12.25 6.32158 12.25 7.03934V16.9607C12.25 17.6785 13.1221 18.0331 13.623 17.519L17.7762 13.2561Z" fill="black" />
-                                                <rect opacity="0.5" width="2" height="16" rx="1" transform="matrix(-1 0 0 1 22 4)" fill="black" />
-                                            </svg>
-                                        </span>                        
-                                        <!--end::Svg Icon-->
+                                    <!--begin::Svg Icon | path: assets/media/icons/duotune/arrows/arr069.svg-->
+                                    <span class="svg-icon svg-icon-primary svg-icon-2hx me-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M14.4 11H2.99999C2.39999 11 1.99999 11.4 1.99999 12C1.99999 12.6 2.39999 13 2.99999 13H14.4V11Z" fill="black" />
+                                            <path d="M17.7762 13.2561C18.4572 12.5572 18.4572 11.4429 17.7762 10.7439L13.623 6.48107C13.1221 5.96697 12.25 6.32158 12.25 7.03934V16.9607C12.25 17.6785 13.1221 18.0331 13.623 17.519L17.7762 13.2561Z" fill="black" />
+                                            <rect opacity="0.5" width="2" height="16" rx="1" transform="matrix(-1 0 0 1 22 4)" fill="black" />
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
                                     <a class="text-gray-600 text-hover-primary fs-4 fw-light me-1" asp-action="Details" asp-controller="Projects" asp-route-id="@Model.Project.Id">PROJECT: @Model.Project.Name</a>
                                 </div>
                                 <div class="d-flex align-items-center mb-0">
@@ -151,7 +151,7 @@
                                         <!--begin::Title-->
                                         <div>
                                             <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="@Model.Attachments.ToList().Count()">0</div>
-                                            <div class="fw-bold fs-6" >Files</div>
+                                            <div class="fw-bold fs-6">Files</div>
                                         </div>
                                         <!--end::Title-->
                                     </div>
@@ -241,9 +241,12 @@
                         <!--begin::Item-->
                         <div class="d-flex mb-5">
                             <!--begin::Symbol-->
-                            <div class="symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
-                                <img src="/assets/media/stock/600x400/img-3.jpg" class="mw-60" alt="" />
-                            </div>
+                            @if (Model.OwnerUser.AvatarFileData != null)
+                            {
+                                <div class="symbol symbol-circle symbol-75px me-3">
+                                    <img src="data:image/*;base64,@Convert.ToBase64String(Model.OwnerUser.AvatarFileData)" />
+                                </div>
+                            }
                             <!--end::Symbol-->
                             <!--begin::Section-->
                             <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
@@ -268,9 +271,15 @@
                         <!--begin::Item-->
                         <div class="d-flex mb-5">
                             <!--begin::Symbol-->
-                            <div class="symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
-                                <img src="/assets/media/stock/600x400/img-3.jpg" class="mw-100" alt="" />
-                            </div>
+                            @if (Model.DeveloperUser != null)
+                            {
+                                @if (Model.DeveloperUser.AvatarFileData != null)
+                                {
+                                    <div class="symbol symbol-circle symbol-75px me-3">
+                                        <img src="data:image/*;base64,@Convert.ToBase64String(Model.DeveloperUser.AvatarFileData)" />
+                                    </div>
+                                }
+                            }
                             <!--end::Symbol-->
                             <!--begin::Section-->
                             <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
@@ -279,7 +288,7 @@
                                     <div class="col-12">
 
                                         <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
-                                            <a href="#" class="fs-5 text-hover-primary fw-bolder text-muted" >Developer</a>
+                                            <a href="#" class="fs-5 text-hover-primary fw-bolder text-muted">Developer</a>
                                             @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
                                         </div>
                                     </div>
@@ -303,9 +312,16 @@
                         <!--begin::Item-->
                         <div class="d-flex mb-5">
                             <!--begin::Symbol-->
-                            <div class="symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
-                                <img src="/assets/media/stock/600x400/img-3.jpg" class="mw-100" alt="" />
-                            </div>
+                            @if(projectManager != null)
+            {
+
+                            @if (projectManager.AvatarFileData != null)
+                            {
+                                <div class="symbol symbol-circle symbol-75px me-3">
+                                    <img src="data:image/*;base64,@Convert.ToBase64String(projectManager.AvatarFileData)" />
+                                </div>
+                            }
+            }
                             <!--end::Symbol-->
                             <!--begin::Section-->
                             <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
@@ -341,7 +357,6 @@
                     <!--end::Body-->
                 </div>
                 <!--end::Users Widget 9-->
-
                 <!--begin::Comments Widget 1-->
                 <div class="card mb-5 mb-xl-8">
                     <!--begin::Body-->
@@ -422,7 +437,6 @@
 
             </div>
             <!--end::Col-->
-
             <!--begin::Col-->
             <div class="col-xl-6">
 
@@ -525,7 +539,6 @@
                     </div>
                 </div>
                 <!--end::Attachments Widget 2-->
-
                 <!--begin::History Widget 5-->
                 <div class="card mb-5 mb-xl-8">
                     <!--begin::Timeline-->

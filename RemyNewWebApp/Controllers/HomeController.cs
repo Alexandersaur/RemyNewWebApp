@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.Logging;
 using RemyNewWebApp.Extensions;
 using RemyNewWebApp.Models;
@@ -20,18 +21,21 @@ namespace RemyNewWebApp.Controllers
         private readonly IBTRolesService _rolesService;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTCompanyInfoService _companyInfoService;
+        private readonly IBTTicketService _ticketService;
 
         public HomeController(ILogger<HomeController> logger,
                               IBTProjectService projectService,
                               IBTRolesService rolesService,
                               UserManager<BTUser> userManager,
-                              IBTCompanyInfoService companyInfoService)
+                              IBTCompanyInfoService companyInfoService,
+                              IBTTicketService ticketService)
         {
             _logger = logger;
             _projectService = projectService;
             _rolesService = rolesService;
             _userManager = userManager;
             _companyInfoService = companyInfoService;
+            _ticketService = ticketService;
         }
 
         public async Task<IActionResult> Index()
@@ -44,6 +48,7 @@ namespace RemyNewWebApp.Controllers
             List<BTUserViewModel> model = new();
             int companyId = User.Identity.GetCompanyId().Value;
             List<BTUser> members = await _companyInfoService.GetAllMembersAsync(companyId);
+
 
             foreach (BTUser member in members)
             {

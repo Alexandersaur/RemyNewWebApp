@@ -9,5 +9,6 @@ namespace RemyNewWebApp.Models.ViewModels
     {
         public BTUser BTUser { get; set; }
         public List<string> Roles { get; set; }
+
     }
 }

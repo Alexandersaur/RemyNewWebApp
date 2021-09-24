@@ -1,6 +1,6 @@
 ﻿@model RemyNewWebApp.Models.ViewModels.AssignDeveloperViewModel
 
-    <h2> Ticket Assignment </h2>
+    @*<h2> Ticket Assignment </h2>
     <div class="row">
         <div class="col-md-4">
             <form asp-action="AssignDeveloper" method="post">
@@ -19,9 +19,38 @@
                 </div>
             </form>
         </div>
+    </div>*@
+<div class="col-6 p-6">
+    <div class="card mb-5 mb-xxl-8">
+        <!--begin::Body-->
+        <div class="card-body pb-0">
+            <!--begin::Post-->
+            <div class="mb-7">
+                <!--begin::Text-->
+                <div class="row text-gray-800 mb-5">
+                    <div class="col">
+                        <form asp-action="AssignDeveloper" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <p class="fs-2 fw-bolder">@Model.Ticket.Title</p>
+                            <p class="fw-light fs-6">@Model.Ticket.Description</p>
+                            <div class="form-group mb-4">
+                                <label class="control-label">Select Ticket Developer</label>
+                                <select asp-for="DeveloperId" class="form-control" asp-items="@Model.Developers">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <button id="update-profile-button" type="submit" class="btn btn-primary">Assign</button>
+                        </form>
+                    </div>
+                </div>
+                <!--end::Text-->
+            </div>
+            <!--end::Post-->
+        </div>
+        <!--end::Body-->
     </div>
-
-<div>
+</div>
+<div class="ms-6">
     <a asp-action="AllTickets">Back to List</a>
 </div>
 
