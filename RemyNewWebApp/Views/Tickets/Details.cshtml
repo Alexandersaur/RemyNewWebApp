@@ -1,6 +1,7 @@
 ﻿@model RemyNewWebApp.Models.Ticket
 @using RemyNewWebApp.Services.Interfaces
 @using Microsoft.AspNetCore.Identity
+@using RemyNewWebApp.Models.Enums
 @inject UserManager<BTUser> UserManager
 @inject IBTFileService BTFileService
 @inject IBTProjectService BTProjectSerivce
@@ -241,11 +242,15 @@
                         <!--begin::Item-->
                         <div class="d-flex mb-5">
                             <!--begin::Symbol-->
-                            @if (Model.OwnerUser.AvatarFileData != null)
+                            @if (Model.OwnerUser != null)
                             {
-                                <div class="symbol symbol-circle symbol-75px me-3">
-                                    <img src="data:image/*;base64,@Convert.ToBase64String(Model.OwnerUser.AvatarFileData)" />
-                                </div>
+
+                                @if (Model.OwnerUser.AvatarFileData != null)
+                                {
+                                    <div class="symbol symbol-circle symbol-75px me-3">
+                                        <img src="data:image/*;base64,@Convert.ToBase64String(Model.OwnerUser.AvatarFileData)" />
+                                    </div>
+                                }
                             }
                             <!--end::Symbol-->
                             <!--begin::Section-->
@@ -259,7 +264,11 @@
                                         </div>
                                     </div>
                                     <div class="py-lg-0 py-2">
-                                        <span class="text-gray-800 fw-boldest fs-3">@Model.OwnerUser.FullName</span>
+                                        @if (Model.OwnerUser != null)
+                                        {
+
+                                            <span class="text-gray-800 fw-boldest fs-3">@Model.OwnerUser.FullName</span>
+                                        }
                                         @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
                                     </div>
                                 </div>
@@ -299,7 +308,14 @@
                                         }
                                         else
                                         {
-                                            <span class="text-gray-800 fw-boldest fs-3">Currently Unassigned</span>
+                                            @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                            {
+                                                <a asp-action="AssignMembers" asp-route-id="@Model.Id" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px">Assign Developer</a>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-gray-800 fw-boldest fs-3">Currently Unassigned</span>
+                                            }
                                         }
                                         @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
                                     </div>
@@ -312,16 +328,16 @@
                         <!--begin::Item-->
                         <div class="d-flex mb-5">
                             <!--begin::Symbol-->
-                            @if(projectManager != null)
-            {
-
-                            @if (projectManager.AvatarFileData != null)
+                            @if (projectManager != null)
                             {
-                                <div class="symbol symbol-circle symbol-75px me-3">
-                                    <img src="data:image/*;base64,@Convert.ToBase64String(projectManager.AvatarFileData)" />
-                                </div>
+
+                                @if (projectManager.AvatarFileData != null)
+                                {
+                                    <div class="symbol symbol-circle symbol-75px me-3">
+                                        <img src="data:image/*;base64,@Convert.ToBase64String(projectManager.AvatarFileData)" />
+                                    </div>
+                                }
                             }
-            }
                             <!--end::Symbol-->
                             <!--begin::Section-->
                             <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
@@ -341,7 +357,7 @@
                                         }
                                         else
                                         {
-                                            <span class="text-gray-800 fw-boldest fs-3">Currently Unassigned</span>
+                                            <a asp-action="AssignPM" asp-route-id="@Model.Project.Id" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px">Assign PM</a>
                                         }
                                         @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
                                     </div>

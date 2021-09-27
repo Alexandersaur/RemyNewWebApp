@@ -7,112 +7,103 @@
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Container-->
     <div class="container" id="kt_content_container">
-        <!--begin::Card-->
-        <div class="card">
-            <!--begin::Card body-->
-            <div class="card-body pb-0 modal-content rounded">
-                <!--begin::Heading-->
-                <div class="card-px text-center pt-20 pb-5">
-                    <!--begin::Title-->
-                    <h2 class="fs-2x fw-bolder mb-0">Editing Project</h2>
-                    <h4>@Model.Name</h4>
-                    <!--end::Title-->
-                    <!--begin::Description-->
-                    <div class="text-gray-400 fs-4 fw-bold py-7">
-                        <!--begin::Modal content-->
-                        <div class="">
-                            <!--begin::Modal body-->
-                            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
-                                <!--begin:Form-->
-                                <form asp-action="Edit">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <input type="hidden" asp-for="Id" />
-
-                                    <!--begin::Input group-->
-                                    <div class="d-flex flex-column mb-8 fv-row">
-                                        <!--begin::Label-->
-                                        <label asp-for="Name" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
-                                        <!--end::Label-->
-                                        <input type="text" class="form-control form-control-solid" asp-for="Name" />
-                                        <span asp-validation-for="Name" class="text-danger"></span>
-                                    </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="d-flex flex-column mb-8 fv-row">
-                                        <!--begin::Label-->
-                                        <label asp-for="Description" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
-                                        <!--end::Label-->
-                                        <textarea rows="4" class="form-control form-control-solid" asp-for="Description"></textarea>
-                                        <span asp-validation-for="Description" class="text-danger"></span>
-                                    </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="d-flex flex-column mb-8 fv-row">
-                                        <!--begin::Label-->
-                                        <label asp-for="StartDate" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
-                                        <!--end::Label-->
-                                        <input type="date" class="form-control form-control-solid" asp-for="StartDate" />
-                                        <span asp-validation-for="StartDate" class="text-danger"></span>
-                                    </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="d-flex flex-column mb-8 fv-row">
-                                        <!--begin::Label-->
-                                        <label asp-for="EndDate" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
-                                        <!--end::Label-->
-                                        <input type="date" class="form-control form-control-solid" asp-for="EndDate" />
-                                        <span asp-validation-for="EndDate" class="text-danger"></span>
-                                    </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="d-flex flex-column mb-8 fv-row">
-                                        <!--begin::Label-->
-                                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">Priority</label>
-                                        <!--end::Label-->
-                                        <select class="form-select form-select-solid" asp-for="@Model.ProjectPriority" asp-items="ViewBag.ProjectPriorityId" data-placeholder="Choose Priority"></select>
-
-                                        @*<input type="text" class="form-control form-control-solid" asp-for="ProjectPriority.Name" />*@
-                                        <span asp-validation-for="ProjectPriority.Name" class="text-danger"></span>
-                                    </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="d-flex flex-column mb-8 fv-row">
-                                        <!--begin::Label-->
-                                        <label asp-for="ImageFormFile" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
-                                        <!--end::Label-->
-                                        <input type="text" class="form-control form-control-solid" asp-for="ImageFormFile" />
-                                        <span asp-validation-for="ImageFormFile" class="text-danger"></span>
-                                    </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Actions-->
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary">
-                                            <span class="indicator-label">Submit</span>
-                                            <span class="indicator-progress">
-                                                Please wait...
-                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                            </span>
-                                        </button>
-                                    </div>
-                                    <!--end::Actions-->
-                                </form>
-                                <!--end:Form-->
-                            </div>
-                            <!--end::Modal body-->
+        <!--begin::Card body-->
+        <div class="card-body pb-0 modal-content rounded">
+            <!--begin::Heading-->
+            <div class="card-px text-center pt-20 pb-5">
+                <!--begin::Title-->
+                <h2 class="fs-2x fw-bolder mb-0">Editing Project</h2>
+                <h4>@Model.Name</h4>
+                <!--end::Title-->
+                <!--begin::Modal body-->
+                <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                    <!--begin:Form-->
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <!--begin::Input group-->
+                        <div class="d-flex flex-column mb-8 fv-row">
+                            <!--begin::Label-->
+                            <label asp-for="Name" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
+                            <!--end::Label-->
+                            <input type="text" class="form-control form-control-solid" asp-for="Name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
-                        <!--end::Modal content-->
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="d-flex flex-column mb-8 fv-row">
+                            <!--begin::Label-->
+                            <label asp-for="Description" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
+                            <!--end::Label-->
+                            <textarea rows="4" class="form-control form-control-solid" asp-for="Description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <!--end::Input group-->
+                        <div class="row">
+                            <div class="col">
 
-                    </div>
-                    <!--end::Description-->
+                        <!--begin::Input group-->
+                        <div class="d-flex flex-column mb-8 fv-row">
+                            <!--begin::Label-->
+                            <label asp-for="StartDate" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
+                            <!--end::Label-->
+                            <input type="date" class="form-control form-control-solid" asp-for="StartDate" />
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </div>
+                        <!--end::Input group-->
+                            </div>
+                            <div class="col">
+
+                        <!--begin::Input group-->
+                        <div class="d-flex flex-column mb-8 fv-row">
+                            <!--begin::Label-->
+                            <label asp-for="EndDate" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
+                            <!--end::Label-->
+                            <input type="date" class="form-control form-control-solid" asp-for="EndDate" />
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                        </div>
+                        <!--end::Input group-->
+                            </div>
+                            <div class="col">
+
+                        <!--begin::Input group-->
+                        <div class="d-flex flex-column mb-8 fv-row">
+                            <!--begin::Label-->
+                            <label class="d-flex align-items-center fs-6 fw-bold mb-2">Priority</label>
+                            <!--end::Label-->
+                            <select class="form-select form-select-solid" asp-for="@Model.ProjectPriority" asp-items="ViewBag.ProjectPriorityId" data-placeholder="Choose Priority"></select>
+                            @*<input type="text" class="form-control form-control-solid" asp-for="ProjectPriority.Name" />*@
+                            <span asp-validation-for="ProjectPriority.Name" class="text-danger"></span>
+                        </div>
+                        <!--end::Input group-->
+                            </div>
+                        </div>
+                        <!--begin::Input group-->
+                        <div class="d-flex flex-column mb-8 fv-row">
+                            <!--begin::Label-->
+                            <label class="d-flex align-items-center fs-6 fw-bold mb-2">Image</label>
+                            <!--end::Label-->
+                            <input type="text" class="form-control form-control-solid" asp-for="ImageFileData" />
+                            <span asp-validation-for="ImageFileData" class="text-danger"></span>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Actions-->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="indicator-label">Submit</span>
+                                <span class="indicator-progress">
+                                    Please wait...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end:Form-->
                 </div>
-                <!--end::Heading-->
-                <!--begin::Illustration-->
-                @*<div class="text-center px-5">
-                        <img src="/assets/media/illustrations/dozzy-1/17.png" alt="" class="mw-100 h-200px h-sm-325px" />
-                    </div>*@
-                <!--end::Illustration-->
+                <!--end::Modal body-->
             </div>
-            <!--end::Card body-->
+            <!--end::Heading-->
         </div>
         <!--end::Card-->
 
@@ -120,44 +111,44 @@
     <!--end::Container-->
 </div>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+@*<hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="ImageFileData" class="control-label"></label>
-                <input asp-for="ImageFileData" class="form-control" />
-                <span asp-validation-for="ImageFileData" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="ImageFileData" class="control-label"></label>
+                    <input asp-for="ImageFileData" class="form-control" />
+                    <span asp-validation-for="ImageFileData" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="ProjectPriorityId" class="control-label"></label>
-                <select asp-for="ProjectPriorityId" class="form-control" asp-items="ViewBag.ProjectPriorityId"></select>
-                <span asp-validation-for="ProjectPriorityId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="ProjectPriorityId" class="control-label"></label>
+                    <select asp-for="ProjectPriorityId" class="form-control" asp-items="ViewBag.ProjectPriorityId"></select>
+                    <span asp-validation-for="ProjectPriorityId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

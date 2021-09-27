@@ -128,7 +128,6 @@ namespace RemyNewWebApp.Services
             List<Project> projects = new();
             projects = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == false)
                                             .Include(p => p.Members)
-                                                .ThenInclude(p=>p.AvatarFileData)
                                             .Include(p => p.Tickets)
                                                 .ThenInclude(t => t.Comments)
                                             .Include(p => p.Tickets)

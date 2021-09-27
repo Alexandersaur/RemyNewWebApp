@@ -52,9 +52,17 @@ namespace RemyNewWebApp.Controllers
         // GET: MY Projects
         public async Task<IActionResult> MyProjects()
         {
+            List<ProjectViewModel> model = new();
             string userId = _userManager.GetUserId(User);
             List<Project> projects = await _projectService.GetUserProjectsAsync(userId);
-            return View(projects);
+            foreach (Project project in projects)
+            {
+                ProjectViewModel viewModel = new();
+                viewModel.Project = project;
+                viewModel.ProjectManager = await _projectService.GetProjectManagerAsync(project.Id);
+                model.Add(viewModel);
+            }
+            return View(model);
         }        
         
         // GET: ALL Projects
@@ -224,11 +232,11 @@ public async Task<IActionResult> AssignPMIndex()
                 }
                 //_context.Add(project);
                 //await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Create));
+                return RedirectToAction("AllProjects");
             }
             //ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
             //ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
-            return RedirectToAction("Index");
+            return RedirectToAction("AllProjects");
         }
 
         // GET: Projects/Edit/5
@@ -255,7 +263,7 @@ public async Task<IActionResult> AssignPMIndex()
         [HttpPost]
         [ValidateAntiForgeryToken]
         //TODO: remove _context
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,ImageFileName,ImageFileData,ImageFileContentType,Archived,CompanyId,ProjectPriorityId")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,ImageFormFile,ProjectPriorityId")] Project project)
         {
             if (id != project.Id)
             {
@@ -265,8 +273,9 @@ public async Task<IActionResult> AssignPMIndex()
             {
                 try
                 {
-                    _context.Update(project);
-                    await _context.SaveChangesAsync();
+                    await _projectService.UpdateProjectAsync(project);
+                    //_context.Update(project);
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -279,7 +288,7 @@ public async Task<IActionResult> AssignPMIndex()
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AllProjects");
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);

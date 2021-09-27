@@ -104,8 +104,8 @@
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <a asp-area="" asp-controller="Projects" asp-action="Create">
-                                                    <span class="menu-title">Create New Project</span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="MyProjects">
+                                                    <span class="menu-title">My Projects</span>
                                                 </a>
                                             </span>
                                         </div>
@@ -116,12 +116,13 @@
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <a asp-area="" asp-controller="Projects" asp-action="MyProjects">
-                                                    <span class="menu-title">My Projects</span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="Create">
+                                                    <span class="menu-title">Create New Project</span>
                                                 </a>
                                             </span>
                                         </div>
                                     </div>
+
                                     @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                                     {
                                         <div class="menu-sub menu-sub-accordion">
@@ -1356,8 +1357,8 @@
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <a asp-area="" asp-controller="Projects" asp-action="Create">
-                                                    <span class="menu-title">Create New Project</span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="MyProjects">
+                                                    <span class="menu-title">My Projects</span>
                                                 </a>
                                             </span>
                                         </div>
@@ -1368,12 +1369,13 @@
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <a asp-area="" asp-controller="Projects" asp-action="MyProjects">
-                                                    <span class="menu-title">My Projects</span>
+                                                <a asp-area="" asp-controller="Projects" asp-action="Create">
+                                                    <span class="menu-title">Create New Project</span>
                                                 </a>
                                             </span>
                                         </div>
                                     </div>
+
                                     @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                                     {
                                         <div class="menu-sub menu-sub-accordion">
