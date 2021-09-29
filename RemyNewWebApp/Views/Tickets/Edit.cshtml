@@ -4,55 +4,109 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Container-->
+    <div class="container" id="kt_content_container">
+        <!--begin::Card body-->
+        <div class="card-body pb-0 modal-content rounded">
+            <!--begin::Heading-->
+            <div class="card-px text-center pt-10 pb-5">
+                <!--begin::Title-->
+                <h2 class="fs-2x fw-bolder mb-0">Edit Ticket</h2>
+                <h4 class="mb-5">@Model.Title</h4>
+                <!--end::Title-->
+                <!--begin::Modal body-->
+                <div class="modal-body scroll-y px-3 px-lg-3 pt-0 pb-4">
+                    <!--begin:Form-->
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="ProjectId" />
+                        <input type="hidden" asp-for="Created" />
+                        <input type="hidden" asp-for="OwnerUserId" />
+                        <input type="hidden" asp-for="DeveloperUserId" />
+                        <div class="row">
+                            <div class="col-12">
+                                <!--begin::Input group-->
+                                <div class="d-flex flex-column mb-8 fv-row">
+                                    <!--begin::Label-->
+                                    <label asp-for="Title" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
+                                    <!--end::Label-->
+                                    <input type="text" class="form-control form-control-solid" asp-for="Title" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group-->
+                                <div class="d-flex flex-column mb-8 fv-row">
+                                    <!--begin::Label-->
+                                    <label asp-for="Description" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
+                                    <!--end::Label-->
+                                    <textarea rows="4" class="form-control form-control-solid" asp-for="Description"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                                <!--end::Input group-->
+                                <div class="row">
+                                    <div class="col-4">
+                                        <!--begin::Input group-->
+                                        <div class="d-flex flex-column mb-8 fv-row">
+                                            <!--begin::Label-->
+                                            <label asp-for="TicketTypeId" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
+                                            <!--end::Label-->
+                                            <select class="form-select form-select-solid" asp-for="TicketTypeId" asp-items="ViewBag.TicketTypeId"></select>
+                                            <span asp-validation-for="TicketTypeId" class="text-danger"></span>
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+                                    <div class="col-4">
+                                        <!--begin::Input group-->
+                                        <div class="d-flex flex-column mb-8 fv-row">
+                                            <!--begin::Label-->
+                                            <label asp-for="TicketStatusId" class="d-flex align-items-center fs-6 fw-bold mb-2"></label>
+                                            <!--end::Label-->
+                                            <select class="form-select form-select-solid" asp-for="TicketStatusId"  asp-items="ViewBag.TicketStatusId"></select>
+                                            <span asp-validation-for="TicketStatusId" class="text-danger"></span>
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+                                    <div class="col-4">
+                                        <!--begin::Input group-->
+                                        <div class="d-flex flex-column mb-8 fv-row">
+                                            <!--begin::Label-->
+                                            <label class="d-flex align-items-center fs-6 fw-bold mb-2">Priority</label>
+                                            <!--end::Label-->
+                                            <select class="form-select form-select-solid" asp-for="TicketPriorityId" asp-items="ViewBag.TicketPriorityId"></select>
+                                            @*<input type="text" class="form-control form-control-solid" asp-for="ProjectPriority.Name" />*@
+                                            <span asp-validation-for="TicketPriorityId" class="text-danger"></span>
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+                                    <!--begin::Actions-->
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary" style="display:block; width:100%">
+                                            <span class="indicator-label">Submit</span>
+                                            <span class="indicator-progress">
+                                                Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <!--end::Actions-->
+                                </div>
+                            </div>     
+                        </div>
+                    </form>
+                    <!--end:Form-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Heading-->
+        </div>
+        <!--end::Card-->
 
-<h4>Ticket</h4>
-<hr />
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="ProjectId" />
-            <input type="hidden" asp-for="Created" />
-            <input type="hidden" asp-for="OwnerUserId" />
-            <input type="hidden" asp-for="DeveloperUserId" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TicketTypeId" class="control-label"></label>
-                <select asp-for="TicketTypeId" class="form-control" asp-items="ViewBag.TicketTypeId"></select>
-                <span asp-validation-for="TicketTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TicketStatusId" class="control-label"></label>
-                <select asp-for="TicketStatusId" class="form-control" asp-items="ViewBag.TicketStatusId"></select>
-                <span asp-validation-for="TicketStatusId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TicketPriorityId" class="control-label"></label>
-                <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
-                <span asp-validation-for="TicketPriorityId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
     </div>
+    <!--end::Container-->
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

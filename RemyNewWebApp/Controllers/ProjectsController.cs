@@ -165,7 +165,6 @@ public async Task<IActionResult> AssignPMIndex()
             {
                 return NotFound();
             }
-
             var project = await _context.Projects
                 .Include(p => p.Company)
                 .Include(p => p.ProjectPriority)

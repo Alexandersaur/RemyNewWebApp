@@ -1,47 +1,79 @@
 ﻿@model RemyNewWebApp.Models.ViewModels.ProjectMembersViewModel
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<BTUser> UserManager
+@inject SignInManager<BTUser> SignInManager
 
-<div class="container">
-    <h2> Assign Users </h2>
+<div class="row ms-8">
+    <div class="col-6">
+        <div class="card mb-5 mb-xxl-8">
+            <!--begin::Body-->
+            <div class="card-body pb-0">
+                <!--begin::Header-->
+                <div class="d-flex align-items-center mb-6">
+                    <!--begin::User-->
+                    <div class="d-flex align-items-center flex-grow-1">
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-green margin-bottom-40">
-                <div class="panel-heading">
-                    <h3 class="panel-title"> @Model.Project.Name</h3>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            BTUser btUser = await UserManager.GetUserAsync(User);
+
+                            @if (btUser.AvatarFileData != null)
+                            {
+                                <div class="symbol symbol-circle symbol-60px me-5">
+                                    <img src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="photo" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="symbol symbol-60px me-5">
+                                    <img src="/assets/media/avatars/150-10.jpg" alt="" />
+                                </div>
+                            }
+                        }
+
+                        <!--begin::Avatar-->
+                        <!--end::Avatar-->
+                        <!--begin::Info-->
+                        <div class="d-flex flex-column">
+                            <a class="text-gray-900 text-hover-primary fs-4 fw-bolder">Assign members to project: @Model.Project.Name</a>
+                            <span class="text-gray-400 fw-bold">Select from available members</span>
+                        </div>
+                        <!--end::Info-->
+                    </div>
+                    <!--end::User-->
                 </div>
+                <!--end::Header-->
+                <!--begin::Post-->
+                <div class="mb-7">
+                    <!--begin::Text-->
+                    <div class="row text-gray-800 mb-5">
+                        <div class="col">
+                            <form asp-action="AssignMembers" asp-controller="Projects" method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="@Model.Project.Id">
+                                <input type="hidden" asp-for="@Model.Project.Name">
+                                <div class="col-12 mb-3">
+                                    <div class="form-group">
+                                        @*<label asp-for="@Model.Users" class="control-label">Assign team members for Project: @Model.Project.Name</label>*@
+                                        <select asp-for="@Model.SelectedUsers" class="form-control" asp-items="@Model.Users" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                        <input type="submit" class="btn btn-success" value="Assign Members"  style="display:block; width:100%"  />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--end::Text-->
+                </div>
+                <!--end::Post-->
             </div>
-            <p>
-                Name :
-                <span>@Model.Project.Name</span>
-            </p>
-
-            <form asp-action="AssignMembers" asp-controller="Projects" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="@Model.Project.Id">
-                <input type="hidden" asp-for="@Model.Project.Name">
-                <div class="col-12">
-                    <div class="form-group">
-                        <label asp-for="@Model.Users" class="control-label">Assign team members for Project: @Model.Project.Name</label>
-                        <select asp-for="@Model.SelectedUsers" class="form-control" asp-items="@Model.Users" multiple="multiple"></select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-offset-2 col-lg-10">
-                        <input type="submit" class="btn btn-success" value="Assign Users" />
-                    </div>
-                </div>
-            </form>
-
-
+            <!--end::Body-->
         </div>
-        <!--End Hover Rows-->
-    </div>
-    <div>
-        @Html.ActionLink("Back to List", "Index")
     </div>
 </div>
 
+
 @section scripts{
-    <script>
-    </script>
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
