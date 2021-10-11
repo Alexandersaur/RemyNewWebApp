@@ -246,7 +246,11 @@ public async Task<IActionResult> AssignPMIndex()
                 return NotFound();
             }
 
-            var project = await _context.Projects.FindAsync(id);
+            //var project = await _context.Projects.FindAsync(id);
+
+            int companyId = User.Identity.GetCompanyId().Value;
+            var project = await _projectService.GetProjectByIdAsync(id, companyId);
+
             if (project == null)
             {
                 return NotFound();

@@ -228,7 +228,7 @@
                                 <!--begin::Info-->
                                 <div class="d-flex flex-column">
                                     <a class="text-gray-900 text-hover-primary fs-6 fw-bolder">Development Team</a>
-                                    <span class="fw-bold text-muted">Submitter, Developer, & P.M.</span>
+                                    <span class="fw-bold text-muted">Developer & Project Manager</span>
                                 </div>
                                 <!--end::Info-->
                             </div>
@@ -238,45 +238,6 @@
                     <!--end::Header-->
                     <!--begin::Body-->
                     <div class="card-body pt-5">
-
-                        <!--begin::Item-->
-                        <div class="d-flex mb-5">
-                            <!--begin::Symbol-->
-                            @if (Model.OwnerUser != null)
-                            {
-
-                                @if (Model.OwnerUser.AvatarFileData != null)
-                                {
-                                    <div class="symbol symbol-circle symbol-75px me-3">
-                                        <img src="data:image/*;base64,@Convert.ToBase64String(Model.OwnerUser.AvatarFileData)" />
-                                    </div>
-                                }
-                            }
-                            <!--end::Symbol-->
-                            <!--begin::Section-->
-                            <div class="d-flex align-items-center flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
-                                <!--begin::Title-->
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pe-3">
-                                            <a href="#" class="fs-5 text-hover-primary fw-bolder text-muted">Submitter</a>
-                                            @*<span class="text-gray-400 fw-bold fs-7 my-1">User Role</span>*@
-                                        </div>
-                                    </div>
-                                    <div class="py-lg-0 py-2">
-                                        @if (Model.OwnerUser != null)
-                                        {
-
-                                            <span class="text-gray-800 fw-boldest fs-3">@Model.OwnerUser.FullName</span>
-                                        }
-                                        @*<span class="text-gray-400 fs-7 fw-bold d-block">Actions on this ticket</span>*@
-                                    </div>
-                                </div>
-                                <!--end::Title-->
-                            </div>
-                            <!--end::Section-->
-                        </div>
-                        <!--end::Item-->
                         <!--begin::Item-->
                         <div class="d-flex mb-5">
                             <!--begin::Symbol-->
@@ -310,7 +271,7 @@
                                         {
                                             @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                                             {
-                                                <a asp-action="AssignMembers" asp-route-id="@Model.Id" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px">Assign Developer</a>
+                                                <a asp-action="AssignMembers" asp-route-id="@Model.Project.Id" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px">Assign Developer</a>
                                             }
                                             else
                                             {
