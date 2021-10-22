@@ -239,7 +239,9 @@ public async Task<IActionResult> AssignPMIndex()
         }
 
         // GET: Projects/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        //public async Task<IActionResult> Edit(int? id)
+        //TO DO: review nullable int
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
