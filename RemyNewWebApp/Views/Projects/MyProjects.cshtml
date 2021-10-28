@@ -2,11 +2,27 @@
 @using RemyNewWebApp.Models.Enums
 @using RemyNewWebApp.Extensions
 @using RemyNewWebApp.Services.Interfaces
+@using Microsoft.AspNetCore.Identity
 @inject IBTProjectService BTProjectSerivce
+@inject UserManager<BTUser> _userManager
+
+@{
+    ViewData["Title"] = "My Projects";
+    BTUser btUser = await _userManager.GetUserAsync(User);
+}
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Container-->
+
     <div class="container" id="kt_content_container">
+        @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+        {
+            <div class="col-12" style="text-align:right">
+
+                <a asp-action="Create" class="btn btn-sm btn-success min-w-125px mb-6 pull-right">New Project</a>
+            </div>
+
+        }
         @if (Model.Count() != 0)
         {
             @foreach (var item in Model)
@@ -15,15 +31,15 @@
                 <div class="card mb-6 mb-xl-9">
                     <div class="card-body pt-9 pb-0">
                         <!--begin::Details-->
-                        <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
+                        <div class="d-flex flex-wrap flex-sm-nowrap mb-4">
                             @if (item.Project.ImageFileData != null)
                             {
                                 <!--begin::Image-->
                                 <div class="row">
                                     <div class="col align-content-center justify-content-center">
-                                        <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
+                                        <a asp-action="Details" asp-route-id="@item.Project.Id" class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
                                             <img class="mw-50px mw-lg-75px" src="data:image/*;base64,@(Convert.ToBase64String(item.Project.ImageFileData))" alt="image" />
-                                        </div>
+                                        </a>
                                         @*<a href="#" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px mb-2">Change Photo</a>*@
                                         @if (item.ProjectManager != null)
                                         {
@@ -79,9 +95,9 @@
                                 <!--begin::Image-->
                                 <div class="row">
                                     <div class="col align-content-center justify-content-around">
-                                        <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
+                                        <a asp-action="Details" asp-route-id="@item.Project.Id" class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
                                             <img class="mw-50px mw-lg-75px" src="/assets/media/svg/brand-logos/volicity-9.svg" alt="image" />
-                                        </div>
+                                        </a>
                                         <!--TODO: Change photo-->
                                         @*<a href="#" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px mb-2">Change Photo</a>*@
                                         @if (item.ProjectManager != null)
@@ -138,14 +154,17 @@
                             <!--begin::Wrapper-->
                             <div class="flex-grow-1">
                                 <!--begin::Head-->
-                                <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                                <div class="d-flex justify-content-between align-items-start flex-nowrap mb-2">
                                     <!--begin::Details-->
-                                    <div class="d-flex flex-column">
+                                    <div class="d-flex">
 
                                         <!--begin::Status-->
-                                        <div class="align-items-center mb-1">
+
+                                        <div class="align-items-end mb-1">
                                             <a asp-action="Details" asp-route-id="@item.Project.Id" class="text-gray-800 text-hover-primary fs-2 fw-bolder me-3">@item.Project.Name</a>
                                         </div>
+
+
                                         <!--end::Status-->
                                         <!--begin::Description-->
                                         @*<div class="d-flex flex-wrap fw-bold mb-4 fs-5 text-gray-400">#1 Tool to get started with Web Apps any Kind &amp; size</div>*@
@@ -176,7 +195,23 @@
                                                 <div class="fw-bold fs-6 text-gray-400">Start Date</div>
                                                 <!--end::Label-->
                                             </div>
-                                            <a asp-action="Details" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px">View Details</a>
+
+                                            @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                            {
+
+                                                @if (item.Project.Archived)
+                                                {
+                                                    <a asp-action="Restore" asp-route-id="@item.Project.Id" class="btn btn-sm btn-warning min-w-125px">Restore</a>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-action="Archive" asp-route-id="@item.Project.Id" class="btn btn-sm btn-danger min-w-125px">Archive</a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="Details" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px">View Details</a>
+                                            }
                                         </div>
                                         <!--end::Stat-->
                                         <!--begin::Stat-->
@@ -191,7 +226,7 @@
                                                 <div class="fw-bold fs-6 text-gray-400">End Date</div>
                                                 <!--end::Label-->
                                             </div>
-                                            @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                            @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(nameof(Roles.Admin)))
                                             {
                                                 @*<a asp-action="Edit" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px" data-bs-toggle="modal" data-bs-target="#kt_modal_users_search">Edit Info</a>*@
                                                 <a asp-action="Edit" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px">Edit Info</a>
@@ -210,7 +245,7 @@
                                                 <div class="fw-bold fs-6 text-gray-400">Members</div>
                                                 <!--end::Label-->
                                             </div>
-                                            @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                            @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(nameof(Roles.Admin)))
                                             {
                                                 @*<a asp-action="AssignMembers" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px" data-bs-toggle="modal" data-bs-target="#kt_modal_users_search">Add Member</a>*@
                                                 <a asp-action="AssignMembers" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px">Add Member</a>
@@ -239,11 +274,11 @@
                                     <!--<div class="symbol-group symbol-hover mb-3">-->
                                     <!--begin::User-->
                                     <!--foreach(var user in item.Project.Members)
-                                {
-                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Michael Eberon">
-                                                <img alt="Pic" src="data:image/*;base64,(Convert.ToBase64String(item.Project.Members.))" />
-                                            </div>
-                                }-->
+                                    {
+                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Michael Eberon">
+                                                    <img alt="Pic" src="data:image/*;base64,(Convert.ToBase64String(item.Project.Members.))" />
+                                                </div>
+                                    }-->
                                     <!--end::User-->
                                     <!--</div>-->
                                     <!--end::Users-->
@@ -253,6 +288,7 @@
                             <!--end::Wrapper-->
                         </div>
                         <!--end::Details-->
+
                     </div>
                 </div>
             }
@@ -263,15 +299,15 @@
                 <div class="card-body pt-9 pb-0">
                     <!--begin::Details-->
                     <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
-                            <!--begin::Image-->
-                            <div class="row">
-                                <div class="col align-content-center justify-content-around">
-                                    <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
-                                        <img class="mw-50px mw-lg-75px" src="/assets/media/svg/brand-logos/volicity-9.svg" alt="image" />
-                                    </div>
+                        <!--begin::Image-->
+                        <div class="row">
+                            <div class="col align-content-center justify-content-around">
+                                <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
+                                    <img class="mw-50px mw-lg-75px" src="/assets/media/svg/brand-logos/volicity-9.svg" alt="image" />
                                 </div>
                             </div>
-                            <!--end::Image-->
+                        </div>
+                        <!--end::Image-->
                         <!--begin::Wrapper-->
                         <div class="flex-grow-1">
                             <!--begin::Head-->
@@ -289,7 +325,7 @@
                             <!--end::Head-->
                             <span class="text-muted fw-bold text-muted d-block fs-7 mb-4 ">
                                 Join a project to see key information here! You must be assigned to a project by an Administrator or a Project Manager
-                            </span>                            
+                            </span>
                         </div>
                         <!--end::Wrapper-->
                     </div>

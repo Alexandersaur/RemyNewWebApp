@@ -40,7 +40,7 @@ namespace RemyNewWebApp.Models
 
         // -- Foreign Keys -- //
 
-        public int? CompanyId { get; set; }
+        public int CompanyId { get; set; }
 
         // -- Navigation Properties -- //
 

@@ -47,8 +47,8 @@ namespace RemyNewWebApp.Controllers
                                                .Include(p => p.Company)
                                                .Include(p => p.ProjectPriority);
             return View(await applicationDbContext.ToListAsync());
-        }        
-        
+        }
+
         // GET: MY Projects
         public async Task<IActionResult> MyProjects()
         {
@@ -63,14 +63,45 @@ namespace RemyNewWebApp.Controllers
                 model.Add(viewModel);
             }
             return View(model);
-        }        
-        
+        }
+
         // GET: ALL Projects
         public async Task<IActionResult> AllProjects()
         {
             List<ProjectViewModel> model = new();
             int companyId = User.Identity.GetCompanyId().Value;
-            List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
+
+            if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+            {
+                List<Project> projects = await _companyInfoService.GetAllProjectsAsync(companyId);
+                foreach (Project project in projects)
+                {
+                    ProjectViewModel viewModel = new();
+                    viewModel.Project = project;
+                    viewModel.ProjectManager = await _projectService.GetProjectManagerAsync(project.Id);
+                    model.Add(viewModel);
+                }
+            }
+            else
+            {
+                List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
+                foreach (Project project in projects)
+                {
+                    ProjectViewModel viewModel = new();
+                    viewModel.Project = project;
+                    viewModel.ProjectManager = await _projectService.GetProjectManagerAsync(project.Id);
+                    model.Add(viewModel);
+                }
+            }
+            return View(model);
+        }
+
+        // GET: Archived Projects
+        public async Task<IActionResult> ArchivedProjects()
+        {
+            List<ProjectViewModel> model = new();
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> projects = await _projectService.GetArchivedProjectsByCompany(companyId);
             foreach (Project project in projects)
             {
                 ProjectViewModel viewModel = new();
@@ -81,10 +112,8 @@ namespace RemyNewWebApp.Controllers
             return View(model);
         }
 
-
-
-// GET: Assign PM index
-public async Task<IActionResult> AssignPMIndex()
+        // GET: Assign PM index
+        public async Task<IActionResult> AssignPMIndex()
         {
             int companyId = User.Identity.GetCompanyId().Value;
             List<Project> projects = await _projectService.GetUnassignedProjectsAsync(companyId);
@@ -185,7 +214,7 @@ public async Task<IActionResult> AssignPMIndex()
             //Add Viewmodel instance "AddProjectWithPMViewModel"
             AddProjectWithPMViewModel model = new();
             //Load SelectLists with data ie. PMList & PriorityList
-            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId),"Id","FullName");
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName");
             model.PriorityList = new SelectList(_context.ProjectPriorities, "Id", "Name");
             //Return View with viewmodel instance as the model
             return View(model);
@@ -222,7 +251,7 @@ public async Task<IActionResult> AssignPMIndex()
                     if (!string.IsNullOrEmpty(model.PMId))
                     {
                         //Add the PM to the project with service call
-                        await _projectService.AddUserToProjectAsync(model.PMId, model.Project.Id);
+                        await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
                     }
                 }
                 catch (Exception)

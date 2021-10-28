@@ -2,29 +2,23 @@
 @using RemyNewWebApp.Models.Enums
 @using RemyNewWebApp.Extensions
 @using RemyNewWebApp.Services.Interfaces
-@using RemyNewWebApp.Services
 @using Microsoft.AspNetCore.Identity 
-@inject IBTProjectService ProjectSerivce
+@inject IBTProjectService BTProjectSerivce
 @inject UserManager<BTUser> UserManager
 
 
 @{
-    ViewData["Title"] = "All Projects";
+    ViewData["Title"] = "Archived Projects";
     BTUser btUser = await UserManager.GetUserAsync(User);
     //BTUser projectManager = await BTProjectSerivce.GetProjectManagerAsync(Model.Project.Id);
 }
 
+<h1> Archived Projects</h1>
+
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Container-->
     <div class="container" id="kt_content_container">
-        @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
-        {
-            <div class="col-12" style="text-align:right">
 
-                <a asp-action="Create" class="btn btn-sm btn-success min-w-125px mb-6 pull-right">New Project</a>
-            </div>
-
-        }
         @foreach (var item in Model)
         {
             <!--begin::Navbar-->
@@ -193,21 +187,9 @@
                                             <!--end::Label-->
                                         </div>
 
-                                        @{
-                                            bool isProjectPM = (await ProjectSerivce.GetProjectManagerAsync(item.Project.Id))?.Id == btUser.Id;
-                                        }
-
-                                        @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
+                                        @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
                                         {
-
-                                            @if (item.Project.Archived)
-                                            {
-                                                <a asp-action="Restore" asp-route-id="@item.Project.Id" class="btn btn-sm btn-warning min-w-125px">Restore</a>
-                                            }
-                                            else
-                                            {
-                                                <a asp-action="Archive" asp-route-id="@item.Project.Id" class="btn btn-sm btn-danger min-w-125px">Archive</a>
-                                            }
+                                                <a asp-action="Restore" asp-route-id="@item.Project.Id" class="btn btn-sm btn-warning min-w-125px">Restore</a>                                    
                                         }
                                         else
                                         {
@@ -227,7 +209,7 @@
                                             <div class="fw-bold fs-6 text-gray-400">End Date</div>
                                             <!--end::Label-->
                                         </div>
-                                        @if (User.IsInRole(Roles.Admin.ToString()) || isProjectPM)
+                                        @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                                         {
                                             @*<a asp-action="Edit" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px" data-bs-toggle="modal" data-bs-target="#kt_modal_users_search">Edit Info</a>*@
                                             <a asp-action="Edit" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px">Edit Info</a>
@@ -246,7 +228,7 @@
                                             <div class="fw-bold fs-6 text-gray-400">Members</div>
                                             <!--end::Label-->
                                         </div>
-                                        @if (User.IsInRole(Roles.Admin.ToString()) || isProjectPM)
+                                        @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                                         {
                                             @*<a asp-action="AssignMembers" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px" data-bs-toggle="modal" data-bs-target="#kt_modal_users_search">Add Member</a>*@
                                             <a asp-action="AssignMembers" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px">Add Member</a>
@@ -275,11 +257,11 @@
                                 <!--<div class="symbol-group symbol-hover mb-3">-->
                                 <!--begin::User-->
                                 <!--foreach(var user in item.Project.Members)
-                            {
-                                        <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Michael Eberon">
-                                            <img alt="Pic" src="data:image/*;base64,(Convert.ToBase64String(item.Project.Members.))" />
-                                        </div>
-                            }-->
+                                {
+                                            <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Michael Eberon">
+                                                <img alt="Pic" src="data:image/*;base64,(Convert.ToBase64String(item.Project.Members.))" />
+                                            </div>
+                                }-->
                                 <!--end::User-->
                                 <!--</div>-->
                                 <!--end::Users-->
