@@ -20,10 +20,8 @@
         @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
         {
             <div class="col-12" style="text-align:right">
-
                 <a asp-action="Create" class="btn btn-sm btn-success min-w-125px mb-6 pull-right">New Project</a>
             </div>
-
         }
         @foreach (var item in Model)
         {

@@ -1,5 +1,6 @@
-﻿ @model RemyNewWebApp.Models.ViewModels.AddProjectWithPMViewModel
+﻿@model RemyNewWebApp.Models.ViewModels.AddProjectWithPMViewModel
 @using Microsoft.AspNetCore.Identity;
+@using RemyNewWebApp.Models.Enums;
 @inject UserManager<BTUser> UserManager
 @inject SignInManager<BTUser> SignInManager
 
@@ -69,15 +70,20 @@
                                             <span asp-validation-for="Project.Description" class="text-danger"></span>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="form-group col-6">
-                                                <label class="control-label">Project Manager</label>
-                                                <select asp-for="PMId" class="form-control" asp-items="@Model.PMList"></select>
-                                            </div>
+                                            @if (User.IsInRole(nameof(Roles.Admin)))
+                                            {
+                                                <div class="form-group col-6">
+                                                    <label class="control-label">Project Manager</label>
+                                                    <select asp-for="PMId" class="form-control" asp-items="@Model.PMList">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                            }
 
 
                                             <div class="form-group col-6">
                                                 <label class="control-label">Priority</label>
-                                                <select asp-for="Project.ProjectPriorityId" class="form-control" asp-items="@Model.PriorityList"></select>
+                                                <select asp-for="ProjectPriority" class="form-control" asp-items="@Model.PriorityList"></select>
                                             </div>
                                         </div>
                                         <div class="row mb-6">
@@ -105,7 +111,7 @@
                                             <span asp-validation-for="Project.ImageFormFile" class="text-danger"></span>
                                         </div>
                                         <label>Image Preview</label>
-                                        @if (Model.Project.ImageFileData != null)
+                                        @if (Model.Project?.ImageFileData != null)
                                         {
                                             <img id="imageFileData" class="img-fluid img-thumbnail mb-3" src="data:image/*;base64,@(Convert.ToBase64String(Model.Project.ImageFileData))" alt="" />
                                         }
@@ -131,8 +137,8 @@
 </div>
 
 @*<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
+        <a asp-action="Index">Back to List</a>
+    </div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -12,5 +12,6 @@ namespace RemyNewWebApp.Models.ViewModels
         public SelectList PMList { get; set; }
         public string PMId { get; set; }
         public SelectList PriorityList { get; set; }
+        public int ProjectPriority { get; set; }
     }
 }

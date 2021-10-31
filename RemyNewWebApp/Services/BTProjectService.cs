@@ -91,9 +91,21 @@ namespace RemyNewWebApp.Services
         //--CRUD: Delete(Archive)--//
         public async Task ArchiveProjectAsync(Project project)
         {
-            project.Archived = true;
-            _context.Update(project);
-            await _context.SaveChangesAsync();
+            try
+            {
+                project.Archived = true;
+                await UpdateProjectAsync(project);
+                foreach(Ticket ticket in project.Tickets)
+                {
+                    ticket.ArchivedByProject = true;
+                    _context.Update(ticket);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<List<BTUser>> GetAllProjectMembersExceptPMAsync(int projectId)
@@ -207,7 +219,7 @@ namespace RemyNewWebApp.Services
             Project project = await _context.Projects
                                             .Include(p => p.Members)
                                             .FirstOrDefaultAsync(p => p.Id == projectId);
-            foreach(BTUser member in project?.Members)
+            foreach (BTUser member in project?.Members)
             {
                 if (await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
                 {
@@ -225,9 +237,9 @@ namespace RemyNewWebApp.Services
             List<BTUser> members = new();
             foreach (var user in project.Members)
             {
-                if(await _rolesService.IsUserInRoleAsync(user, role))
+                if (await _rolesService.IsUserInRoleAsync(user, role))
                 {
-                    members.Add(user); 
+                    members.Add(user);
                 }
             }
             return members;
@@ -327,7 +339,7 @@ namespace RemyNewWebApp.Services
                                             .FirstOrDefaultAsync(p => p.Id == projectId);
             try
             {
-                foreach(BTUser member in project?.Members)
+                foreach (BTUser member in project?.Members)
                 {
                     if (await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
                     {
@@ -373,7 +385,7 @@ namespace RemyNewWebApp.Services
             {
                 List<BTUser> members = await GetProjectMembersByRoleAsync(projectId, role);
                 Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
-                foreach(BTUser btUser in members)
+                foreach (BTUser btUser in members)
                 {
                     try
                     {
@@ -398,6 +410,25 @@ namespace RemyNewWebApp.Services
         {
             _context.Update(project);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task RestoreProjectAsync(Project project)
+        {
+            try
+            { 
+                project.Archived = false;
+                await UpdateProjectAsync(project);
+                foreach (Ticket ticket in project.Tickets)
+                {
+                    ticket.ArchivedByProject = false;
+                    _context.Update(ticket);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

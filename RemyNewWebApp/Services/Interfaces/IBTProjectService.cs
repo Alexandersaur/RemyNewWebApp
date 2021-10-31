@@ -30,6 +30,7 @@ namespace RemyNewWebApp.Services.Interfaces
         public Task RemoveProjectManagerAsync(int projectId);
         public Task RemoveUsersFromProjectByRoleAsync(string role, int projectId);
         public Task RemoveUserFromProjectAsync(string userId, int projectId);
+        public Task RestoreProjectAsync(Models.Project project);
         public Task UpdateProjectAsync(Models.Project project);
 
     }
