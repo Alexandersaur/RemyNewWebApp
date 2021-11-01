@@ -5,9 +5,11 @@
 @using RemyNewWebApp.Services.Interfaces
 @inject IBTProjectService BTProjectSerivce
 @inject IBTRolesService BTRolesService
+@inject IBTTicketHistoryService HistoryService
 @inject UserManager<BTUser> UserManager
 
 @{
+    ViewData["Title"] = "Details";
     BTUser projectManager = await BTProjectSerivce.GetProjectManagerAsync(Model.Id);
     BTUser btUser = await UserManager.GetUserAsync(User);
 }
@@ -20,125 +22,64 @@
             <div class="card-body pt-9 pb-0">
                 <!--begin::Details-->
                 <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
-                    @if (Model.ImageFileData != null)
-                    {
-                        <!--begin::Image-->
-                        <div class="row">
-                            <div class="col align-content-center justify-content-center">
-                                <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
+                    <!--begin::Image-->
+                    <div class="row">
+                        <div class="col align-content-center justify-content-center">
+                            <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
+                                @if (Model.ImageFileData != null)
+                                {
                                     <img class="mw-50px mw-lg-75px" src="data:image/*;base64,@(Convert.ToBase64String(Model.ImageFileData))" alt="image" />
-                                </div>
-                                @*<a href="#" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px mb-2">Change Photo</a>*@
-                                @*@if (item.ProjectManager != null)
-                                    {
-                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                            PM: @item.ProjectManager.FullName
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        @if (User.IsInRole(Roles.Admin.ToString()))
-                                        {
-                                            <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                                <a asp-action="AssignPM" asp-route-id="@Model.Id" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px">Assign PM</a>
-                                            </a>
-                                        }
-                                        else
-                                        {
-                                            <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                                PM: Unassigned
-                                            </a>
-                                        }
-                                    }*@
-                                @if (Model.ProjectPriorityId == 4)
-                                {
-                                    <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                        Priority: <span class="badge badge-light-primary me-auto">@Model.ProjectPriority.Name</span>
-                                    </a>
                                 }
-                                @if (Model.ProjectPriorityId == 3)
+                                else
                                 {
-                                    <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                        Priority: <span class="badge badge-light-success me-auto">@Model.ProjectPriority.Name</span>
-                                    </a>
-                                }
-                                @if (Model.ProjectPriorityId == 2)
-                                {
-                                    <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                        Priority: <span class="badge badge-light-warning me-auto">@Model.ProjectPriority.Name</span>
-                                    </a>
-                                }
-                                @if (Model.ProjectPriorityId == 1)
-                                {
-                                    <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                        Priority: <span class="badge badge-light-danger me-auto">@Model.ProjectPriority.Name</span>
-                                    </a>
-                                }
-                            </div>
-                        </div>
-                        <!--end::Image-->
-                    }
-                    else
-                    {
-                        <!--begin::Image-->
-                        <div class="row">
-                            <div class="col align-content-center justify-content-around">
-                                <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
                                     <img class="mw-50px mw-lg-75px" src="/assets/media/svg/brand-logos/volicity-9.svg" alt="image" />
-                                </div>
-                                <!--TODO: Change photo-->
-                                @*<a href="#" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px mb-2">Change Photo</a>*@
-                                @*@if (item.ProjectManager != null)
-                                    {
-                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                            PM: @item.ProjectManager.FullName
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        @if (User.IsInRole(Roles.Admin.ToString()))
-                                        {
-                                            <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                                <a asp-action="AssignPM" asp-route-id="@Model.Id" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px">Assign PM</a>
-                                            </a>
-                                        }
-                                        else
-                                        {
-                                            <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                                PM: Unassigned
-                                            </a>
-                                        }
-                                    }*@
-                                @if (Model.ProjectPriorityId == 4)
-                                {
-                                    <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                        Priority: <span class="badge badge-light-primary me-auto">@Model.ProjectPriority.Name</span>
-                                    </a>
-                                }
-                                @if (Model.ProjectPriorityId == 3)
-                                {
-                                    <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                        Priority: <span class="badge badge-light-success me-auto">@Model.ProjectPriority.Name</span>
-                                    </a>
-                                }
-                                @if (Model.ProjectPriorityId == 2)
-                                {
-                                    <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                        Priority: <span class="badge badge-light-warning me-auto">@Model.ProjectPriority.Name</span>
-                                    </a>
-                                }
-                                @if (Model.ProjectPriorityId == 1)
-                                {
-                                    <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
-                                        Priority: <span class="badge badge-light-danger me-auto">@Model.ProjectPriority.Name</span>
-                                    </a>
+
                                 }
                             </div>
+
+                            @if (Model.ProjectPriorityId == 4)
+                            {
+                                <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px mb-2">
+                                    Priority: <span class="badge badge-light-primary me-auto">@Model.ProjectPriority.Name</span>
+                                </a>
+                            }
+                            @if (Model.ProjectPriorityId == 3)
+                            {
+                                <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px mb-2">
+                                    Priority: <span class="badge badge-light-success me-auto">@Model.ProjectPriority.Name</span>
+                                </a>
+                            }
+                            @if (Model.ProjectPriorityId == 2)
+                            {
+                                <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px mb-2">
+                                    Priority: <span class="badge badge-light-warning me-auto">@Model.ProjectPriority.Name</span>
+                                </a>
+                            }
+                            @if (Model.ProjectPriorityId == 1)
+                            {
+                                <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px mb-2">
+                                    Priority: <span class="badge badge-light-danger me-auto">@Model.ProjectPriority.Name</span>
+                                </a>
+                            }
+                            <div class="progress-container progress-info me-4">
+                                <span class="progress-badge" style="font-size:small">
+                                    Timeline Progress
+                                </span>
+                                <div class="progress">
+                                    @{
+                                        var start = Model.StartDate.DateTime;
+                                        var end = Model.EndDate.DateTime;
+                                        var today = DateTime.Now;
+                                        var percent = today >= end ? 100 : today < start ? 0 : Math.Round((today.Subtract(start)) / (end.Subtract(start)) * 100);
+                                    }
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:@percent%;">
+                                        <span class="progress-value">@percent%</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!--end::Image-->
-                    }
-
-
+                    </div>
+                    <!--end::Image-->
                     <!--begin::Wrapper-->
                     <div class="flex-grow-1">
                         <!--begin::Head-->
@@ -150,6 +91,18 @@
                                 <div class="align-items-center mb-1">
                                     <a asp-action="Details" asp-route-id="@Model.Id" class="text-gray-800 text-hover-primary fs-2 fw-bolder me-3">@Model.Name</a>
                                 </div>
+                                <!--begin::Users-->
+                                <div class="symbol-group symbol-hover">
+                                    <!--begin::User-->
+                                    @foreach (var user in Model.Members)
+                                    {
+                                        <div class="symbol symbol-55px symbol-circle" data-bs-toggle="tooltip" title="@user.FullName">
+                                            <img alt="Pic" src="data:image/*;base64,@(Convert.ToBase64String(user.AvatarFileData))" />
+                                        </div>
+                                    }
+                                    <!--end::User-->
+                                </div>
+                                <!--end::Users-->
                                 <!--end::Status-->
                                 <!--begin::Description-->
                                 @*<div class="d-flex flex-wrap fw-bold mb-4 fs-5 text-gray-400">#1 Tool to get started with Web Apps any Kind &amp; size</div>*@
@@ -239,20 +192,11 @@
                                 <!--end::Stat-->
                             </div>
                             <!--end::Stats-->
-                            <!--begin::Users-->
-                            <!--<div class="symbol-group symbol-hover mb-3">-->
-                            <!--begin::User-->
-                            <!--foreach(var user in item.Project.Members)
-                            {
-                                        <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Michael Eberon">
-                                            <img alt="Pic" src="data:image/*;base64,(Convert.ToBase64String(item.Project.Members.))" />
-                                        </div>
-                            }-->
-                            <!--end::User-->
-                            <!--</div>-->
-                            <!--end::Users-->
+
                         </div>
                         <!--end::Info-->
+
+
                     </div>
                     <!--end::Wrapper-->
                 </div>
