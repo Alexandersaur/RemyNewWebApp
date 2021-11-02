@@ -1,0 +1,294 @@
+﻿@model IEnumerable<RemyNewWebApp.Models.ViewModels.ProjectViewModel>
+@using RemyNewWebApp.Models.Enums
+@using RemyNewWebApp.Extensions
+@using RemyNewWebApp.Services.Interfaces
+@using RemyNewWebApp.Services
+@using Microsoft.AspNetCore.Identity 
+@inject IBTProjectService ProjectSerivce
+@inject UserManager<BTUser> UserManager
+
+
+@{
+    ViewData["Title"] = "Unassigned Projects";
+    BTUser btUser = await UserManager.GetUserAsync(User);
+    //BTUser projectManager = await BTProjectSerivce.GetProjectManagerAsync(Model.Project.Id);
+}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Container-->
+    <div class="container" id="kt_content_container">
+        @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+        {
+            <div class="col-12" style="text-align:right">
+                <a asp-action="Create" class="btn btn-sm btn-success min-w-125px mb-6 pull-right">New Project</a>
+            </div>
+        }
+        @foreach (var item in Model)
+        {
+            <!--begin::Navbar-->
+            <div class="card mb-6 mb-xl-9">
+                <div class="card-body pt-9 pb-0">
+                    <!--begin::Details-->
+                    <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
+                        @if (item.Project.ImageFileData != null)
+                        {
+                            <!--begin::Image-->
+                            <div class="row">
+                                <div class="col align-content-center justify-content-center">
+                                    <a asp-action="Details" asp-route-id="@item.Project.Id" class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
+                                        <img class="mw-50px mw-lg-75px" src="data:image/*;base64,@(Convert.ToBase64String(item.Project.ImageFileData))" alt="image" />
+                                    </a>
+                                    @*<a href="#" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px mb-2">Change Photo</a>*@
+                                    @if (item.ProjectManager != null)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            PM: @item.ProjectManager.FullName
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        @if (User.IsInRole(Roles.Admin.ToString()))
+                                        {
+                                            <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                                <a asp-action="AssignPM" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px">Assign PM</a>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                                PM: Unassigned
+                                            </a>
+                                        }
+                                    }
+                                    @if (item.Project.ProjectPriorityId == 4)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            Priority: <span class="badge badge-light-primary me-auto">@item.Project.ProjectPriority.Name</span>
+                                        </a>
+                                    }
+                                    @if (item.Project.ProjectPriorityId == 3)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            Priority: <span class="badge badge-light-success me-auto">@item.Project.ProjectPriority.Name</span>
+                                        </a>
+                                    }
+                                    @if (item.Project.ProjectPriorityId == 2)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            Priority: <span class="badge badge-light-warning me-auto">@item.Project.ProjectPriority.Name</span>
+                                        </a>
+                                    }
+                                    @if (item.Project.ProjectPriorityId == 1)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            Priority: <span class="badge badge-light-danger me-auto">@item.Project.ProjectPriority.Name</span>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                            <!--end::Image-->
+                        }
+                        else
+                        {
+                            <!--begin::Image-->
+                            <div class="row">
+                                <div class="col align-content-center justify-content-around">
+                                    <a asp-action="Details" asp-route-id="@item.Project.Id" class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
+                                        <img class="mw-50px mw-lg-75px" src="/assets/media/svg/brand-logos/volicity-9.svg" alt="image" />
+                                    </a>
+                                    <!--TODO: Change photo-->
+                                    @*<a href="#" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px mb-2">Change Photo</a>*@
+                                    @if (item.ProjectManager != null)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            PM: @item.ProjectManager.FullName
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        @if (User.IsInRole(Roles.Admin.ToString()))
+                                        {
+                                            <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                                <a asp-action="AssignPM" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px">Assign PM</a>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                                PM: Unassigned
+                                            </a>
+                                        }
+                                    }
+                                    @if (item.Project.ProjectPriorityId == 4)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            Priority: <span class="badge badge-light-primary me-auto">@item.Project.ProjectPriority.Name</span>
+                                        </a>
+                                    }
+                                    @if (item.Project.ProjectPriorityId == 3)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            Priority: <span class="badge badge-light-success me-auto">@item.Project.ProjectPriority.Name</span>
+                                        </a>
+                                    }
+                                    @if (item.Project.ProjectPriorityId == 2)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            Priority: <span class="badge badge-light-warning me-auto">@item.Project.ProjectPriority.Name</span>
+                                        </a>
+                                    }
+                                    @if (item.Project.ProjectPriorityId == 1)
+                                    {
+                                        <a class="text-dark fw-bold d-block fs-7 w-100px w-lg-150px">
+                                            Priority: <span class="badge badge-light-danger me-auto">@item.Project.ProjectPriority.Name</span>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                            <!--end::Image-->
+                        }
+
+
+                        <!--begin::Wrapper-->
+                        <div class="flex-grow-1">
+                            <!--begin::Head-->
+                            <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                                <!--begin::Details-->
+                                <div class="d-flex flex-column">
+
+                                    <!--begin::Status-->
+                                    <div class="align-items-center mb-1">
+                                        <a asp-action="Details" asp-route-id="@item.Project.Id" class="text-gray-800 text-hover-primary fs-2 fw-bolder me-3">@item.Project.Name</a>
+                                    </div>
+                                    <!--end::Status-->
+                                    <!--begin::Description-->
+                                    @*<div class="d-flex flex-wrap fw-bold mb-4 fs-5 text-gray-400">#1 Tool to get started with Web Apps any Kind &amp; size</div>*@
+                                    <!--end::Description-->
+                                </div>
+                                <!--end::Details-->
+
+                            </div>
+                            <!--end::Head-->
+
+                            <span class="text-muted fw-bold text-muted d-block fs-7 mb-4 ">
+                                @Html.DisplayFor(modelItem => item.Project.Description)
+                            </span>
+
+                            <!--begin::Info-->
+                            <div class="d-flex flex-wrap justify-content-start">
+                                <!--begin::Stats-->
+                                <div class="d-flex flex-wrap">
+                                    <!--begin::Stat-->
+                                    <div class="col">
+                                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                            <!--begin::Number-->
+                                            <div class="d-flex align-items-center">
+                                                <div class="fs-4 fw-bolder">@item.Project.StartDate.ToString("dd/MM/yyyy")</div>
+                                            </div>
+                                            <!--end::Number-->
+                                            <!--begin::Label-->
+                                            <div class="fw-bold fs-6 text-gray-400">Start Date</div>
+                                            <!--end::Label-->
+                                        </div>
+
+                                        @{
+                                            bool isProjectPM = (await ProjectSerivce.GetProjectManagerAsync(item.Project.Id))?.Id == btUser.Id;
+                                        }
+
+                                        @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
+                                        {
+
+                                            @if (item.Project.Archived)
+                                            {
+                                                <a asp-action="Restore" asp-route-id="@item.Project.Id" class="btn btn-sm btn-warning min-w-125px">Restore</a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="Archive" asp-route-id="@item.Project.Id" class="btn btn-sm btn-danger min-w-125px">Archive</a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Details" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px">View Details</a>
+                                        }
+                                    </div>
+                                    <!--end::Stat-->
+                                    <!--begin::Stat-->
+                                    <div class="col">
+                                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                            <!--begin::Number-->
+                                            <div class="d-flex align-items-center">
+                                                <div class="fs-4 fw-bolder">@item.Project.EndDate.ToString("dd/MM/yyyy")</div>
+                                            </div>
+                                            <!--end::Number-->
+                                            <!--begin::Label-->
+                                            <div class="fw-bold fs-6 text-gray-400">End Date</div>
+                                            <!--end::Label-->
+                                        </div>
+                                        @if (User.IsInRole(Roles.Admin.ToString()) || isProjectPM)
+                                        {
+                                            @*<a asp-action="Edit" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px" data-bs-toggle="modal" data-bs-target="#kt_modal_users_search">Edit Info</a>*@
+                                            <a asp-action="Edit" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px">Edit Info</a>
+                                        }
+                                    </div>
+                                    <!--end::Stat-->
+                                    <!--begin::Stat-->
+                                    <div class="col">
+                                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                            <!--begin::Number-->
+                                            <div class="d-flex align-items-center">
+                                                <div class="fs-4 fw-bolder">@item.Project.Members.Count()</div>
+                                            </div>
+                                            <!--end::Number-->
+                                            <!--begin::Label-->
+                                            <div class="fw-bold fs-6 text-gray-400">Members</div>
+                                            <!--end::Label-->
+                                        </div>
+                                        @if (User.IsInRole(Roles.Admin.ToString()) || isProjectPM)
+                                        {
+                                            @*<a asp-action="AssignMembers" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px" data-bs-toggle="modal" data-bs-target="#kt_modal_users_search">Add Member</a>*@
+                                            <a asp-action="AssignMembers" asp-route-id="@item.Project.Id" class="btn btn-sm btn-primary min-w-125px">Add Member</a>
+                                        }
+                                    </div>
+                                    <!--end::Stat-->
+                                    <!--begin::Stat-->
+                                    <div class="col">
+                                        <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                            <!--begin::Number-->
+                                            <div class="d-flex align-items-center">
+                                                <div class="fs-4 fw-bolder me-2" data-kt-countup="true" data-kt-countup-value="@item.Project.Tickets.Count()">0</div>
+                                            </div>
+                                            <!--end::Number-->
+                                            <!--begin::Label-->
+                                            <div class="fw-bold fs-6 text-gray-400">Open Tickets</div>
+                                            <!--end::Label-->
+                                        </div>
+                                        @*<a asp-action="Create" asp-controller="Tickets" class="btn btn-sm btn-primary min-w-125px" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Add Ticket</a>*@
+                                        <a asp-action="Create" asp-controller="Tickets" class="btn btn-sm btn-primary min-w-125px">Add Ticket</a>
+                                    </div>
+                                    <!--end::Stat-->
+                                </div>
+                                <!--end::Stats-->
+                                <!--begin::Users-->
+                                <!--<div class="symbol-group symbol-hover mb-3">-->
+                                <!--begin::User-->
+                                <!--foreach(var user in item.Project.Members)
+                            {
+                                        <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Michael Eberon">
+                                            <img alt="Pic" src="data:image/*;base64,(Convert.ToBase64String(item.Project.Members.))" />
+                                        </div>
+                            }-->
+                                <!--end::User-->
+                                <!--</div>-->
+                                <!--end::Users-->
+                            </div>
+                            <!--end::Info-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Details-->
+                </div>
+            </div>
+        }
+    </div>
+</div>

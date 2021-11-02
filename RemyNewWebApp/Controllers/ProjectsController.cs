@@ -144,7 +144,7 @@ namespace RemyNewWebApp.Controllers
                 await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
                 return RedirectToAction("Details", "Projects", new { id = model.Project.Id });
             }
-            return RedirectToAction("AssignPMIndex", "Projects");
+            return RedirectToAction(nameof(AssignPM), new { projectId = model.Project.Id });
         }
 
 
@@ -183,8 +183,7 @@ namespace RemyNewWebApp.Controllers
                     {
                         await _projectService.AddUserToProjectAsync(item, model.Project.Id);
                     }
-                    //goto project details
-                    //return RedirectToAction("Details", "Projects", new {id = model.Project.id});
+                    return RedirectToAction("Details", "Projects", new { id = model.Project.Id });
                 }
             }
             return RedirectToAction("AssignMembers", new { id = model.Project.Id });
@@ -293,7 +292,7 @@ namespace RemyNewWebApp.Controllers
                     {
                         await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
                     }
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Details", "Projects", new { id = model.Project.Id });
                 }
                 catch (Exception) 
                 {
@@ -302,6 +301,15 @@ namespace RemyNewWebApp.Controllers
             }
 
             return RedirectToAction("Edit");
+        }
+
+        // GET: Projects/UnassignedProjects
+        public async Task<IActionResult> UnassignedProjects()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> projects = new();
+            projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+            return View(projects);
         }
 
         // GET: Projects/Archive/5

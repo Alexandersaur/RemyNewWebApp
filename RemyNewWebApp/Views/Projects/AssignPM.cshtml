@@ -4,7 +4,7 @@
 @inject SignInManager<BTUser> SignInManager
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Assign PM";
 }
 
 <div class="row ms-8">
@@ -52,7 +52,7 @@
                     <!--begin::Text-->
                     <div class="row text-gray-800 mb-5">
                         <div class="col">
-                            <form asp-action="AssignPM" method="post">
+                            <form asp-action="AssignPM" asp-controller="Projects" method="post">
                                 <input asp-for="Project.Id" hidden />
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 @*<p>@Model.Project.Name</p>*@
@@ -71,6 +71,9 @@
                     <!--end::Text-->
                 </div>
                 <!--end::Post-->
+            </div>
+            <div>
+                <a asp-action="UnassignedProjects">Back to Unassigned Projects</a>
             </div>
             <!--end::Body-->
         </div>

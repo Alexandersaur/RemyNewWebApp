@@ -55,7 +55,7 @@
                                 <div class="col-12 mb-3">
                                     <div class="form-group">
                                         @*<label asp-for="@Model.Users" class="control-label">Assign team members for Project: @Model.Project.Name</label>*@
-                                        <select asp-for="@Model.SelectedUsers" class="form-control" asp-items="@Model.Users" multiple="multiple"></select>
+                                        <select required asp-for="@Model.SelectedUsers" class="form-control" asp-items="@Model.Users" multiple="multiple"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -67,8 +67,12 @@
                     <!--end::Text-->
                 </div>
                 <!--end::Post-->
+                <div>
+                    <a asp-action="Details" asp-controller="Projects" asp-route-id="@Model.Project.Id">Back to Details</a>
+                </div>
             </div>
             <!--end::Body-->
+
         </div>
     </div>
 </div>

@@ -140,7 +140,21 @@
                                         </div>
                                     </div>
 
-
+                                    @if (User.IsInRole(nameof(Roles.Admin)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Projects" asp-action="UnassignedProjects">
+                                                        <span class="menu-title">Unassigned Projects</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
 
                                     @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                                     {
@@ -627,7 +641,21 @@
                                         </div>
                                     </div>
 
-
+                                    @if (User.IsInRole(nameof(Roles.Admin)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Projects" asp-action="UnassignedProjects">
+                                                        <span class="menu-title">Unassigned Projects</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
 
                                     @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                                     {
@@ -1113,7 +1141,21 @@
                                         </div>
                                     </div>
 
-
+                                    @if (User.IsInRole(nameof(Roles.Admin)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Projects" asp-action="UnassignedProjects">
+                                                        <span class="menu-title">Unassigned Projects</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
 
                                     @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                                     {
@@ -1599,7 +1641,21 @@
                                         </div>
                                     </div>
 
-
+                                    @if (User.IsInRole(nameof(Roles.Admin)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Projects" asp-action="UnassignedProjects">
+                                                        <span class="menu-title">Unassigned Projects</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
 
                                     @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                                     {

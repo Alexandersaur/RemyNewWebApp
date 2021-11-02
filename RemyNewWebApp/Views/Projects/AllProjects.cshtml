@@ -36,7 +36,7 @@
                             <div class="row">
                                 <div class="col align-content-center justify-content-center">
                                     <a asp-action="Details" asp-route-id="@item.Project.Id" class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-2">
-                                        <img class="mw-50px mw-lg-75px" src="data:image/*;base64,@(Convert.ToBase64String(item.Project.ImageFileData))" alt="image" />
+                                        <img class="mw-100px mw-lg-150px" src="data:image/*;base64,@(Convert.ToBase64String(item.Project.ImageFileData))" alt="image" />
                                     </a>
                                     @*<a href="#" class="btn btn-sm btn-primary me-3 w-100px w-lg-150px mb-2">Change Photo</a>*@
                                     @if (item.ProjectManager != null)
