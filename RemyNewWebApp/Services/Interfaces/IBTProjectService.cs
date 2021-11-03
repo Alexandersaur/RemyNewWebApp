@@ -25,6 +25,7 @@ namespace RemyNewWebApp.Services.Interfaces
         public Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId);
         public Task<List<Models.Project>> GetUnassignedProjectsAsync(int companyId);
         public Task<List<Models.Project>> GetUserProjectsAsync(string userId);
+        public Task<bool> IsAssignedProjectManagerAsync(string userId, int projectId);
         public Task<bool> IsUserOnProjectAsync(string userId, int projectId);
         public Task<int> LookupProjectPriorityId(string priorityName);
         public Task RemoveProjectManagerAsync(int projectId);

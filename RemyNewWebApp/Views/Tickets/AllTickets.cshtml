@@ -7,7 +7,7 @@
 @inject UserManager<BTUser> UserManager
 
 @{
-    //BTUser btUser = await UserManager.GetUserAsync(User);
+    BTUser btUser = await UserManager.GetUserAsync(User);
 }
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -268,8 +268,26 @@
                                         </td>
                                     }
                                     <td class="text-end">
-                                        @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>*@
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>
+                                        @if (User.IsInRole(nameof(Roles.Admin)) || item.DeveloperUserId == btUser.Id || item.OwnerUserId == btUser.Id || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
+                                        }
+                                        @if (User.IsInRole(nameof(Roles.Admin)) || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId))
+                                        {
+                                            <span>|</span>
+                                            if (item.Project.Archived)
+                                            {
+                                                <a asp-action="Restore" asp-route-id="@item.Project.Id" class="btn btn-sm btn-warning min-w-125px">Restore</a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="Archive" asp-route-id="@item.Project.Id" class="btn btn-sm btn-danger min-w-125px">Archive</a>
+                                            }
+                                            <span>|</span>
+                                            <a asp-action="AssignDeveloper" asp-route-id="@item.Project.Id" class="btn btn-sm btn-danger min-w-125px">Assign Dev</a>
+
+                                        }
                                     </td>
                                 </tr>
                             }

@@ -27,13 +27,15 @@ namespace RemyNewWebApp.Controllers
         private readonly IBTTicketService _ticketService;
         private readonly IBTTicketHistoryService _historyService;
         private readonly IBTNotificationService _notificationService;
+        private readonly IBTLookupService _lookupService;
 
         public TicketsController(ApplicationDbContext context,
                                  IBTProjectService projectService,
                                  UserManager<BTUser> userManager,
                                  IBTTicketService ticketService,
                                  IBTTicketHistoryService historyService,
-                                 IBTNotificationService notificationService)
+                                 IBTNotificationService notificationService,
+                                 IBTLookupService lookupService)
         {
             _context = context;
             _projectService = projectService;
@@ -41,6 +43,7 @@ namespace RemyNewWebApp.Controllers
             _ticketService = ticketService;
             _historyService = historyService;
             _notificationService = notificationService;
+            _lookupService = lookupService;
         }
 
         // GET: Tickets
@@ -66,6 +69,16 @@ namespace RemyNewWebApp.Controllers
             string userId = _userManager.GetUserId(User);
 
             List<Ticket> tickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+            if(User.IsInRole(nameof(Roles.Developer)) || User.IsInRole(nameof(Roles.Submitter)))
+            {
+                return View(tickets.Where(t => t.Archived == false));
+            }
+            else
+            {
+                return View(tickets);
+            }
+
+
             ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name");
             ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name");
             ViewData["ProjectId"] = new SelectList(await _projectService.GetUserProjectsAsync(userId), "Id", "Name");
@@ -125,8 +138,8 @@ namespace RemyNewWebApp.Controllers
             {
                 ViewData["ProjectId"] = new SelectList(await _projectService.GetUserProjectsAsync(btUser.Id), "Id", "Name");
             }
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name");
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name");
+            ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name");
+            ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name");
             return View();
         }
 
@@ -138,9 +151,9 @@ namespace RemyNewWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
         {
+            BTUser btUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
-                BTUser btUser = await _userManager.GetUserAsync(User);
                 ticket.Created = DateTimeOffset.Now;
                 ticket.OwnerUserId = btUser.Id;
                 ticket.TicketStatusId = (await _ticketService.LookupTicketStatusIdAsync(BTTicketStatus.New.ToString())).Value;
@@ -171,8 +184,18 @@ namespace RemyNewWebApp.Controllers
                     await _notificationService.SendEmailNotificationsByRole(notification, companyId, Roles.Admin.ToString());
                 }
                 #endregion
-                return RedirectToAction("Details", "Projects", new { id = ticket.ProjectId });
+                return RedirectToAction(nameof(AllTickets));
             }
+            if (User.IsInRole(Roles.Admin.ToString()))
+            {
+                ViewData["ProjectId"] = new SelectList(await _projectService.GetAllProjectsByCompany(btUser.CompanyId), "Id", "Name");
+            }
+            else
+            {
+                ViewData["ProjectId"] = new SelectList(await _projectService.GetUserProjectsAsync(btUser.Id), "Id", "Name");
+            }
+            ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name");
+            ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name");
 
             return View(ticket);
         }
@@ -214,8 +237,7 @@ namespace RemyNewWebApp.Controllers
                 try
                 {
                     ticket.Updated = DateTimeOffset.Now;
-                    //_context.Update(ticket);
-                    //await _context.SaveChangesAsync();
+
                     await _ticketService.UpdateTicketAsync(ticket);
 
                     //TODO: Send notification
@@ -234,7 +256,7 @@ namespace RemyNewWebApp.Controllers
                 Ticket newticket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
                 await _historyService.AddHistoryAsync(oldTicket, newticket, btUser.Id);
 
-                return RedirectToAction("AllTickets", new { id = ticket.Id });
+                return RedirectToAction(nameof(AllTickets);
             }
             //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
             //ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.OwnerUserId);
@@ -277,8 +299,8 @@ namespace RemyNewWebApp.Controllers
         }
 
 
-        // GET: Tickets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Tickets/Archive/5
+        public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
             {
@@ -298,18 +320,18 @@ namespace RemyNewWebApp.Controllers
                 return NotFound();
             }
 
-            return View(ticket);
+            return RedirectToAction(nameof(AllTickets));
         }
 
-        // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Tickets/Archive/5
+        [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> ArchiveConfirmed(int id)
         {
             var ticket = await _context.Tickets.FindAsync(id);
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllTickets));
         }
 
         private async Task<bool> TicketExistsAsync(int id)
