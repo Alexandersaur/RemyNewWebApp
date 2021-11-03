@@ -256,7 +256,7 @@ namespace RemyNewWebApp.Controllers
                 Ticket newticket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
                 await _historyService.AddHistoryAsync(oldTicket, newticket, btUser.Id);
 
-                return RedirectToAction(nameof(AllTickets);
+                return RedirectToAction(nameof(AllTickets));
             }
             //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
             //ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.OwnerUserId);
