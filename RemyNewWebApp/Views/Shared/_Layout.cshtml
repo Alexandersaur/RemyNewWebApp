@@ -226,18 +226,21 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="menu-sub menu-sub-accordion">
-                                        <div class="menu-item menu-accordion">
-                                            <span class="menu-link">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
+                                    @if (!User.IsInRole(nameof(Roles.Admin)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
+                                                        <span class="menu-title">My Tickets</span>
+                                                    </a>
                                                 </span>
-                                                <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
-                                                    <span class="menu-title">My Tickets</span>
-                                                </a>
-                                            </span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                     <div class="menu-sub menu-sub-accordion">
                                         <div class="menu-item menu-accordion">
                                             <span class="menu-link">
@@ -262,7 +265,23 @@
                                             </span>
                                         </div>
                                     </div>
+                                    @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Tickets" asp-action="UnassignedTickets">
+                                                        <span class="menu-title">Unassigned Tickets</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
+
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -727,18 +746,21 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="menu-sub menu-sub-accordion">
-                                        <div class="menu-item menu-accordion">
-                                            <span class="menu-link">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
+                                    @if (!User.IsInRole(nameof(Roles.Admin)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
+                                                        <span class="menu-title">My Tickets</span>
+                                                    </a>
                                                 </span>
-                                                <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
-                                                    <span class="menu-title">My Tickets</span>
-                                                </a>
-                                            </span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                     <div class="menu-sub menu-sub-accordion">
                                         <div class="menu-item menu-accordion">
                                             <span class="menu-link">
@@ -763,6 +785,21 @@
                                             </span>
                                         </div>
                                     </div>
+                                    @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Tickets" asp-action="UnassignedTickets">
+                                                        <span class="menu-title">Unassigned Tickets</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <span class="menu-link">
@@ -1227,18 +1264,21 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="menu-sub menu-sub-accordion">
-                                        <div class="menu-item menu-accordion">
-                                            <span class="menu-link">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
+                                    @if (!User.IsInRole(nameof(Roles.Admin)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
+                                                        <span class="menu-title">My Tickets</span>
+                                                    </a>
                                                 </span>
-                                                <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
-                                                    <span class="menu-title">My Tickets</span>
-                                                </a>
-                                            </span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                     <div class="menu-sub menu-sub-accordion">
                                         <div class="menu-item menu-accordion">
                                             <span class="menu-link">
@@ -1263,6 +1303,21 @@
                                             </span>
                                         </div>
                                     </div>
+                                    @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Tickets" asp-action="UnassignedTickets">
+                                                        <span class="menu-title">Unassigned Tickets</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <span class="menu-link">
@@ -1727,18 +1782,21 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="menu-sub menu-sub-accordion">
-                                        <div class="menu-item menu-accordion">
-                                            <span class="menu-link">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
+                                    @if (!User.IsInRole(nameof(Roles.Admin)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
+                                                        <span class="menu-title">My Tickets</span>
+                                                    </a>
                                                 </span>
-                                                <a asp-area="" asp-controller="Tickets" asp-action="MyTickets">
-                                                    <span class="menu-title">My Tickets</span>
-                                                </a>
-                                            </span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                     <div class="menu-sub menu-sub-accordion">
                                         <div class="menu-item menu-accordion">
                                             <span class="menu-link">
@@ -1763,6 +1821,21 @@
                                             </span>
                                         </div>
                                     </div>
+                                    @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                    {
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <div class="menu-item menu-accordion">
+                                                <span class="menu-link">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <a asp-area="" asp-controller="Tickets" asp-action="UnassignedTickets">
+                                                        <span class="menu-title">Unassigned Tickets</span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <span class="menu-link">

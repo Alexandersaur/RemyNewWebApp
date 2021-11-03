@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RemyNewWebApp.Data;
 using RemyNewWebApp.Models;
+using RemyNewWebApp.Services.Interfaces;
 
 namespace RemyNewWebApp.Controllers
 {
@@ -15,12 +16,15 @@ namespace RemyNewWebApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTTicketService _ticketService;
 
         public TicketCommentsController(ApplicationDbContext context,
-                                        UserManager<BTUser> userManager)
+                                        UserManager<BTUser> userManager,
+                                        IBTTicketService ticketService)
         {
             _context = context;
             _userManager = userManager;
+            _ticketService = ticketService;
         }
 
         // GET: TicketComments
@@ -69,8 +73,8 @@ namespace RemyNewWebApp.Controllers
             {
                 ticketComment.Created = DateTime.Now;
                 ticketComment.UserId = _userManager.GetUserId(User);
-                _context.Add(ticketComment);
-                await _context.SaveChangesAsync();
+                await _ticketService.AddTicketCommentAsync(ticketComment);
+
                 return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId});
             }
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", ticketComment.TicketId);

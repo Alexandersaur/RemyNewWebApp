@@ -17,12 +17,17 @@ namespace RemyNewWebApp.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IBTFileService _fileService;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTTicketService _ticketService;
 
-        public TicketAttachmentsController(ApplicationDbContext context, IBTFileService fileService, UserManager<BTUser> userManager)
+        public TicketAttachmentsController(ApplicationDbContext context,
+                                           IBTFileService fileService,
+                                           UserManager<BTUser> userManager,
+                                           IBTTicketService ticketService)
         {
             _context = context;
             _fileService = fileService;
             _userManager = userManager;
+            _ticketService = ticketService;
         }
 
         // GET: TicketAttachments
@@ -55,32 +60,31 @@ namespace RemyNewWebApp.Controllers
         // GET: TicketAttachments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FormFile,Image,Description,Created,TicketId,UserId")] TicketAttachment ticketAttachment)
+        public async Task<IActionResult> Create([Bind("Id,FormFile,Description,TicketId")] TicketAttachment ticketAttachment)
         {
-            if (ModelState.IsValid)
+            string statusMessage;
+            if (ModelState.IsValid && ticketAttachment.FormFile != null)
             {
-                if (ticketAttachment.FormFile != null)
-                {
-                    ticketAttachment.FileData = await _fileService.ConvertFileToByteArrayAsync(ticketAttachment.FormFile);
-                    ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
-                    ticketAttachment.FileContentType = ticketAttachment.FormFile.ContentType;
-                }
+                ticketAttachment.FileData = await _fileService.ConvertFileToByteArrayAsync(ticketAttachment.FormFile);
+                ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
+                ticketAttachment.FileContentType = ticketAttachment.FormFile.ContentType;
 
                 ticketAttachment.Created = DateTimeOffset.Now;
                 ticketAttachment.UserId = _userManager.GetUserId(User);
 
-                _context.Add(ticketAttachment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
+                await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
+                statusMessage = "Success: New attachment added to Ticket."; 
             }
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", ticketAttachment.TicketId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", ticketAttachment.UserId);
-            return View(ticketAttachment);
+            else
+            {
+                statusMessage = "Error: Invalid data.";
+            }
+            return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
+
         }
 
         //POST: TicketAttachments/Create
-        //To protect from overposting attacks, enable the specific properties you want to bind to.
-        //For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]

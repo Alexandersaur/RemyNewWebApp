@@ -1,0 +1,118 @@
+﻿@model IEnumerable<RemyNewWebApp.Models.Ticket>
+@using RemyNewWebApp.Models.Enums
+@using Microsoft.AspNetCore.Identity  
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="container" id="kt_content_container">
+        <div class="row g-5 g-xxl-8">
+            <div class="col-xl-6">
+                <!--begin::Comments Widget 1-->
+                <div class="card mb-5 mb-xl-8">
+                    <!--begin::Body-->
+                    <div class="card-body pb-0">
+                        <!--begin::Header-->
+                        <div class="d-flex mb-5">
+                            <!--begin::User-->
+                            <div class="d-flex align-items-center flex-grow-1">
+                                <!--begin::Avatar-->
+                                <div class="symbol symbol-40px me-3">
+                                    <div class="symbol-label bg-primary bg-opacity-10">
+                                        <!--begin::Svg Icon | path: icons/duotune/abstract/abs045.svg-->
+                                        <span class="svg-icon svg-icon-1 svg-icon-primary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z" fill="black" />
+                                                <path d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </div>
+                                </div>
+                                <!--end::Avatar-->
+                                <!--begin::Info-->
+                                <div class="d-flex flex-column">
+                                    <a class="text-gray-900 text-hover-primary fs-6 fw-bolder">Unassigned Tickets</a>
+                                    <span class="fw-bold text-muted">All tickets that have not yet been assigned a Developer</span>
+                                </div>
+                                <!--end::Info-->
+                            </div>
+                            <!--end::User-->
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Card body-->
+                        <div class="card-body p-9 pt-3 pb-3">
+                            <!--begin::Tickets-->
+                            @foreach (var ticket in Model.OrderByDescending(d => d.Created))
+                            {
+                                <!--begin::Header-->
+                                <div class="d-flex align-items-center mb-3">
+                                    <!--begin::User-->
+                                    <div class="d-flex align-items-center">
+                                        <!--begin::Avatar-->
+
+                                        @if (ticket.DeveloperUserId != null)
+                                        {
+                                            <div class="symbol symbol-circle symbol-60px me-5">
+                                                <img src="data:image/*;base64,@Convert.ToBase64String(Model.FirstOrDefault(t => t.Id == ticket.Id).OwnerUser.AvatarFileData)" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                            {
+                                                <a class="btn btn-sm btn-primary me-5" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@ticket.Id">+ Dev.</a>
+                                            }
+                                            else
+                                            {
+                                                <div class="symbol symbol-circle symbol-60px me-5">
+                                                    <span>No Dev.</span>
+                                                </div>
+                                            }
+                                        }
+                                        <!--end::Avatar-->
+                                        <!--begin::Info-->
+                                        <div class="d-flex flex-column">
+                                            <span class="text-gray-900 text-hover-primary fs-3 fw-bolder"><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id" style="color:black">@Model.FirstOrDefault(t => t.Id == ticket.Id).Title</a></span>
+                                            <span class="text-gray-900 fs-6">By: @Model.FirstOrDefault(t => t.Id == ticket.Id).OwnerUser.FullName</span>
+                                            <span class="text-gray-900 fs-6">On: @Model.FirstOrDefault(t => t.Id == ticket.Id).Created.ToString("dd/MM/yy")</span>
+                                            <span class="text-gray-400 fw-bold">
+                                                @if (ticket.TicketPriorityId == 4)
+                                                {
+                                                    <span>#@ticket.TicketType.Name</span> <span class="badge badge-light-primary me-auto">@ticket.TicketPriority.Name</span>
+                                                }
+                                                @if (ticket.TicketPriorityId == 3)
+                                                {
+                                                    <span>#@ticket.TicketType.Name</span> <span class="badge badge-light-success me-auto">@ticket.TicketPriority.Name</span>
+                                                }
+                                                @if (ticket.TicketPriorityId == 2)
+                                                {
+                                                    <span>#@ticket.TicketType.Name</span> <span class="badge badge-light-warning me-auto">@ticket.TicketPriority.Name</span>
+                                                }
+                                                @if (ticket.TicketPriorityId == 1)
+                                                {
+                                                    <span>#@ticket.TicketType.Name</span> <span class="badge badge-light-danger me-auto">@ticket.TicketPriority.Name</span>
+                                                }
+                                            </span>
+                                        </div>
+                                        <!--end::Info-->
+                                    </div>
+                                    <!--end::User-->
+                                </div>
+                                <!--end::Header-->
+                            }
+                            <!--end::Tickets-->
+                        </div>
+                        <!--end::Card body -->
+                        <!--<form asp-action="Create" asp-controller="TicketComments" method="post">
+                        <input hidden asp-for="Id" name="TicketId" />-->
+                        @*<label asp-for="Comments" class="control-label"></label>*@
+                        <!--<textarea name="Comment" id="Comments" class="form-control mb-3"></textarea>
+                            <span asp-validation-for="Comments" class="text-danger"></span>
+                            <button class="btn btn-primary btn-sm mb-9 mt-3" style="display:block; width:100%" type="submit">Comment</button>
+                        </form>-->
+                    </div>
+                </div>
+                <!--end::Comments Widget 1-->
+            </div>
+        </div>
+    </div>
+</div>

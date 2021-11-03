@@ -50,6 +50,34 @@ namespace RemyNewWebApp.Services
             }
         }
 
+        public async Task AddTicketCommentAsync(TicketComment ticketComment)
+        {
+            try
+            {
+                await _context.AddAsync(ticketComment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
+        {
+            try
+            {
+                await _context.AddAsync(ticketAttachment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task AssignTicketAsync(int ticketId, string userId)
         {
             Ticket ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
@@ -357,6 +385,20 @@ namespace RemyNewWebApp.Services
             }
         }
 
+        public async Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId)
+        {
+            List<Ticket> tickets = new();
+            try
+            {
+                tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).ToList();
+                return tickets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId)
         {
             try
@@ -375,7 +417,6 @@ namespace RemyNewWebApp.Services
                 throw;
             }
         }
-
 
         public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
         {

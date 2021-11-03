@@ -69,7 +69,7 @@ namespace RemyNewWebApp.Controllers
             string userId = _userManager.GetUserId(User);
 
             List<Ticket> tickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
-            if(User.IsInRole(nameof(Roles.Developer)) || User.IsInRole(nameof(Roles.Submitter)))
+            if (User.IsInRole(nameof(Roles.Developer)) || User.IsInRole(nameof(Roles.Submitter)))
             {
                 return View(tickets.Where(t => t.Archived == false));
             }
@@ -85,6 +85,39 @@ namespace RemyNewWebApp.Controllers
             return View(tickets);
         }
 
+        // GET: Archived Tickets
+        public async Task<IActionResult> ArchivedTickets()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Ticket> tickets = await _ticketService.GetArchivedTicketsAsync(companyId);
+            return View(tickets);
+        }
+
+        [Authorize(Roles = "Admin, ProjectManager")]
+        // GET: Unassigned Tickets
+        public async Task<IActionResult> UnassignedTickets()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            string btUserId = _userManager.GetUserId(User);
+            List<Ticket> tickets = await _ticketService.GetUnassignedTicketsAsync(companyId);
+            if (User.IsInRole(nameof(Roles.Admin)))
+            {
+                return View(tickets);
+            }
+            else
+            {
+                List<Ticket> pmTickets = new();
+                foreach(Ticket ticket in tickets)
+                {
+                    if(await _projectService.IsAssignedProjectManagerAsync(btUserId, ticket.ProjectId))
+                    {
+                        pmTickets.Add(ticket);
+                    }
+                }
+                return View(pmTickets);
+            }
+        }
+
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -93,17 +126,8 @@ namespace RemyNewWebApp.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                                       .Include(t => t.DeveloperUser)
-                                       .Include(t => t.OwnerUser)
-                                       .Include(t => t.Project)
-                                       .Include(t => t.TicketPriority)
-                                       .Include(t => t.TicketStatus)
-                                       .Include(t => t.TicketType)
-                                       .Include(t => t.Comments).ThenInclude(t => t.User)
-                                       .Include(t => t.Attachments).ThenInclude(t => t.User)
-                                       .Include(t => t.Histories).ThenInclude(t => t.User)
-                                       .FirstOrDefaultAsync(m => m.Id == id);
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+
             if (ticket == null)
             {
                 return NotFound();
@@ -212,15 +236,13 @@ namespace RemyNewWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+            ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name", ticket.TicketPriorityId);
+            ViewData["TicketStatusId"] = new SelectList(await _lookupService.GetTicketStatusesAsync(), "Id", "Name", ticket.TicketStatusId);
+            ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name", ticket.TicketTypeId);
             return View(ticket);
         }
 
         // POST: Tickets/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,TicketTypeId,TicketStatusId,TicketPriorityId,ProjectId,Created,OwnerUserId,DeveloperUserId")] Ticket ticket)
@@ -258,15 +280,13 @@ namespace RemyNewWebApp.Controllers
 
                 return RedirectToAction(nameof(AllTickets));
             }
-            //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
-            //ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.OwnerUserId);
-            //ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", ticket.ProjectId);
-            //ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id", ticket.TicketPriorityId);
-            //ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id", ticket.TicketStatusId);
-            //ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
+            ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name", ticket.TicketPriorityId);
+            ViewData["TicketStatusId"] = new SelectList(await _lookupService.GetTicketStatusesAsync(), "Id", "Name", ticket.TicketStatusId);
+            ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name", ticket.TicketTypeId);
             return View(ticket);
         }
 
+        [HttpGet]
         public async Task<IActionResult> AssignDeveloper(int id)
         {
             AssignDeveloperViewModel model = new();
@@ -295,7 +315,7 @@ namespace RemyNewWebApp.Controllers
             //TODO: Add history
             //TODO: Get Newticket
             //TODO: Send notifications
-            return RedirectToAction("AllTickets");
+            return RedirectToAction(nameof(AssignDeveloper), new { id = model.Ticket.Id });
         }
 
 
@@ -307,14 +327,8 @@ namespace RemyNewWebApp.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.DeveloperUser)
-                .Include(t => t.OwnerUser)
-                .Include(t => t.Project)
-                .Include(t => t.TicketPriority)
-                .Include(t => t.TicketStatus)
-                .Include(t => t.TicketType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+
             if (ticket == null)
             {
                 return NotFound();
@@ -328,15 +342,43 @@ namespace RemyNewWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ArchiveConfirmed(int id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id);
+            ticket.Archived = true;
+            await _ticketService.UpdateTicketAsync(ticket);
+            return RedirectToAction(nameof(AllTickets));
+        }
+
+        // GET: Tickets/Restore/5
+        public async Task<IActionResult> Restore(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(AllTickets));
+        }
+
+        // POST: Tickets/Restore/5
+        [HttpPost, ActionName("Restore")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RestoreConfirmed(int id)
+        {
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id);
+            ticket.Archived = false;
+            await _ticketService.UpdateTicketAsync(ticket);
             return RedirectToAction(nameof(AllTickets));
         }
 
         private async Task<bool> TicketExistsAsync(int id)
         {
-            //return _context.Tickets.Any(e => e.Id == id);
             int companyId = User.Identity.GetCompanyId().Value;
             return (await _ticketService.GetAllTicketsByCompanyAsync(companyId)).Any(t => t.Id == id);
         }

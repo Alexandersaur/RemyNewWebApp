@@ -6,9 +6,10 @@
 @inject IBTFileService BTFileService
 @inject IBTProjectService BTProjectSerivce
 @inject IBTTicketService BTTicketService
+@inject IBTTicketHistoryService BTTicketHistoryService
 
 @{
-    //int companyId = User.Identity.GetCompanyId();
+    //int companyId = User.Identity.GetCompanyId().Value;
     //BTUser developer = await BTTicketService.GetTicketDeveloperAsync(Model.Id, companyId);
     BTUser btUser = await UserManager.GetUserAsync(User);
     BTUser projectManager = await BTProjectSerivce.GetProjectManagerAsync(Model.ProjectId);
@@ -87,6 +88,22 @@
                                     </a>
                                 </div>
                                 <!--end::Info-->
+                            </div>
+                            <div class="progress-container progress-info me-4 mb-2">
+                                <span class="progress-badge" style="font-size:small">
+                                    Timeline Progress
+                                </span>
+                                <div class="progress">
+                                    @{
+                                        var start = Model.Project.StartDate.DateTime;
+                                        var end = Model.Project.EndDate.DateTime;
+                                        var today = DateTime.Now;
+                                        var percent = today >= end ? 100 : today < start ? 0 : Math.Round((today.Subtract(start)) / (end.Subtract(start)) * 100);
+                                    }
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:@percent%;">
+                                        <span class="progress-value">@percent%</span>
+                                    </div>
+                                </div>
                             </div>
                             <!--end::User-->
                         </div>
@@ -377,13 +394,20 @@
                                     <div class="d-flex align-items-center flex-grow-1">
                                         <!--begin::Avatar-->
                                         <div class="symbol symbol-45px me-5">
-                                            <img src="/assets/media/avatars/150-10.jpg" alt="" />
+                                            @if (comment.User.AvatarFileData != null)
+                                            {
+                                                <img alt="Pic" src="data:image/*;base64,@(Convert.ToBase64String(comment.User.AvatarFileData))" />
+                                            }
+                                            else
+                                            {
+                                                <img src="/assets/media/avatars/150-10.jpg" alt="" />
+                                            }
                                         </div>
                                         <!--end::Avatar-->
                                         <!--begin::Info-->
                                         <div class="d-flex flex-column">
                                             <a href="#" class="text-gray-900 text-hover-primary fs-6 fw-bolder">@comment.User.FullName</a>
-                                            <span class="text-gray-400 fw-bold">@comment.Created.ToString("dd/MM/yy")</span>
+                                            <span class="text-gray-400 fw-bold">@comment.Created.ToString("dd/MM/yy h:ss tt")</span>
                                         </div>
                                         <!--end::Info-->
                                     </div>
@@ -403,10 +427,22 @@
                         <!--end::Card body -->
                         <form asp-action="Create" asp-controller="TicketComments" method="post">
                             <input hidden asp-for="Id" name="TicketId" />
-                            @*<label asp-for="Comments" class="control-label"></label>*@
-                            <textarea name="Comment" id="Comments" class="form-control mb-3"></textarea>
-                            <span asp-validation-for="Comments" class="text-danger"></span>
-                            <button class="btn btn-primary btn-sm mb-9 mt-3" style="display:block; width:100%" type="submit">Comment</button>
+                            @if (Model.DeveloperUserId == btUser.Id || Model.OwnerUserId == btUser.Id || projectManager?.Id == btUser.Id || User.IsInRole(nameof(Roles.Admin)))
+                            {
+                                <div class="form-group">
+                                    <textarea asp-for="@(new TicketComment().Comment)" rows="8" class="form-control" required placeholder="Add comment..."></textarea>
+                                    <button class="btn btn-primary btn-sm mb-9 mt-3" style="display:block; width:100%" type="submit">Submit</button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <textarea disabled asp-for="@(new TicketComment().Comment)" rows="8" class="form-control" required placeholder="Add comment..."></textarea>
+                                </div>
+                            }
+                            @*<textarea name="Comment" id="Comments" class="form-control mb-3"></textarea>
+                                <span asp-validation-for="Comments" class="text-danger"></span>
+                                <button class="btn btn-primary btn-sm mb-9 mt-3" style="display:block; width:100%" type="submit">Comment</button>*@
                         </form>
                     </div>
                 </div>
