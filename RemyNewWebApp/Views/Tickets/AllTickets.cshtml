@@ -268,24 +268,22 @@
                                         </td>
                                     }
                                     <td class="text-end">
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>
+                                        @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Details</a>*@
                                         @if (User.IsInRole(nameof(Roles.Admin)) || item.DeveloperUserId == btUser.Id || item.OwnerUserId == btUser.Id || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId))
                                         {
-                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4">Edit</a>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-bg-light btn-color-muted btn-active-color-primary btn-sm px-4 min-w-75px">Edit</a>
                                         }
                                         @if (User.IsInRole(nameof(Roles.Admin)) || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId))
                                         {
-                                            <span>|</span>
-                                            if (item.Project.Archived)
+                                            if (item.Archived == true)
                                             {
-                                                <a asp-action="Restore" asp-route-id="@item.Project.Id" class="btn btn-sm btn-warning min-w-125px">Restore</a>
+                                                <a asp-action="Restore" asp-route-id="@item.Id" class="btn btn-sm btn-warning min-w-75px">Restore</a>
                                             }
                                             else
                                             {
-                                                <a asp-action="Archive" asp-route-id="@item.Project.Id" class="btn btn-sm btn-danger min-w-125px">Archive</a>
+                                                <a asp-action="Archive" asp-route-id="@item.Id" class="btn btn-sm btn-danger min-w-75px">Archive</a>
                                             }
-                                            <span>|</span>
-                                            <a asp-action="AssignDeveloper" asp-route-id="@item.Project.Id" class="btn btn-sm btn-danger min-w-125px">Assign Dev</a>
+                                            @*<a asp-action="AssignDeveloper" asp-route-id="@item.Id" class="btn btn-sm btn-danger min-w-100px">Assign Dev</a>*@
 
                                         }
                                     </td>
