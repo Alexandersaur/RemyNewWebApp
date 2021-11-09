@@ -52,7 +52,7 @@
                                         @if (ticket.DeveloperUserId != null)
                                         {
                                             <div class="symbol symbol-circle symbol-60px me-5">
-                                                <img src="data:image/*;base64,@Convert.ToBase64String(Model.FirstOrDefault(t => t.Id == ticket.Id).OwnerUser.AvatarFileData)" />
+                                                <img src="data:image/*;base64,@Convert.ToBase64String(Model.FirstOrDefault(t => t.Id == ticket.Id).DeveloperUser.AvatarFileData)" />
                                             </div>
                                         }
                                         else
@@ -72,7 +72,7 @@
                                         <!--begin::Info-->
                                         <div class="d-flex flex-column">
                                             <span class="text-gray-900 text-hover-primary fs-3 fw-bolder"><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id" style="color:black">@Model.FirstOrDefault(t => t.Id == ticket.Id).Title</a></span>
-                                            <span class="text-gray-900 fs-6">By: @Model.FirstOrDefault(t => t.Id == ticket.Id).OwnerUser.FullName</span>
+                                            <span class="text-gray-900 fs-6">By: @Model.FirstOrDefault(t => t.Id == ticket.Id).DeveloperUser?.FullName</span>
                                             <span class="text-gray-900 fs-6">On: @Model.FirstOrDefault(t => t.Id == ticket.Id).Created.ToString("dd/MM/yy")</span>
                                             <span class="text-gray-400 fw-bold">
                                                 @if (ticket.TicketPriorityId == 4)
