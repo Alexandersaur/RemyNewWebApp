@@ -29,7 +29,7 @@
     //                         select n).Count();
     int doneTickets = resolvedTickets.Count;
     int unresolvedTickets = newTickets.Count + developmentTickets.Count + testingTickets.Count;
-    var percent = ((doneTickets) / (unresolvedTickets) * 100);
+    //var percent = ((doneTickets) / (unresolvedTickets) * 100);
 
     //int unresolvedRatio = resolvedTickets.Count() / unresolvedTickets
         }
@@ -188,7 +188,7 @@
                                 </div>
                                 <br />
                                 <div class="progress h-7px bg-success bg-opacity-50 mt-7">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: @percent" aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 34%" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <!--begin::Chart-->
                                 @*<div class="mixed-widget-14-chart" style="height: 100px"></div>*@
@@ -216,7 +216,7 @@
                             <!--begin::Stats-->
                             <div class="pt-5">
                                 <!--begin::Number-->
-                                <span class="text-dark fw-bolder fs-3x me-2 lh-0">@unresolvedTickets%</span>
+                                <span class="text-dark fw-bolder fs-3x me-2 lh-0">34%</span>
                                 <!--end::Number-->
                                 <!--begin::Text-->
                                 <span class="text-dark fw-bolder fs-6 lh-0">completed</span>

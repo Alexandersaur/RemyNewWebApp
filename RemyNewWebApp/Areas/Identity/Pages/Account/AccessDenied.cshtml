@@ -4,7 +4,19 @@
     ViewData["Title"] = "Access denied";
 }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+<div class="row ms-8">
+    <div class="col-10">
+        <div class="card mb-5 mb-xxl-8">
+            <!--begin::Body-->
+            <div class="card-body pb-0">
+                <!--begin::Header-->
+                <div class="d-flex align-items-center mb-6">
+                    <header>
+                        <h1 class="text-danger">@ViewData["Title"]</h1>
+                        <p class="text-danger">Due to your assigned role, you do not have access to this resource. Please contact your Project Manager or Administrator for assistance.</p>
+                    </header>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
